@@ -1,8 +1,13 @@
 import {SettingsHandler} from "../settings.js";
+import Imgui from "../imgui";
 
 export class Prefs extends SettingsHandler
 {
-    constructor(nmspace)
+    imgui: Imgui | null;
+    nmspace: string;
+    vals: Record<string, any>;
+
+    constructor(nmspace: string)
     {
         super();
         this.imgui = null;
@@ -10,14 +15,14 @@ export class Prefs extends SettingsHandler
         this.vals = {};
     }
 
-    Begin(imgui)
+    Begin(imgui: Imgui)
     {
         this.imgui = imgui;
     }
 
     GetTypeName() { return "Prefs"; }
 
-    Clear(val=null)
+    Clear(val: string| null =null)
     {
         if(!val)
             this.vals = {};
@@ -30,17 +35,17 @@ export class Prefs extends SettingsHandler
         return this.vals;
     }
 
-    Instantiate(imgui, o) // @override of SettingsHandler
+    Instantiate(imgui: Imgui, o: Record<string, any>) // @override of SettingsHandler
     {
         console.assert(this.imgui == imgui);
         this.vals = o;
     }
 
-    SetValue(nm, value) // @override
+    SetValue(nm: string, value: any) // @override
     {
         if(!nm) 
         {
-            console.assert(nm);
+            console.assert(!!nm);
             return;
         }
 
@@ -52,11 +57,11 @@ export class Prefs extends SettingsHandler
         }
     }
 
-    GetValue(nm, fallback) // @override
+    GetValue(nm: string, fallback: any) // @override
     {
         if(!nm) 
         {
-            console.assert(nm);
+            console.assert(!!nm);
             return fallback;
         }
 
