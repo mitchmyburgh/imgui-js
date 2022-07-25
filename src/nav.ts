@@ -26,6 +26,14 @@ const NavWinHighlightDelay = 0.2; // time before highlight an and screen dimming
 const NavWinAppearDelay = 0.15;
 
 export class NavMoveResult {
+  ID: number = 0
+  SelectScopeId: number = 0
+  Window: any = null; // todo type
+  DistBox: number = Number.MAX_VALUE;
+  DistCenter: number = Number.MAX_VALUE;
+  DistAxial: number = Number.MAX_VALUE;
+  RectRel: any = null; // todo type
+
   constructor() {
     this.Clear();
   }

@@ -2,8 +2,9 @@ import {ValRef, Vec2} from "../types.js";
 import {TextFilter} from "../widgets/text.js";
 import {WindowFlags} from "../window.js";
 import {CondFlags} from "../flags.js";
+import Imgui from "../imgui";
 
-var Singleton = null;
+let Singleton: LogWindow | null = null;
 
 export function GetLog()
 {
@@ -24,9 +25,34 @@ const sLevelShorten =
     "DEBUG": "dbg",
 };
 
+
+type Level = "DEBUG" | "INFO" | "NOTICE" | "WARNING" | "ERROR"
+
+interface LogEntry {m: string, l: Level, ts: number}
+
 export class LogWindow
 {
-    constructor(app)
+    app: any // todo type
+    IsShowing: ValRef;
+    entries: LogEntry[]
+    scrollToBottom: boolean
+    filter: any// todo type
+    lastError: string;
+    lastErrorLevel: string;
+    lastMsg:  string;
+    lastMsgLevel: string;
+    console: {
+    debug: (...args: any[]) => void,
+    log: (...args: any[]) => void,
+    info: (...args: any[]) => void,
+    warn: (...args: any[]) => void,
+    error: (...args: any[]) => void,
+    alert: (...args: any[]) => void
+}
+    dirty: boolean = false
+    raiseRequested: boolean = false
+
+    constructor(app: any)
     {
         this.app = app;
         this.IsShowing = new ValRef(false);
@@ -35,7 +61,7 @@ export class LogWindow
         this.scrollToBottom = true;
         this.filter = null;
         this.lastError = "";
-        this.lastErrorLevel = null;
+        this.lastErrorLevel = "";
         this.lastMsg = "";
         this.lastMsgLevel = "";
         this.console = {
@@ -54,7 +80,7 @@ export class LogWindow
         console.debug("Starting Log");
     }
 
-    bindConsole(override)
+    bindConsole(override: boolean)
     {
         if(override)
         {
@@ -76,7 +102,7 @@ export class LogWindow
         }
     }
 
-    Debug(msg, ...args)
+    Debug(msg: any, ...args: any[])
     {
         // send debug message to real console
         let d = new Date();
@@ -86,37 +112,37 @@ export class LogWindow
         // was: this.log(msg, "DEBUG", args);
     }
 
-    Info(msg, ...args)
+    Info(msg: any, ...args: any[])
     {
         this.log(msg, "INFO", args); // nb: levels are styles, see sLevelShorten
     }
 
-    Notice(msg, ...args)
+    Notice(msg: any, ...args: any[])
     {
         this.log(msg, "NOTICE", args);// nb: levels are styles, see sLevelShorten
     }
 
-    Warning(msg, ...args)
+    Warning(msg: any, ...args: any[])
     {
         this.log(msg, "WARNING", args);
     }
 
-    Error(msg, ...args)
+    Error(msg: any, ...args: any[])
     {
         this.log(msg, "ERROR", args);
     }
 
-    Alert(msg, ...args)
+    Alert(msg: any, ...args: any[])
     {
-        var x = document.getElementById("Alert");
+        let x = document.getElementById("Alert");
         if(x)
         {
             x.className = "show";
             x.innerHTML = `<span>${msg}${args}</span>`;
             setTimeout(() => 
             { 
-                x.className = ""; 
-                x.innerHTML = "";
+                x!.className = "";
+                x!.innerHTML = "";
             }, 3000);
         }
         else
@@ -131,7 +157,7 @@ export class LogWindow
             return this.lastMsg.slice(0, maxLength);
     }
 
-    GetLastMsgColor(imgui)
+    GetLastMsgColor(imgui: Imgui)
     {
         let lev = this.lastMsgLevel;
         if(lev)
@@ -158,14 +184,14 @@ export class LogWindow
         return this.lastErrorLevel;
     }
 
-    GetLastErrorColor(imgui)
+    GetLastErrorColor(imgui: Imgui)
     {
         let lev = this.lastErrorLevel;
         if(!lev) lev = "DEBUG";
         return imgui.guictx.Style.GetColor(lev);
     }
 
-    log(msg, level="INFO", args)
+    log(msg: any, level: string="INFO", args: any[])
     {
         if(msg.message)
             msg = msg.message;
@@ -205,7 +231,7 @@ export class LogWindow
         this.app.OnLogActivity(this.lastMsg, this.lastMsgLevel);
     }
 
-    FilterEntries(filter)
+    FilterEntries(filter: (entry: LogEntry) => boolean)
     {
         this.entries = this.entries.filter(filter); 
     }
@@ -218,10 +244,10 @@ export class LogWindow
         this.lastMsgLevel = "";
     }
 
-    Begin(imgui)
+    Begin(imgui: Imgui)
     {}
 
-    Show(imgui, winname="Log")
+    Show(imgui: Imgui, winname: string="Log")
     {
         if(!this.IsShowing.get()) return;
 
@@ -248,7 +274,7 @@ export class LogWindow
         if(!imgui.IsWindowCollapsed())
         {
             this.lastError = "";
-            this.lastErrorLevel = null;
+            this.lastErrorLevel = "";
         }
         if(open)
         {
@@ -305,7 +331,7 @@ export class LogWindow
         imgui.End();
     }
 
-    GetLevelColor(imgui, lev)
+    GetLevelColor(imgui: Imgui, lev: Level)
     {
         let c;
         if(imgui)
@@ -321,7 +347,7 @@ export class LogWindow
         else
         {
             c = {
-                "": "#222",
+                "DEBUG": "#222",
                 "INFO": "#448",
                 "NOTICE": "#24a",
                 "WARNING": "#942",
@@ -331,7 +357,7 @@ export class LogWindow
         return c;
     }
 
-    formatEntryHead(entry)
+    formatEntryHead(entry: LogEntry)
     {
         let d = new Date(entry.ts);
         let h = ("0" + d.getHours()).slice(-2);

@@ -23,6 +23,7 @@ export class Imgui extends ImguiMixins {
   // we require a subset of 'navigator' interface:
   //      platform,
   //      clipboard.writeText, clipboard.readText
+  guictx: GuiContext;
   constructor(canvas, appname = "imgui-njs", appServices = navigator) {
     super();
     this.debug = true;
