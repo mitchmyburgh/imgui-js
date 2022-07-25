@@ -4,6 +4,7 @@ export var FocusedFlags = {
   ChildWindows: 1 << 0, // IsWindowFocused(): Return true if any children of the window is focused
   RootWindow: 1 << 1, // IsWindowFocused(): Test from root window (top most parent of the current hierarchy)
   AnyWindow: 1 << 2, // IsWindowFocused(): Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs, do NOT use this. Use ImGui::GetIO().WantCaptureMouse instead.
+  RootAndChildWindows: 1 << 1 | 1 << 0
 };
 FocusedFlags.RootAndChildWindows =
   FocusedFlags.RootWindow | FocusedFlags.ChildWindows;
@@ -21,6 +22,8 @@ export var HoveredFlags = {
   AllowWhenBlockedByActiveItem: 1 << 5, // Return true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
   AllowWhenOverlapped: 1 << 6, // Return true even if the position is overlapped by another window
   AllowWhenDisabled: 1 << 7, // Return true even if the item is disabled
+  RectOnly: 1 << 3 | 1 << 5 | 1 << 6,
+  RootAndChildWindows: 1 << 1 | 1 << 0
 };
 HoveredFlags.RectOnly =
   HoveredFlags.AllowWhenBlockedByPopup |
@@ -162,6 +165,11 @@ export var ColorEditFlags = {
   PickerHueWheel: 1 << 26, // ColorPicker: wheel for Hue, triangle for Sat/Value.
   InputRGB: 1 << 27, // ColorEdit, ColorPicker: input and output data in RGB format.
   InputHSV: 1 << 28, // ColorEdit, ColorPicker: input and output data in HSV format.
+  OptionsDefault: 1 << 23 | 1 << 20 | 1 << 27 | 1 << 25,
+  DisplayMask: 1 << 20 | 1 << 21 | 1 << 22,
+  DataTypeMask: 1,
+  PickerMask: 1,
+  InputMask: 1
 };
 
 // Defaults Options. You can set application defaults using SetColorEditOptions(). The intent is that you probably don't want to
@@ -196,6 +204,11 @@ export var CornerFlags = {
   TopRight: 1 << 1, // 0x2
   BotLeft: 1 << 2, // 0x4
   BotRight: 1 << 3, // 0x8
+  Top: 1,
+  Bot: 1,
+  Left: 1,
+    Right: 1,
+    All: 0xF,
 };
 f = CornerFlags;
 f.Top = f.TopLeft | f.TopRight; // 0x3
