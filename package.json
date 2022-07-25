@@ -1,0 +1,25 @@
+{
+  "name": "imgui-js",
+  "version": "0.0.1",
+  "description": "Pure JS implementation of Imgui",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitchmyburgh/imgui-js.git"
+  },
+  "author": "2022 Mitch Myburgh, 2019 Dana Batali (dbadb)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mitchmyburgh/imgui-js/issues"
+  },
+  "homepage": "https://github.com/mitchmyburgh/imgui-js#readme",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}

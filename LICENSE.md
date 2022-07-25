@@ -1,5 +1,6 @@
 MIT License
 
+Copyright (c) 2022 Mitch Myburgh
 Copyright (c) 2019 Dana Batali (dbadb) and Cannery Coders
 Copyright (c) 2014-2019 Omar Cornut
 
