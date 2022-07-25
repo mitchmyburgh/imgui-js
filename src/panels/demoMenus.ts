@@ -39,7 +39,7 @@ export function ExampleFileMenu(imgui)
     }
     imgui.Separator();
     if (imgui.BeginMenu("Disabled", false)) // Disabled
-        console.assert(0);
+        console.assert(false);
     if (imgui.MenuItem("Checked", null, true))
     {
         // pass

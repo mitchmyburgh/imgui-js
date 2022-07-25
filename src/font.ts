@@ -21,7 +21,11 @@ export class Font {
   measuring: number;
   ctx: CanvasRenderingContext2D;
   ijmap: unknown;
-  constructor(canvctx: CanvasRenderingContext2D, metrics: FontMetrics, str: String) {
+  constructor(
+    canvctx: CanvasRenderingContext2D,
+    metrics: FontMetrics,
+    str: String
+  ) {
     this.Metrics = metrics;
     this.Family = metrics.fontFamily;
     this.Size = metrics.fontSize;

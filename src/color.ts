@@ -1,8 +1,8 @@
-import {Rect, Vec1} from "./types.js";
+import { Rect, Vec1 } from "./types.js";
 
 export class ColorMod {
   Field: string;
-    BackupValue: Color;
+  BackupValue: Color;
   constructor(field: string, backupValue: Color) {
     this.Field = field; // aka: Col (we use field name, not idx)
     this.BackupValue = backupValue;
@@ -23,7 +23,7 @@ export class Color {
   space: string;
   a: number;
   str: string | null;
-  alphaMult: number = 0
+  alphaMult: number = 0;
 
   static RandomCss() {
     let keys = Object.keys(CSSColors);
@@ -43,7 +43,11 @@ export class Color {
     return CSSColors[nm].Clone();
   }
 
-  static FromArray(c: [number, number, number, number?], alpha = true, space = undefined) {
+  static FromArray(
+    c: [number, number, number, number?],
+    alpha = true,
+    space = undefined
+  ) {
     return new Color(c[0], c[1], c[2], alpha ? c[3] : 1, space);
   }
 
@@ -148,7 +152,7 @@ export class Color {
   constructor(
     x: number = 0,
     y: number = 0,
-    z: number= 0,
+    z: number = 0,
     a: number = 1,
     space: string = "rgb" // rgb, hsv, hsl
   ) {
@@ -156,7 +160,7 @@ export class Color {
     this.y = y;
     this.z = z;
     this.space = space;
-    this.a =  a;
+    this.a = a;
     this.str = null;
   }
 
@@ -371,7 +375,7 @@ export class Color {
         return new Color(r, g, b, this.a * this.alphaMult);
       }
     }
-    return this
+    return this;
   }
 
   AsHSL(): Color {
@@ -404,7 +408,7 @@ export class Color {
               h = (r - g) / d + 4;
               break;
           }
-          h =  (h!) / 6;
+          h = h! / 6;
         }
         return new Color(h, s, l, a, "hsl");
       }
@@ -413,7 +417,7 @@ export class Color {
       case "hsv": // to hsv to rsl
         return this.AsRGB().AsHSL();
     }
-    return this
+    return this;
   }
 
   AsHSV(clone = false): Color {
@@ -449,7 +453,7 @@ export class Color {
         if (!clone) return this;
         else return this.Clone();
     }
-    return this
+    return this;
   }
 
   rgbaStr() {

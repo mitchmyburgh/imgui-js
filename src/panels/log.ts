@@ -6,8 +6,10 @@ import Imgui from "../imgui";
 
 let Singleton: LogWindow | null = null;
 
-export function GetLog()
-{
+export function GetLog(app: Imgui) {
+    if (Singleton === null){
+        Singleton = new LogWindow(app);
+}
     return Singleton;
 }
 
@@ -32,7 +34,7 @@ interface LogEntry {m: string, l: Level, ts: number}
 
 export class LogWindow
 {
-    app: any // todo type
+    app: Imgui
     IsShowing: ValRef;
     entries: LogEntry[]
     scrollToBottom: boolean
@@ -52,7 +54,7 @@ export class LogWindow
     dirty: boolean = false
     raiseRequested: boolean = false
 
-    constructor(app: any)
+    constructor(app: Imgui)
     {
         this.app = app;
         this.IsShowing = new ValRef(false);

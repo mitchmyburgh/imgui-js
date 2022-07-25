@@ -26,6 +26,17 @@ import { ImguiTextMixin } from "./widgets/text.js";
 import { ImguiTooltipMixin } from "./widgets/tooltip.js";
 import { ImguiTreeMixin } from "./widgets/tree.js";
 
+
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+  baseCtors.forEach(baseCtor => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+      if (name !== 'constructor') {
+        derivedCtor.prototype[name] = baseCtor.prototype[name];
+      }
+    });
+  });
+}
+
 // Our job is to compose extra files' worth of methods for the
 // (gigantic) ImgGui class.
 export class ImguiMixins {
@@ -63,5 +74,6 @@ let mixins = [
   ImguiTooltipMixin,
   ImguiTreeMixin,
 ];
+
 
 for (let m of mixins) Object.assign(ImguiMixins.prototype, m);

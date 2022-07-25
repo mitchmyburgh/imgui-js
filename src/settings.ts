@@ -1,6 +1,7 @@
 import { WindowFlags } from "./window.js";
 import { Vec2 } from "./types.js";
 import { GetHash } from "./hashutil.js";
+import Imgui from "./imgui";
 
 // initially our settings will be stored in a single json string
 // of the form:
@@ -20,26 +21,25 @@ import { GetHash } from "./hashutil.js";
 export class SettingsHandler {
   constructor() {}
   GetTypeName() {
-    console.assert(0);
+    console.assert(false);
   }
   // return an object appropriate for JSON.stringify
-  Encapsulate(imgui) {
-    console.assert(0);
+  Encapsulate(imgui: Imgui) {
+    console.assert(false);
   }
   // obj is a parsed json obj
-  Instantiate(imgui, obj) {
-    console.assert(0);
+  Instantiate(imgui: Imgui, obj: any) {
+    console.assert(false);
   }
 }
 
 class WindowSettings {
-  constructor(o) {
-    this.Name = null;
-    this.ID = 0;
-    this.Pos = new Vec2();
-    this.Size = new Vec2();
-    this.Collapsed = false;
-  }
+  Name = null;
+  ID = 0;
+  Pos = new Vec2();
+  Size = new Vec2();
+  Collapsed = false;
+  constructor(o: any) {}
 
   Encapsulate() {
     return this;
@@ -64,7 +64,7 @@ export class WindowsSettingsHandler extends SettingsHandler {
     return "Windows";
   }
   Encapsulate(
-    imgui // we read from the real windows list
+    imgui: Imgui // we read from the real windows list
   ) {
     let g = imgui.guictx;
     let o = {};

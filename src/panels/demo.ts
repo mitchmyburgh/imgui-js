@@ -13,47 +13,47 @@ import {DemoCustomRendering} from "./demoCustomRendering.js";
 import {DemoPropertyEditor} from "./demoPropertyEditor.js";
 import {DemoSimpleLayout} from "./demoSimpleLayout.js";
 
-import {GetLog} from "./log.js";
+import Log, {GetLog} from "./log.js";
+import Imgui from "../imgui";
 
 export class DemoWindow
 {
+    showAppDocuments = new ValRef(false);
+    showAppMainMenuBar = new ValRef(false);
+    showAppConsole = new ValRef(false);
+    showAppLayout = new ValRef(false);
+    showAppPropertyEditor = new ValRef(false);
+    showAppLongText = new ValRef(false);
+    showAppAutoResize = new ValRef(false);
+    showAppConstrainedResize = new ValRef(false);
+    showAppSimpleOverlay = new ValRef(false);
+    showAppWindowTitles = new ValRef(false);
+    showAppCustomRendering = new ValRef(false);
+    showAppStyleEditor = new ValRef(false);
+    showAppMetrics = new ValRef(false);
+    showAppAbout = new ValRef(false);
+    noTitleBar = new ValRef(false);
+    noScrollBar = new ValRef(false);
+    noMenu = new ValRef(false);
+    noMove = new ValRef(false);
+    noResize = new ValRef(false);
+    noCollapse = new ValRef(false);
+    noNav = new ValRef(false);
+    noBgd = new ValRef(false);
+    noBringToFront = new ValRef(false);
+    noClose = new ValRef(false);
+    counter = 0;
+    imgui: Imgui;
+    log: Log
+
     constructor()
     {
-        // Examples App
-        this.showAppDocuments = new ValRef(false);
-        this.showAppMainMenuBar = new ValRef(false);
-        this.showAppConsole = new ValRef(false);
-        this.showAppLayout = new ValRef(false);
-        this.showAppPropertyEditor = new ValRef(false);
-        this.showAppLongText = new ValRef(false);
-        this.showAppAutoResize = new ValRef(false);
-        this.showAppConstrainedResize = new ValRef(false);
-        this.showAppSimpleOverlay = new ValRef(false);
-        this.showAppWindowTitles = new ValRef(false);
-        this.showAppCustomRendering = new ValRef(false);
-        this.showAppStyleEditor = new ValRef(false);
-        this.showAppMetrics = new ValRef(false);
-        this.showAppAbout = new ValRef(false);
 
-        // Window Options
-        this.noTitleBar = new ValRef(false);
-        this.noScrollBar = new ValRef(false);
-        this.noMenu = new ValRef(false);
-        this.noMove = new ValRef(false);
-        this.noResize = new ValRef(false);
-        this.noCollapse = new ValRef(false);
-        this.noNav = new ValRef(false);
-        this.noBgd = new ValRef(false);
-        this.noBringToFront = new ValRef(false);
-        this.noClose = new ValRef(false);
-
-        // misc
-        this.counter = 0;
 
         // console.debug("imgui demo loaded");
     }
 
-    Show(imgui, winname="imgui demo", isOpen=null)
+    Show(imgui: Imgui, winname="imgui demo", isOpen: boolean | null =null)
     {
         if(isOpen != null && !isOpen.get()) return;
         let done = false;

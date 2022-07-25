@@ -14,9 +14,16 @@ import {
 } from "./flags.js";
 
 import { Rect, Vec2 } from "./types.js";
+import GuiContext from "./guictx";
 
 export class ItemHoveredDataBackup {
-  constructor(guictx) {
+  guictx: GuiContext;
+  LastItemId: number;
+  LastItemStatusFlags: number;
+  LastItemRect: Rect;
+  LastItemDisplayRect: Rect;
+
+  constructor(guictx: GuiContext) {
     this.guictx = guictx;
     this.Backup();
   }

@@ -1,4 +1,8 @@
 export class Storage {
+  intMap: Record<string, number> = {};
+  floatMap: Record<string, number> = {};
+  boolMap: Record<string, boolean> = {};
+  voidPtrMap: Record<string, any> = {};
   constructor() {
     this.Clear();
   }
@@ -10,43 +14,43 @@ export class Storage {
     this.voidPtrMap = {};
   }
 
-  GetInt(key, defaultVal = 0) {
+  GetInt(key: string, defaultVal = 0) {
     let v = this.intMap[key];
     if (v === undefined) return defaultVal;
     else return v;
   }
 
-  SetInt(key, val) {
+  SetInt(key: string, val: number) {
     this.intMap[key] = val;
   }
 
-  GetBool(key, defaultVal = false) {
+  GetBool(key: string, defaultVal = false) {
     let v = this.boolMap[key];
     if (v === undefined) return defaultVal;
     else return v;
   }
 
-  SetBool(key, val) {
+  SetBool(key: string, val: boolean) {
     this.boolMap[key] = val;
   }
 
-  GetFloat(key, defaultVal = 0) {
+  GetFloat(key: string, defaultVal = 0) {
     let v = this.floatMap[key];
     if (v === undefined) return defaultVal;
     else return v;
   }
 
-  SetFloat(key, val) {
+  SetFloat(key: string, val: number) {
     this.floatMap[key] = val;
   }
 
-  GetVoidPtr(key) {
+  GetVoidPtr(key: string) {
     let v = this.voidPtrMap[key];
     if (v === undefined) return null;
     else return v;
   }
 
-  SetVoidPtr(key, val) {
+  SetVoidPtr(key: string, val: any) {
     this.voidPtrMap[key] = val;
   }
 

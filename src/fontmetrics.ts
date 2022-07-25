@@ -15,7 +15,7 @@ const sStdMeasureChars = {
 export class FontMetrics {
   initialized: boolean = false;
   padding: number | null = null;
-  context: CanvasRenderingContext2D |null = null;
+  context: CanvasRenderingContext2D | null = null;
   canvas: HTMLCanvasElement | null = null;
 
   constructor() {
