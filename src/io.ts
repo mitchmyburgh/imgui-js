@@ -7,12 +7,265 @@ import { BackendFlags, ConfigFlags } from "./flags.js";
 import { MouseCursor, NavInput, Key } from "./enums.js";
 import { FontAtlas } from "./font.js";
 import { ArrayEx } from "./arrayex.js";
+import Imgui from "./imgui";
 
 const DirtyCount = 5; // iterations to "draw down" to LazyMode
 const MinimumFrameInterval = 1000; // minimum 1 fps
 
 export class IO {
-  constructor(imgui, canvas, appname) {
+  imgui : Imgui;
+  PrevTime : number;
+  PrevDirtyTime : number;
+  Dirty : number;
+  SynthesizePointerEvents : boolean
+
+
+
+
+  ConfigFlags : number;
+
+  BackendFlags : number;
+  DisplayOffset : Vec2;
+  DisplaySize : Vec2;
+  DeltaTime : number;
+  IniSavingRate : number;
+
+
+  IniFilename : string;
+
+
+  LogFilename : string;
+
+  LazyDraw : boolean;
+
+
+  MouseDoubleClickTime : number;
+
+  MouseDoubleClickMaxDist : number;
+
+  MouseDragThreshold : number;
+
+
+  KeyMap : ArrayEx;
+
+
+  KeyRepeatDelay : number;
+
+
+  LongPressInterval : number;
+
+  KeyRepeatRate : number;
+
+  UserData : unknown;
+
+  Fonts : FontAtlas;
+
+  FontGlobalScale : number;
+
+  FontAllowScaling : boolean;
+
+
+
+
+  DisplayFramebufferScale : Vec2;
+
+
+
+
+
+
+  MouseDrawCursor : boolean;
+
+
+
+
+
+
+  ConfigMacOSXBehaviors : boolean;
+
+
+  ConfigInputTextCursorBlink : boolean;
+
+
+
+
+
+  ConfigWindowsResizeFromEdges : boolean;
+
+
+  ConfigWindowsMoveFromTitleBarOnly : boolean;
+
+
+
+
+
+
+
+
+
+  BackendPlatformName : string;
+  BackendRendererName : string;
+  BackendPlatformUserData : unknown;
+  BackendRendererUserData : unknown;
+  BackendLanguageUserData : unknown;
+
+
+
+
+
+  ClipboardUserData : unknown;
+  Clipboardtext : unknown;
+
+
+
+
+  ImeSetInputScreenPosFn : unknown;
+  ImeWindowHandle : unknown;
+
+
+
+
+
+
+
+
+  MousePos : Vec2;
+
+
+
+
+
+  MouseDown : number[];
+
+  MouseWheel : number;
+
+
+
+  MouseWheelH : number;
+
+
+
+
+
+
+  MouseButtonMap : number[];
+
+  KeyCtrl : boolean;
+
+  KeyShift : boolean;
+
+  KeyAlt : boolean;
+
+  KeySuper: boolean = false;
+
+
+
+  KeysDown : ArrayEx;
+
+
+  NavInputs : ArrayEx;
+
+
+  Touches : [];
+  TouchActive : boolean;
+  TouchDelta : { x: number, y: number };
+
+
+
+
+
+
+
+
+
+  WantCaptureMouse : boolean;
+
+
+
+
+  WantCaptureKeyboard : boolean;
+
+
+
+  WantTextInput : boolean;
+
+
+
+  WantSetMousePos : boolean;
+
+
+
+
+  WantSaveIniSettings : boolean;
+
+
+
+  NavActive : boolean;
+
+
+  NavVisible : boolean;
+
+
+
+  Framerate : number;
+
+  MetricsRenderVertices : number;
+
+  MetricsRenderIndices : number;
+
+  MetricsRenderWindows : number;
+
+  MetricsActiveWindows : number;
+
+
+  MetricsActiveAllocations: unknown = null;
+
+
+
+
+
+
+
+  MouseDelta : Vec2;
+
+
+  MousePosPrev : Vec2;
+
+  MouseClickedPos : (Vec2 | null)[];
+
+  MouseClickedTime : ArrayEx;
+
+  MouseClicked : ArrayEx;
+
+  MouseDoubleClicked : ArrayEx;
+
+  MouseReleased : ArrayEx;
+  MouseDownOwned : ArrayEx;
+
+
+  MouseDownDuration : ArrayEx;
+
+  MouseDownDurationPrev : ArrayEx;
+
+  MouseDragMaxDistanceAbs : ArrayEx;
+
+
+  MouseDragMaxDistanceSqr : ArrayEx;
+
+
+
+  KeysDownDuration : ArrayEx;
+
+  KeysDownDurationPrev : ArrayEx;
+
+
+  NavInputsDownDuration : ArrayEx;
+  NavInputsDownDurationPrev : ArrayEx;
+
+
+  InputKeyEvents : ArrayEx;
+
+  constructor(imgui: Imgui, canvas: HTMLCanvasElement, appname: string) {
     this.imgui = imgui;
     this.PrevTime = 0;
     this.PrevDirtyTime = 0;

@@ -24,7 +24,15 @@ export class Imgui extends ImguiMixins {
   //      platform,
   //      clipboard.writeText, clipboard.readText
   guictx: GuiContext;
-  constructor(canvas, appname = "imgui-njs", appServices = navigator) {
+  debug: boolean;
+  version: string;
+  version_imgui: string;
+  about: string;
+  canvas: HTMLCanvasElement;
+  appServices: Navigator;
+  Initialized: boolean;
+
+  constructor(canvas: HTMLCanvasElement, appname: string = "imgui-njs", appServices: Navigator = navigator) {
     super();
     this.debug = true;
     if (!this.debug) console.assert = function () {};
@@ -52,7 +60,7 @@ export class Imgui extends ImguiMixins {
     return this.guictx.Style;
   }
 
-  GetStyleFont(nm) {
+  GetStyleFont(nm: string) {
     return this.guictx.Style.GetFont(nm);
   }
 
