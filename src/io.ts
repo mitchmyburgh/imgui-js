@@ -13,257 +13,156 @@ const DirtyCount = 5; // iterations to "draw down" to LazyMode
 const MinimumFrameInterval = 1000; // minimum 1 fps
 
 export class IO {
-  imgui : Imgui;
-  PrevTime : number;
-  PrevDirtyTime : number;
-  Dirty : number;
-  SynthesizePointerEvents : boolean
+  imgui: Imgui;
+  PrevTime: number;
+  PrevDirtyTime: number;
+  Dirty: number;
+  SynthesizePointerEvents: boolean;
 
+  ConfigFlags: number;
 
+  BackendFlags: number;
+  DisplayOffset: Vec2;
+  DisplaySize: Vec2;
+  DeltaTime: number;
+  IniSavingRate: number;
 
+  IniFilename: string;
 
-  ConfigFlags : number;
+  LogFilename: string;
 
-  BackendFlags : number;
-  DisplayOffset : Vec2;
-  DisplaySize : Vec2;
-  DeltaTime : number;
-  IniSavingRate : number;
+  LazyDraw: boolean;
 
+  MouseDoubleClickTime: number;
 
-  IniFilename : string;
+  MouseDoubleClickMaxDist: number;
 
+  MouseDragThreshold: number;
 
-  LogFilename : string;
+  KeyMap: ArrayEx;
 
-  LazyDraw : boolean;
+  KeyRepeatDelay: number;
 
+  LongPressInterval: number;
 
-  MouseDoubleClickTime : number;
+  KeyRepeatRate: number;
 
-  MouseDoubleClickMaxDist : number;
+  UserData: unknown;
 
-  MouseDragThreshold : number;
+  Fonts: FontAtlas;
 
+  FontGlobalScale: number;
 
-  KeyMap : ArrayEx;
+  FontAllowScaling: boolean;
 
+  DisplayFramebufferScale: Vec2;
 
-  KeyRepeatDelay : number;
+  MouseDrawCursor: boolean;
 
+  ConfigMacOSXBehaviors: boolean;
 
-  LongPressInterval : number;
+  ConfigInputTextCursorBlink: boolean;
 
-  KeyRepeatRate : number;
+  ConfigWindowsResizeFromEdges: boolean;
 
-  UserData : unknown;
+  ConfigWindowsMoveFromTitleBarOnly: boolean;
 
-  Fonts : FontAtlas;
+  BackendPlatformName: string;
+  BackendRendererName: string;
+  BackendPlatformUserData: unknown;
+  BackendRendererUserData: unknown;
+  BackendLanguageUserData: unknown;
 
-  FontGlobalScale : number;
+  ClipboardUserData: unknown;
+  Clipboardtext: unknown;
 
-  FontAllowScaling : boolean;
+  ImeSetInputScreenPosFn: unknown;
+  ImeWindowHandle: unknown;
 
+  MousePos: Vec2;
 
+  MouseDown: number[];
 
+  MouseWheel: number;
 
-  DisplayFramebufferScale : Vec2;
+  MouseWheelH: number;
 
+  MouseButtonMap: number[];
 
+  KeyCtrl: boolean;
 
+  KeyShift: boolean;
 
-
-
-  MouseDrawCursor : boolean;
-
-
-
-
-
-
-  ConfigMacOSXBehaviors : boolean;
-
-
-  ConfigInputTextCursorBlink : boolean;
-
-
-
-
-
-  ConfigWindowsResizeFromEdges : boolean;
-
-
-  ConfigWindowsMoveFromTitleBarOnly : boolean;
-
-
-
-
-
-
-
-
-
-  BackendPlatformName : string;
-  BackendRendererName : string;
-  BackendPlatformUserData : unknown;
-  BackendRendererUserData : unknown;
-  BackendLanguageUserData : unknown;
-
-
-
-
-
-  ClipboardUserData : unknown;
-  Clipboardtext : unknown;
-
-
-
-
-  ImeSetInputScreenPosFn : unknown;
-  ImeWindowHandle : unknown;
-
-
-
-
-
-
-
-
-  MousePos : Vec2;
-
-
-
-
-
-  MouseDown : number[];
-
-  MouseWheel : number;
-
-
-
-  MouseWheelH : number;
-
-
-
-
-
-
-  MouseButtonMap : number[];
-
-  KeyCtrl : boolean;
-
-  KeyShift : boolean;
-
-  KeyAlt : boolean;
+  KeyAlt: boolean;
 
   KeySuper: boolean = false;
 
+  KeysDown: ArrayEx;
 
+  NavInputs: ArrayEx;
 
-  KeysDown : ArrayEx;
+  Touches: [];
+  TouchActive: boolean;
+  TouchDelta: { x: number; y: number };
 
+  WantCaptureMouse: boolean;
 
-  NavInputs : ArrayEx;
+  WantCaptureKeyboard: boolean;
 
+  WantTextInput: boolean;
 
-  Touches : [];
-  TouchActive : boolean;
-  TouchDelta : { x: number, y: number };
+  WantSetMousePos: boolean;
 
+  WantSaveIniSettings: boolean;
 
+  NavActive: boolean;
 
+  NavVisible: boolean;
 
+  Framerate: number;
 
+  MetricsRenderVertices: number;
 
+  MetricsRenderIndices: number;
 
+  MetricsRenderWindows: number;
 
-
-  WantCaptureMouse : boolean;
-
-
-
-
-  WantCaptureKeyboard : boolean;
-
-
-
-  WantTextInput : boolean;
-
-
-
-  WantSetMousePos : boolean;
-
-
-
-
-  WantSaveIniSettings : boolean;
-
-
-
-  NavActive : boolean;
-
-
-  NavVisible : boolean;
-
-
-
-  Framerate : number;
-
-  MetricsRenderVertices : number;
-
-  MetricsRenderIndices : number;
-
-  MetricsRenderWindows : number;
-
-  MetricsActiveWindows : number;
-
+  MetricsActiveWindows: number;
 
   MetricsActiveAllocations: unknown = null;
 
+  MouseDelta: Vec2;
 
+  MousePosPrev: Vec2;
 
+  MouseClickedPos: (Vec2 | null)[];
 
+  MouseClickedTime: ArrayEx;
 
+  MouseClicked: ArrayEx;
 
+  MouseDoubleClicked: ArrayEx;
 
-  MouseDelta : Vec2;
+  MouseReleased: ArrayEx;
+  MouseDownOwned: ArrayEx;
 
+  MouseDownDuration: ArrayEx;
 
-  MousePosPrev : Vec2;
+  MouseDownDurationPrev: ArrayEx;
 
-  MouseClickedPos : (Vec2 | null)[];
+  MouseDragMaxDistanceAbs: ArrayEx;
 
-  MouseClickedTime : ArrayEx;
+  MouseDragMaxDistanceSqr: ArrayEx;
 
-  MouseClicked : ArrayEx;
+  KeysDownDuration: ArrayEx;
 
-  MouseDoubleClicked : ArrayEx;
+  KeysDownDurationPrev: ArrayEx;
 
-  MouseReleased : ArrayEx;
-  MouseDownOwned : ArrayEx;
+  NavInputsDownDuration: ArrayEx;
+  NavInputsDownDurationPrev: ArrayEx;
 
-
-  MouseDownDuration : ArrayEx;
-
-  MouseDownDurationPrev : ArrayEx;
-
-  MouseDragMaxDistanceAbs : ArrayEx;
-
-
-  MouseDragMaxDistanceSqr : ArrayEx;
-
-
-
-  KeysDownDuration : ArrayEx;
-
-  KeysDownDurationPrev : ArrayEx;
-
-
-  NavInputsDownDuration : ArrayEx;
-  NavInputsDownDurationPrev : ArrayEx;
-
-
-  InputKeyEvents : ArrayEx;
+  InputKeyEvents: ArrayEx;
+  canvas: HTMLCanvasElement;
 
   constructor(imgui: Imgui, canvas: HTMLCanvasElement, appname: string) {
     this.imgui = imgui;
@@ -532,11 +431,11 @@ export class IO {
 
     // Queue of characters input (obtained by platform back-end).
     this.InputKeyEvents = new ArrayEx(); // evt
-
+    this.canvas = canvas;
     this.initCanvas(canvas);
   }
 
-  initCanvas(canvas) {
+  initCanvas(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     if (typeof window !== "undefined") {
       // ImGui.LoadIniSettingsFromMemory(window.localStorage.getItem("imgui.ini") || "");

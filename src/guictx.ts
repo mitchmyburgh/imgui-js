@@ -28,15 +28,15 @@ export class GuiContext {
   FrameScopePushedImplicitWindow: boolean;
   IO: IO;
   Style: Style;
-  Font:unknown;
+  Font: unknown;
   FontSize: number;
   FontLineHeight: number; // Just Size*Pct
   Time: number;
   FrameCount: number;
-  FrameCountEnded:number;
+  FrameCountEnded: number;
   FrameCountRendered: number;
   Windows: ArrayEx;
-  WindowsFocusOrder:ArrayEx;
+  WindowsFocusOrder: ArrayEx;
   WindowsSortBuffer: ArrayEx;
   CurrentWindowStack: ArrayEx;
   WindowsByName: Record<string, any>;
@@ -44,29 +44,29 @@ export class GuiContext {
   CurrentWindow: unknown; // Begin drawin into
   HoveredWindow: unknown; // Will catch mouse inputs
   HoveredRootWindow: unknown; // Will catch mouse inputs (for focus/move)
-  HoveredId: number // Hovered Widget
-  HoveredIdAllowOverlap: boolean
-  HoveredIdPreviousFrame: number
-  HoveredIdTimer: number // contiguous hovering time
-  HoveredIdNotActiveTimer: number
-  ActiveId: number
-  ActiveIdPreviousFrame: number
-  ActiveIdIsAlive: number
-  ActiveIdTimer: number
-  ActiveIdIsJustActivated: boolean
-  ActiveIdAllowOverlap: boolean
-  ActiveIdHasBeenPressed: boolean
-  ActiveIdHasBeenEdited: boolean
-  ActiveIdPreviousFrameIsAlive: boolean
-  ActiveIdPreviousFrameHasBeenEdited: boolean
-  ActiveIdAllowNavDirFlags: number
-  ActiveIdBlockNavInputFlags: number
-  ActiveIdClickOffset:Vec2
+  HoveredId: number; // Hovered Widget
+  HoveredIdAllowOverlap: boolean;
+  HoveredIdPreviousFrame: number;
+  HoveredIdTimer: number; // contiguous hovering time
+  HoveredIdNotActiveTimer: number;
+  ActiveId: number;
+  ActiveIdPreviousFrame: number;
+  ActiveIdIsAlive: number;
+  ActiveIdTimer: number;
+  ActiveIdIsJustActivated: boolean;
+  ActiveIdAllowOverlap: boolean;
+  ActiveIdHasBeenPressed: boolean;
+  ActiveIdHasBeenEdited: boolean;
+  ActiveIdPreviousFrameIsAlive: boolean;
+  ActiveIdPreviousFrameHasBeenEdited: boolean;
+  ActiveIdAllowNavDirFlags: number;
+  ActiveIdBlockNavInputFlags: number;
+  ActiveIdClickOffset: Vec2;
   ActiveIdWindow: unknown;
   ActiveIdPreviousFrameWindow: unknown;
   ActiveIdSource: InputSource;
-  LastActiveId: number
-  LastActiveIdTimer: number
+  LastActiveId: number;
+  LastActiveIdTimer: number;
   LastValidMousePos: Vec2;
   MovingWindow: unknown;
   ColorModifiers: ArrayEx;
@@ -74,45 +74,45 @@ export class GuiContext {
   FontStack: ArrayEx;
   OpenPopupStack: ArrayEx;
   BeginPopupStack: ArrayEx;
-  NextWindowData:NextWindowData;
-  NextTreeNodeOpenVal: boolean
-  NextTreeNodeOpenCond:  CondFlags;
+  NextWindowData: NextWindowData;
+  NextTreeNodeOpenVal: boolean;
+  NextTreeNodeOpenCond: CondFlags;
   NavWindow: unknown; // focused window
-  NavId: number // GuiID
-  NavActivateId: number
-  NavActivateDownId: number
-  NavActivatePressedId: number
-  NavInputId: number
-  NavJustTabbedId: number
-  NavJustMovedToId: number
-  NavJustMovedToSelectScopeId: number
-  NavNextActivateId: number
+  NavId: number; // GuiID
+  NavActivateId: number;
+  NavActivateDownId: number;
+  NavActivatePressedId: number;
+  NavInputId: number;
+  NavJustTabbedId: number;
+  NavJustMovedToId: number;
+  NavJustMovedToSelectScopeId: number;
+  NavNextActivateId: number;
   NavInputSource: InputSource;
   NavScoringRectScreen: Rect;
-  NavScoringCount: number
+  NavScoringCount: number;
   NavWindowingTarget: unknown; // window
   NavWindowingTargetAnim: unknown; // window
   NavWindowingList: unknown; // window
-  NavWindowingTimer: number
-  NavWindowingHighlightAlpha: number
-  NavWindowingToggleLayer: boolean
-  NavLayer:  NavLayer;
+  NavWindowingTimer: number;
+  NavWindowingHighlightAlpha: number;
+  NavWindowingToggleLayer: boolean;
+  NavLayer: NavLayer;
   NavIdTabCounter: number;
-  NavIdIsAlive: boolean
-  NavMousePosDirty: boolean
+  NavIdIsAlive: boolean;
+  NavMousePosDirty: boolean;
   NavDisableHighlight: boolean;
-  NavDisableMouseHover: boolean
-  NavAnyRequest: boolean
-  NavInitRequest: boolean
-  NavInitRequestFromMove: boolean
-  NavInitResultId: number
-  NavMoveFromClampedRefRect: boolean
-  NavMoveRequest: boolean
-  NavMoveRequestFlags: number
-  NavMoveRequestForward:  NavForward;
-  NavMoveDir:  Dir;
-  NavMoveDirLast:  Dir;
-  NavMoveClipDir:  Dir;
+  NavDisableMouseHover: boolean;
+  NavAnyRequest: boolean;
+  NavInitRequest: boolean;
+  NavInitRequestFromMove: boolean;
+  NavInitResultId: number;
+  NavMoveFromClampedRefRect: boolean;
+  NavMoveRequest: boolean;
+  NavMoveRequestFlags: number;
+  NavMoveRequestForward: NavForward;
+  NavMoveDir: Dir;
+  NavMoveDirLast: Dir;
+  NavMoveClipDir: Dir;
   NavMoveResultLocal: NavMoveResult;
   NavMoveResultLocalVisibleSet: NavMoveResult;
   NavMoveResultOther: NavMoveResult;
@@ -122,56 +122,56 @@ export class GuiContext {
   FocusRequestCurrCounterTab: number;
   FocusRequestNextCounterAll: number;
   FocusRequestNextCounterTab: number;
-  FocusTabPressed: boolean
-  DimBgRatio: number // [0,1] for anim fades
+  FocusTabPressed: boolean;
+  DimBgRatio: number; // [0,1] for anim fades
   DrawList: DrawList;
-  MouseCursor:  MouseCursor;
-  DragDropActive: boolean
-  DragDropWithinSourceOrTarget: boolean
-  DragDropSourceFlags: number
+  MouseCursor: MouseCursor;
+  DragDropActive: boolean;
+  DragDropWithinSourceOrTarget: boolean;
+  DragDropSourceFlags: number;
   DragDropSourceFrameCount: number;
   DragDropMouseButton: number;
   DragDropPayload: Payload;
   DragDropTargetRect: Rect;
-  DragDropTargetId: number
-  DragDropAcceptFlags: number
-  DragDropAcceptIdCurrRectSurface: number
-  ActiveIdDragDropAcceptIdCurr: number
-  DragDropAcceptIdPrev: number
+  DragDropTargetId: number;
+  DragDropAcceptFlags: number;
+  DragDropAcceptIdCurrRectSurface: number;
+  ActiveIdDragDropAcceptIdCurr: number;
+  DragDropAcceptIdPrev: number;
   DragDropAcceptFrameCount: number;
-  TabBars: unknown // pool of TabBar
+  TabBars: unknown; // pool of TabBar
   CurrentTabBar: unknown;
   CurrentTabBarStack: ArrayEx; // of TabBarRef
   TabSortByWidthBuffer: ArrayEx; // of TabBarSortItem
-  InputTextState: InputTextState
+  InputTextState: InputTextState;
   InputTextPasswordFont: unknown;
-  ScalarAsInputTextId: number // id of temporary text input when ctrl+clicking
-  ColorEditOptions:  ColorEditFlags;
+  ScalarAsInputTextId: number; // id of temporary text input when ctrl+clicking
+  ColorEditOptions: ColorEditFlags;
   ColorPickerRef: Color;
-  DragCurrentAccumDirty: boolean
-  DragCurrentAccum: number
+  DragCurrentAccumDirty: boolean;
+  DragCurrentAccum: number;
   DragSpeedDefaultRatio: number;
   ScrollbarClickDeltaToGrabCenter: Vec2;
-  TooltipOverrideCount: number
+  TooltipOverrideCount: number;
   PrivateClipboard: unknown; // char array
-  MultiSelectScopeId: number
+  MultiSelectScopeId: number;
   PlatformImePos: Vec2;
-  PlatformImeLastPos: = Vec2;
-  SettingsLoaded: boolean
-  SettingsDirtyTimer: number
+  PlatformImeLastPos: Vec2;
+  SettingsLoaded: boolean;
+  SettingsDirtyTimer: number;
   SettingsHandlers: ArrayEx; // list of SettingsHandler
   SettingsWindows: ArrayEx; // list of WindowSettings
   SettingsIniData: string; // json-string of all settings
-  LogEnabled: boolean
-  LogType:  LogType;
+  LogEnabled: boolean;
+  LogType: LogType;
   LogFile: unknown;
   LogLinePosY: number;
-  LogLineFirstItem: boolean
-  LogDepthRef: number
+  LogLineFirstItem: boolean;
+  LogDepthRef: number;
   LogDepthToExpand: number;
   FramerateSecPerFrame: ArrayEx; // keep two seconds of framerates for avg
-  FramerateSecPerFrameIdx: number
-  FramerateSecPerFrameAccum: number
+  FramerateSecPerFrameIdx: number;
+  FramerateSecPerFrameAccum: number;
   WantCaptureMouseNextFrame: number;
   WantCaptureKeyboardNextFrame: number;
   WantTextInputNextFrame: number;

@@ -32,7 +32,11 @@ export class Imgui extends ImguiMixins {
   appServices: Navigator;
   Initialized: boolean;
 
-  constructor(canvas: HTMLCanvasElement, appname: string = "imgui-njs", appServices: Navigator = navigator) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    appname: string = "imgui-njs",
+    appServices: Navigator = navigator
+  ) {
     super();
     this.debug = true;
     if (!this.debug) console.assert = function () {};
