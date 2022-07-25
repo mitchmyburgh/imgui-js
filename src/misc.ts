@@ -71,9 +71,9 @@ export var ImguiMiscMixin = {
     let g = this.guictx;
     if (g.MovingWindow != null) {
       // We actually want to move the root window.
-      //  g.MovingWindow == window we clicked on (could be a child window).
+      //  g.MovingWindow === window we clicked on (could be a child window).
       // We track it to preserve Focus and so that generally
-      // ActiveIdWindow == MovingWindow and ActiveId == MovingWindow->MoveId
+      // ActiveIdWindow === MovingWindow and ActiveId === MovingWindow->MoveId
       // for consistency.
       this.keepAliveID(g.ActiveId);
       console.assert(g.MovingWindow && g.MovingWindow.RootWindow);
@@ -92,7 +92,7 @@ export var ImguiMiscMixin = {
     } else {
       // When clicking/dragging from a window that has the _NoMove flag,
       // we still set the ActiveId in order to prevent hovering others.
-      if (g.ActiveIdWindow && g.ActiveIdWindow.MoveId == g.ActiveId) {
+      if (g.ActiveIdWindow && g.ActiveIdWindow.MoveId === g.ActiveId) {
         this.keepAliveID(g.ActiveId);
         if (!g.IO.MouseDown[0]) this.clearActiveID();
       }
@@ -138,12 +138,12 @@ export var ImguiMiscMixin = {
       if (modal) hovered_window_above_modal = true;
       for (
         let i = g.Windows.length - 1;
-        i >= 0 && hovered_window_above_modal == false;
+        i >= 0 && hovered_window_above_modal === false;
         i--
       ) {
         let win = g.Windows[i];
-        if (win == modal) break;
-        if (win == g.HoveredWindow) hovered_window_above_modal = true;
+        if (win === modal) break;
+        if (win === g.HoveredWindow) hovered_window_above_modal = true;
       }
       this.closePopupsOverWindow(
         hovered_window_above_modal ? g.HoveredWindow : modal
@@ -151,7 +151,7 @@ export var ImguiMiscMixin = {
     }
   },
 
-  // Basic accessors ======
+  // Basic accessors =======
   getItemID() {
     return this.guictx.CurrentWindow.DC.LastItemId;
   },
@@ -182,10 +182,10 @@ export var ImguiMiscMixin = {
     if (id) {
       g.ActiveIdIsAlive = id;
       if (
-        g.NavActivateId == id ||
-        g.NavInputId == id ||
-        g.NavJustTabbedId == id ||
-        g.NavJustMovedToId == id
+        g.NavActivateId === id ||
+        g.NavInputId === id ||
+        g.NavJustTabbedId === id ||
+        g.NavJustMovedToId === id
       )
         g.ActiveIdSource = InputSource.Nav;
       else g.ActiveIdSource = InputSource.Mouse;
@@ -205,13 +205,13 @@ export var ImguiMiscMixin = {
     g.NavWindow = win;
     g.NavLayer = nav_layer;
     win.NavLastIds[nav_layer] = id;
-    if (win.DC.LastItemId == id) {
+    if (win.DC.LastItemId === id) {
       win.NavRectRel[nav_layer] = new Rect(
         Vec2.Subtract(win.DC.LastItemRect.Min, win.Pos),
         Vec2.Subtract(win.DC.LastItemRect.Max, win.Pos)
       );
     }
-    if (g.ActiveIdSource == InputSource.Nav) g.NavDisableMouseHover = true;
+    if (g.ActiveIdSource === InputSource.Nav) g.NavDisableMouseHover = true;
     else g.NavDisableHighlight = true;
   },
 
@@ -234,8 +234,8 @@ export var ImguiMiscMixin = {
 
   keepAliveID(id) {
     let g = this.guictx;
-    if (g.ActiveId == id) g.ActiveIdIsAlive = id;
-    if (g.ActiveIdPreviousFrame == id) g.ActiveIdPreviousFrameIsAlive = true;
+    if (g.ActiveId === id) g.ActiveIdIsAlive = id;
+    if (g.ActiveIdPreviousFrame === id) g.ActiveIdPreviousFrameIsAlive = true;
   },
 
   markItemEdited(id) {
@@ -245,8 +245,8 @@ export var ImguiMiscMixin = {
     // press/release button behavior) but still need need to
     // fill the data.
     let g = this.guictx;
-    console.assert(g.ActiveId == id || g.ActiveId == 0 || g.DragDropActive);
-    //IM_ASSERT(g.CurrentWindow->DC.LastItemId == id);
+    console.assert(g.ActiveId === id || g.ActiveId === 0 || g.DragDropActive);
+    //IM_ASSERT(g.CurrentWindow->DC.LastItemId === id);
     g.ActiveIdHasBeenEdited = true;
     g.CurrentWindow.DC.LastItemStatusFlags |= ItemStatusFlags.Edited;
   },
@@ -281,17 +281,17 @@ export var ImguiMiscMixin = {
     let g = this.guictx;
     // Increment counters
     const is_tab_stop =
-      (win.DC.ItemFlags & (ItemFlags.NoTabStop | ItemFlags.Disabled)) == 0;
+      (win.DC.ItemFlags & (ItemFlags.NoTabStop | ItemFlags.Disabled)) === 0;
     win.DC.FocusCounterAll++;
     if (is_tab_stop) win.DC.FocusCounterTab++;
 
     // Process TAB/Shift-TAB to tab *OUT* of the currently focused item.
     // (Note that we can always TAB out of a widget that doesn't allow tabbing in)
     if (
-      g.ActiveId == id &&
+      g.ActiveId === id &&
       g.FocusTabPressed &&
       !(g.ActiveIdBlockNavInputFlags & (1 << NavInput.KeyTab)) &&
-      g.FocusRequestNextWindow == null
+      g.FocusRequestNextWindow === null
     ) {
       g.FocusRequestNextWindow = win;
       g.FocusRequestNextCounterTab =
@@ -301,18 +301,18 @@ export var ImguiMiscMixin = {
     }
 
     // Handle focus requests
-    if (g.FocusRequestCurrWindow == win) {
-      if (win.DC.FocusCounterAll == g.FocusRequestCurrCounterAll) return true;
+    if (g.FocusRequestCurrWindow === win) {
+      if (win.DC.FocusCounterAll === g.FocusRequestCurrCounterAll) return true;
       if (
         is_tab_stop &&
-        win.DC.FocusCounterTab == g.FocusRequestCurrCounterTab
+        win.DC.FocusCounterTab === g.FocusRequestCurrCounterTab
       ) {
         g.NavJustTabbedId = id;
         return true;
       }
 
       // If another item is about to be focused, we clear our own active id
-      if (g.ActiveId == id) this.clearActiveID();
+      if (g.ActiveId === id) this.clearActiveID();
     }
 
     return false;
@@ -375,10 +375,10 @@ export var ImguiMiscMixin = {
     let g = this.guictx;
     if (!g.HoveredWindow || g.HoveredWindow.Collapsed) return;
     if (
-      g.IO.MouseWheel == 0 &&
-      g.IO.MouseWheelH == 0 &&
-      g.IO.TouchDelta.x == 0 &&
-      g.IO.TouchDelta.y == 0
+      g.IO.MouseWheel === 0 &&
+      g.IO.MouseWheelH === 0 &&
+      g.IO.TouchDelta.x === 0 &&
+      g.IO.TouchDelta.y === 0
     )
       return;
 
@@ -429,7 +429,7 @@ export var ImguiMiscMixin = {
         if (g.IO.MouseWheel != 0) amt *= g.IO.MouseWheel;
         else {
           amt *= g.IO.TouchDelta.y;
-          if (g.IO.TouchActive == 0) {
+          if (g.IO.TouchActive === 0) {
             g.IO.TouchDelta.y *= 0.98; // <-- vertical deceleration
             if (Math.abs(g.IO.TouchDelta.y) < 0.15) g.IO.TouchDelta.y = 0;
           }
@@ -446,7 +446,7 @@ export var ImguiMiscMixin = {
       if (g.IO.MouseWheelH != 0) amt *= g.IO.MouseWheelH;
       else {
         amt *= g.IO.TouchDelta.x;
-        if (g.IO.TouchActive == 0) {
+        if (g.IO.TouchActive === 0) {
           g.IO.TouchDelta.x *= 0.75; // <-- faster horizontal deceleration
           if (Math.abs(g.IO.TouchDelta.x) < 0.15) g.IO.TouchDelta.x = 0;
         }

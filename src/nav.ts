@@ -66,13 +66,13 @@ export var ImguiNavMixin = {
 
   navInitWindow(win, forceReinit) {
     let g = this.guictx;
-    console.assert(win == g.NavWindow);
+    console.assert(win === g.NavWindow);
     let init_for_nav = false;
     if (!(win.Flags & WindowFlags.NoNavInputs)) {
       if (
         !(win.Flags & WindowFlags.ChildWindow) ||
         win.Flags & WindowFlags.Popup ||
-        win.NavLastIds[0] == 0 ||
+        win.NavLastIds[0] === 0 ||
         forceReinit
       )
         init_for_nav = true;
@@ -171,9 +171,9 @@ export var ImguiNavMixin = {
 
     // When a forwarded move request failed, we restore the highlight that
     // we disabled during the forward frame
-    if (g.NavMoveRequestForward == NavForward.ForwardActive) {
+    if (g.NavMoveRequestForward === NavForward.ForwardActive) {
       console.assert(g.NavMoveRequest);
-      if (g.NavMoveResultLocal.ID == 0 && g.NavMoveResultOther.ID == 0)
+      if (g.NavMoveResultLocal.ID === 0 && g.NavMoveResultOther.ID === 0)
         g.NavDisableHighlight = false;
       g.NavMoveRequestForward = NavForward.None;
     }
@@ -197,7 +197,7 @@ export var ImguiNavMixin = {
     }
     g.NavIdIsAlive = false;
     g.NavJustTabbedId = 0;
-    console.assert(g.NavLayer == 0 || g.NavLayer == 1);
+    console.assert(g.NavLayer === 0 || g.NavLayer === 1);
 
     // Store our return window (for returning from Layer 1 to Layer 0) and
     // clear it as soon as we step back in our own Layer 0
@@ -205,7 +205,7 @@ export var ImguiNavMixin = {
     if (
       g.NavWindow &&
       g.NavWindow.NavLastChildNavWindow != null &&
-      g.NavLayer == 0
+      g.NavLayer === 0
     )
       g.NavWindow.NavLastChildNavWindow = null;
 
@@ -277,13 +277,13 @@ export var ImguiNavMixin = {
       let activate_pressed =
         activate_down &&
         this.isNavInputPressed(NavInput.Activate, InputReadMode.Pressed);
-      if (g.ActiveId == 0 && activate_pressed) g.NavActivateId = g.NavId;
-      if ((g.ActiveId == 0 || g.ActiveId == g.NavId) && activate_down)
+      if (g.ActiveId === 0 && activate_pressed) g.NavActivateId = g.NavId;
+      if ((g.ActiveId === 0 || g.ActiveId === g.NavId) && activate_down)
         g.NavActivateDownId = g.NavId;
-      if ((g.ActiveId == 0 || g.ActiveId == g.NavId) && activate_pressed)
+      if ((g.ActiveId === 0 || g.ActiveId === g.NavId) && activate_pressed)
         g.NavActivatePressedId = g.NavId;
       if (
-        (g.ActiveId == 0 || g.ActiveId == g.NavId) &&
+        (g.ActiveId === 0 || g.ActiveId === g.NavId) &&
         this.isNavInputPressed(NavInput.Input, InputReadMode.Pressed)
       )
         g.NavInputId = g.NavId;
@@ -291,7 +291,7 @@ export var ImguiNavMixin = {
     if (g.NavWindow && g.NavWindow.Flags & WindowFlags.NoNavInputs)
       g.NavDisableHighlight = true;
     if (g.NavActivateId != 0)
-      console.assert(g.NavActivateDownId == g.NavActivateId);
+      console.assert(g.NavActivateDownId === g.NavActivateId);
     g.NavMoveRequest = false;
 
     // Process programmatic activation request
@@ -305,8 +305,9 @@ export var ImguiNavMixin = {
     g.NavNextActivateId = 0;
 
     // Initiate directional inputs request
-    const allowed_dir_flags = g.ActiveId == 0 ? ~0 : g.ActiveIdAllowNavDirFlags;
-    if (g.NavMoveRequestForward == NavForward.None) {
+    const allowed_dir_flags =
+      g.ActiveId === 0 ? ~0 : g.ActiveIdAllowNavDirFlags;
+    if (g.NavMoveRequestForward === NavForward.None) {
       g.NavMoveDir = Dir.None;
       g.NavMoveRequestFlags = NavMoveFlags.None;
       if (
@@ -364,7 +365,7 @@ export var ImguiNavMixin = {
       // (Preserve g.NavMoveRequestFlags, g.NavMoveClipDir which were set
       // by the navMoveRequestForward() function)
       console.assert(g.NavMoveDir != Dir.None && g.NavMoveClipDir != Dir.None);
-      console.assert(g.NavMoveRequestForward == NavForward.ForwardQueued);
+      console.assert(g.NavMoveRequestForward === NavForward.ForwardQueued);
       g.NavMoveRequestForward = NavForward.ForwardActive;
     }
 
@@ -381,7 +382,7 @@ export var ImguiNavMixin = {
       g.NavMoveRequest = true;
       g.NavMoveDirLast = g.NavMoveDir;
     }
-    if (g.NavMoveRequest && g.NavId == 0) {
+    if (g.NavMoveRequest && g.NavId === 0) {
       g.NavInitRequest = g.NavInitRequestFromMove = true;
       g.NavInitResultId = 0;
       g.NavDisableHighlight = false;
@@ -403,21 +404,21 @@ export var ImguiNavMixin = {
         win.CalcLineHeight() * 100 * g.IO.DeltaTime + 0.5
       );
       if (
-        win.DC.NavLayerActiveMask == 0x00 &&
+        win.DC.NavLayerActiveMask === 0x00 &&
         win.DC.NavHasScroll &&
         g.NavMoveRequest
       ) {
-        if (g.NavMoveDir == Dir.Left || g.NavMoveDir == Dir.Right) {
+        if (g.NavMoveDir === Dir.Left || g.NavMoveDir === Dir.Right) {
           win.SetWindowScrollX(
             Math.floor(
-              win.Scroll.x + (g.NavMoveDir == Dir.Left ? -1 : 1) * scroll_speed
+              win.Scroll.x + (g.NavMoveDir === Dir.Left ? -1 : 1) * scroll_speed
             )
           );
         }
-        if (g.NavMoveDir == Dir.Up || g.NavMoveDir == Dir.Down) {
+        if (g.NavMoveDir === Dir.Up || g.NavMoveDir === Dir.Down) {
           win.SetWindowScrollY(
             Math.floor(
-              win.Scroll.y + (g.NavMoveDir == Dir.Up ? -1 : 1) * scroll_speed
+              win.Scroll.y + (g.NavMoveDir === Dir.Up ? -1 : 1) * scroll_speed
             )
           );
         }
@@ -453,7 +454,7 @@ export var ImguiNavMixin = {
     // When we have manually scrolled (without using navigation) and
     // NavId becomes out of bounds, we project its bounding box to the
     // visible area to restart navigation within visible items
-    if (g.NavMoveRequest && g.NavMoveFromClampedRefRect && g.NavLayer == 0) {
+    if (g.NavMoveRequest && g.NavMoveFromClampedRefRect && g.NavLayer === 0) {
       let win = g.NavWindow;
       let window_rect_rel = new Rect(
         Vec2.SubtractXY(Vec2.Subtract(win.InnerMainRect.Min, win.Pos), 1, 1),
@@ -529,7 +530,7 @@ export var ImguiNavMixin = {
     }
   }, // end navUpdate
 
-  // We get here when either NavId == id, or when g.NavAnyRequest is set
+  // We get here when either NavId === id, or when g.NavAnyRequest is set
   // (which is updated by NavUpdateAnyRequestFlag above)
   navProcessItem(win, nav_bb, id) {
     let g = this.guictx;
@@ -547,13 +548,13 @@ export var ImguiNavMixin = {
     );
 
     // Process Init Request
-    if (g.NavInitRequest && g.NavLayer == win.DC.NavLayerCurrent) {
+    if (g.NavInitRequest && g.NavLayer === win.DC.NavLayerCurrent) {
       // Even if 'ItemFlags.NoNavDefaultFocus' is on (typically
       // collapse/close button) we record the first ResultId so they
       // can be used as a fallback
       if (
         !(item_flags & ItemFlags.NoNavDefaultFocus) ||
-        g.NavInitResultId == 0
+        g.NavInitResultId === 0
       ) {
         g.NavInitResultId = id;
         g.NavInitResultRectRel = nav_bb_rel;
@@ -574,7 +575,7 @@ export var ImguiNavMixin = {
       !(item_flags & (ItemFlags.Disabled | ItemFlags.NoNav))
     ) {
       let result =
-        win == g.NavWindow ? g.NavMoveResultLocal : g.NavMoveResultOther;
+        win === g.NavWindow ? g.NavMoveResultLocal : g.NavMoveResultOther;
       let new_best = g.NavMoveRequest && this.navScoreItem(result, nav_bb);
       if (new_best) {
         result.ID = id;
@@ -605,7 +606,7 @@ export var ImguiNavMixin = {
     }
 
     // Update window-relative bounding box of navigated item
-    if (g.NavId == id) {
+    if (g.NavId === id) {
       // Always refresh g.NavWindow, because some operations such as
       // focusItem() don't have a window.
       console.assert(win);
@@ -622,8 +623,8 @@ export var ImguiNavMixin = {
     let g = this.guictx;
     return (
       g.NavMoveRequest &&
-      g.NavMoveResultLocal.ID == 0 &&
-      g.NavMoveResultOther.ID == 0
+      g.NavMoveResultLocal.ID === 0 &&
+      g.NavMoveResultOther.ID === 0
     );
   },
 
@@ -635,7 +636,7 @@ export var ImguiNavMixin = {
 
   navMoveRequestForward(move_dir, clip_dir, bb_rel, move_flags) {
     let g = this.guictx;
-    console.assert(g.NavMoveRequestForward == NavForward.None);
+    console.assert(g.NavMoveRequestForward === NavForward.None);
     this.navMoveRequestCancel();
     g.NavMoveDir = move_dir;
     g.NavMoveClipDir = clip_dir;
@@ -658,7 +659,7 @@ export var ImguiNavMixin = {
     let bb_rel = win.NavRectRel[0].Clone();
     let clip_dir = g.NavMoveDir;
     if (
-      g.NavMoveDir == Dir.Left &&
+      g.NavMoveDir === Dir.Left &&
       move_flags & (NavMoveFlags.WrapX | NavMoveFlags.LoopX)
     ) {
       bb_rel.Min.x = bb_rel.Max.x =
@@ -670,7 +671,7 @@ export var ImguiNavMixin = {
       this.navMoveRequestForward(g.NavMoveDir, clip_dir, bb_rel, move_flags);
     }
     if (
-      g.NavMoveDir == Dir.Right &&
+      g.NavMoveDir === Dir.Right &&
       move_flags & (NavMoveFlags.WrapX | NavMoveFlags.LoopX)
     ) {
       bb_rel.Min.x = bb_rel.Max.x = -win.Scroll.x;
@@ -681,7 +682,7 @@ export var ImguiNavMixin = {
       this.navMoveRequestForward(g.NavMoveDir, clip_dir, bb_rel, move_flags);
     }
     if (
-      g.NavMoveDir == Dir.Up &&
+      g.NavMoveDir === Dir.Up &&
       move_flags & (NavMoveFlags.WrapY | NavMoveFlags.LoopY)
     ) {
       bb_rel.Min.y = bb_rel.Max.y =
@@ -693,7 +694,7 @@ export var ImguiNavMixin = {
       this.navMoveRequestForward(g.NavMoveDir, clip_dir, bb_rel, move_flags);
     }
     if (
-      g.NavMoveDir == Dir.Down &&
+      g.NavMoveDir === Dir.Down &&
       move_flags & (NavMoveFlags.WrapY | NavMoveFlags.LoopY)
     ) {
       bb_rel.Min.y = bb_rel.Max.y = -win.Scroll.y;
@@ -708,30 +709,30 @@ export var ImguiNavMixin = {
   getNavInputAmount(n, mode) {
     let g = this.guictx;
     // Instant, read analog input (0.0f..1., as provided by user)
-    if (mode == InputReadMode.Down) return g.IO.NavInputs[n];
+    if (mode === InputReadMode.Down) return g.IO.NavInputs[n];
     const t = g.IO.NavInputsDownDuration[n];
     // Return 1 when just released, no repeat, ignore analog input.
-    if (t < 0 && mode == InputReadMode.Released)
+    if (t < 0 && mode === InputReadMode.Released)
       return g.IO.NavInputsDownDurationPrev[n] >= 0 ? 1 : 0;
     if (t < 0) return 0;
 
     // Return 1.0f when just pressed, no repeat, ignore analog input.
-    if (mode == InputReadMode.Pressed) return t == 0 ? 1 : 0;
-    if (mode == InputReadMode.Repeat)
+    if (mode === InputReadMode.Pressed) return t === 0 ? 1 : 0;
+    if (mode === InputReadMode.Repeat)
       return this.calcTypematicPressedRepeatAmount(
         t,
         t - g.IO.DeltaTime,
         g.IO.KeyRepeatDelay * 0.8,
         g.IO.KeyRepeatRate * 0.8
       );
-    if (mode == InputReadMode.RepeatSlow)
+    if (mode === InputReadMode.RepeatSlow)
       return this.calcTypematicPressedRepeatAmount(
         t,
         t - g.IO.DeltaTime,
         g.IO.KeyRepeatDelay * 1,
         g.IO.KeyRepeatRate * 2
       );
-    if (mode == InputReadMode.RepeatFast)
+    if (mode === InputReadMode.RepeatFast)
       return this.calcTypematicPressedRepeatAmount(
         t,
         t - g.IO.DeltaTime,
@@ -775,7 +776,7 @@ export var ImguiNavMixin = {
   },
 
   calcTypematicPressedRepeatAmount(t, t_prev, repeat_delay, repeat_rate) {
-    if (t == 0) return 1;
+    if (t === 0) return 1;
     if (t <= repeat_delay || repeat_rate <= 0) return 0;
     const count =
       Math.floor((t - repeat_delay) / repeat_rate) -
@@ -792,7 +793,7 @@ export var ImguiNavMixin = {
   setNavID(id, nav_layer) {
     let g = this.guictx;
     console.assert(g.NavWindow);
-    console.assert(nav_layer == 0 || nav_layer == 1);
+    console.assert(nav_layer === 0 || nav_layer === 1);
     g.NavId = id;
     g.NavWindow.NavLastIds[nav_layer] = id;
   },
@@ -821,7 +822,7 @@ export var ImguiNavMixin = {
     let apply_toggle_layer = false;
 
     // Fade out
-    if (g.NavWindowingTargetAnim && g.NavWindowingTarget == null) {
+    if (g.NavWindowingTargetAnim && g.NavWindowingTarget === null) {
       g.NavWindowingHighlightAlpha = Math.max(
         g.NavWindowingHighlightAlpha - g.IO.DeltaTime * 10,
         0
@@ -862,7 +863,7 @@ export var ImguiNavMixin = {
 
     // Gamepad update
     g.NavWindowingTimer += g.IO.DeltaTime;
-    if (g.NavWindowingTarget && g.NavInputSource == InputSource.NavGamepad) {
+    if (g.NavWindowingTarget && g.NavInputSource === InputSource.NavGamepad) {
       // Highlight only appears after a brief time holding the button,
       // so that a fast tap on PadMenu (to toggle NavLayer) doesn't add
       // visual noise
@@ -898,7 +899,7 @@ export var ImguiNavMixin = {
     }
 
     // Keyboard: Focus
-    if (g.NavWindowingTarget && g.NavInputSource == InputSource.NavKeyboard) {
+    if (g.NavWindowingTarget && g.NavInputSource === InputSource.NavKeyboard) {
       // Visuals only appears after a brief time after pressing TAB the
       // first time, so that a fast CTRL+TAB doesn't add visual noise
       g.NavWindowingHighlightAlpha = Math.max(
@@ -915,11 +916,11 @@ export var ImguiNavMixin = {
     // so compare mouse validity to detect the common case of back-end
     // clearing releases all keys on ALT-TAB
     if (
-      (g.ActiveId == 0 || g.ActiveIdAllowOverlap) &&
+      (g.ActiveId === 0 || g.ActiveIdAllowOverlap) &&
       this.isNavInputPressed(NavInput.KeyMenu_, InputReadMode.Released)
     ) {
       if (
-        this.IsMousePosValid(g.IO.MousePos) ==
+        this.IsMousePosValid(g.IO.MousePos) ===
         this.IsMousePosValid(g.IO.MousePosPrev)
       ) {
         apply_toggle_layer = true;
@@ -932,12 +933,12 @@ export var ImguiNavMixin = {
       !(g.NavWindowingTarget.Flags & WindowFlags.NoMove)
     ) {
       let move_delta;
-      if (g.NavInputSource == InputSource.NavKeyboard && !g.IO.KeyShift)
+      if (g.NavInputSource === InputSource.NavKeyboard && !g.IO.KeyShift)
         move_delta = this.getNavInputAmount2d(
           NavDirSourceFlags.Keyboard,
           InputReadMode.Down
         );
-      if (g.NavInputSource == InputSource.NavGamepad)
+      if (g.NavInputSource === InputSource.NavGamepad)
         move_delta = this.getNavInputAmount2d(
           NavDirSourceFlags.PadLStick,
           InputReadMode.Down
@@ -962,7 +963,7 @@ export var ImguiNavMixin = {
     // Apply final focus
     if (
       apply_focus_window &&
-      (g.NavWindow == null || apply_focus_window != g.NavWindow.RootWindow)
+      (g.NavWindow === null || apply_focus_window != g.NavWindow.RootWindow)
     ) {
       g.NavDisableHighlight = false;
       g.NavDisableMouseHover = true;
@@ -971,10 +972,10 @@ export var ImguiNavMixin = {
       this.closePopupsOverWindow(apply_focus_window);
       this.clearActiveID();
       this.FocusWindow(apply_focus_window);
-      if (apply_focus_window.NavLastIds[0] == 0)
+      if (apply_focus_window.NavLastIds[0] === 0)
         this.navInitWindow(apply_focus_window, false);
       // If the window only has a menu layer, select it directly
-      if (apply_focus_window.DC.NavLayerActiveMask == 1 << NavLayer.Menu)
+      if (apply_focus_window.DC.NavLayerActiveMask === 1 << NavLayer.Menu)
         g.NavLayer = NavLayer.Menu;
     }
     if (apply_focus_window) g.NavWindowingTarget = null;
@@ -984,9 +985,9 @@ export var ImguiNavMixin = {
       // Move to parent menu if necessary
       let newNavWin = g.NavWindow;
       while (
-        (newNavWin.DC.NavLayerActiveMask & (1 << 1)) == 0 &&
+        (newNavWin.DC.NavLayerActiveMask & (1 << 1)) === 0 &&
         (newNavWin.Flags & WindowFlags.ChildWindow) != 0 &&
-        (newNavWin.Flags & (WindowFlags.Popup | WindowFlags.ChildMenu)) == 0
+        (newNavWin.Flags & (WindowFlags.Popup | WindowFlags.ChildMenu)) === 0
       ) {
         newNavWin = newNavWin.ParentWindow;
       }
@@ -1008,7 +1009,7 @@ export var ImguiNavMixin = {
   // Window has already passed the IsWindowNavFocusable()
   getFallbackWindowNameForWindowingList(window) {
     if (window.Flags & WindowFlags.Popup) return "(Popup)";
-    if (window.Flags & WindowFlags.MenuBar && window.Name == "##MainMenuBar")
+    if (window.Flags & WindowFlags.MenuBar && window.Name === "##MainMenuBar")
       return "(Main menu bar)";
     return "(Untitled)";
   },
@@ -1020,7 +1021,7 @@ export var ImguiNavMixin = {
 
     if (g.NavWindowingTimer < NavWinAppearDelay) return;
 
-    if (g.NavWindowingList == null)
+    if (g.NavWindowingList === null)
       g.NavWindowingList = this.findWindowByName("###NavWindowingList");
     this.SetNextWindowSizeConstraints(
       new Vec2(g.IO.DisplaySize.x * 0.2, g.IO.DisplaySize.y * 0.2),
@@ -1049,7 +1050,7 @@ export var ImguiNavMixin = {
       let label = window.Name;
       if (label.indexOf("##") != -1)
         label = this.getFallbackWindowNameForWindowingList(window);
-      this.Selectable(label, g.NavWindowingTarget == window);
+      this.Selectable(label, g.NavWindowingTarget === window);
     }
     this.End();
     this.PopStyleVar();
@@ -1080,7 +1081,7 @@ export var ImguiNavMixin = {
   // Apply result from previous frame navigation directional move request
   navUpdateMoveResult() {
     let g = this.guictx;
-    if (g.NavMoveResultLocal.ID == 0 && g.NavMoveResultOther.ID == 0) {
+    if (g.NavMoveResultLocal.ID === 0 && g.NavMoveResultOther.ID === 0) {
       // In a situation when there is no results but NavId != 0, re-enable the Navigation highlight (because g.NavId is not considered as a possible result)
       if (g.NavId != 0) {
         g.NavDisableHighlight = false;
@@ -1111,11 +1112,11 @@ export var ImguiNavMixin = {
     if (
       result != g.NavMoveResultOther &&
       g.NavMoveResultOther.ID != 0 &&
-      g.NavMoveResultOther.Window.ParentWindow == g.NavWindow
+      g.NavMoveResultOther.Window.ParentWindow === g.NavWindow
     ) {
       if (
         g.NavMoveResultOther.DistBox < result.DistBox ||
-        (g.NavMoveResultOther.DistBox == result.DistBox &&
+        (g.NavMoveResultOther.DistBox === result.DistBox &&
           g.NavMoveResultOther.DistCenter < result.DistCenter)
       ) {
         result & g.NavMoveResultOther;
@@ -1124,7 +1125,7 @@ export var ImguiNavMixin = {
     console.assert(g.NavWindow && result.Window);
 
     // Scroll to keep newly navigated item fully into view.
-    if (g.NavLayer == 0) {
+    if (g.NavLayer === 0) {
       let rect_abs = new Rect(
         Vec2.Add(result.RectRel.Min, result.Window.Pos),
         Vec2.Add(result.RectRel.Max, result.Window.Pos)
@@ -1184,11 +1185,11 @@ export var ImguiNavMixin = {
   navUpdatePageUpPageDown(allowed_dir_flags) {
     let g = this.guictx;
     if (
-      g.NavMoveDir == Dir.None &&
+      g.NavMoveDir === Dir.None &&
       g.NavWindow &&
       !(g.NavWindow.Flags & WindowFlags.NoNavInputs) &&
       !g.NavWindowingTarget &&
-      g.NavLayer == 0
+      g.NavLayer === 0
     ) {
       let win = g.NavWindow;
       let page_up_held =
@@ -1199,7 +1200,7 @@ export var ImguiNavMixin = {
         allowed_dir_flags & (1 << Dir.Down);
       if (page_up_held != page_down_held) {
         // If either (not both) are pressed
-        if (win.DC.NavLayerActiveMask == 0x00 && win.DC.NavHasScroll) {
+        if (win.DC.NavLayerActiveMask === 0x00 && win.DC.NavHasScroll) {
           // Fallback manual-scroll when window has no navigable item
           if (this.IsKeyPressed(g.IO.KeyMap[Key.PageUp], true))
             win.SetWindowScrollY(win.Scroll.y - win.InnerClipRect.GetHeight());
@@ -1247,7 +1248,7 @@ export var ImguiNavMixin = {
   },
 
   // FIXME: This could be replaced by updating a frame number in each
-  // window when (window == NavWindow) and (NavLayer == 0). This way we could
+  // window when (window === NavWindow) and (NavLayer === 0). This way we could
   // find the last focused window among our children. It would be much
   // less confusing this way?
   navSaveLastChildNavWindowIntoParent(nav_window) {
@@ -1255,7 +1256,7 @@ export var ImguiNavMixin = {
     while (
       parent &&
       (parent.Flags & WindowFlags.ChildWindow) != 0 &&
-      (parent.Flags & (WindowFlags.Popup | WindowFlags.ChildMenu)) == 0
+      (parent.Flags & (WindowFlags.Popup | WindowFlags.ChildMenu)) === 0
     ) {
       parent = parent.ParentWindow;
     }
@@ -1275,7 +1276,7 @@ export var ImguiNavMixin = {
   },
 
   navClampRectToVisibleAreaForMoveDir(move_dir, r, clip_rect) {
-    if (move_dir == Dir.Left || move_dir == Dir.Right) {
+    if (move_dir === Dir.Left || move_dir === Dir.Right) {
       r.Min.y = Vec1.Clamp(r.Min.y, clip_rect.Min.y, clip_rect.Max.y);
       r.Max.y = Vec1.Clamp(r.Max.y, clip_rect.Min.y, clip_rect.Max.y);
     } else {
@@ -1298,7 +1299,7 @@ export var ImguiNavMixin = {
 
     // When entering through a NavFlattened border, we consider child
     // window items as fully clipped for scoring
-    if (win.ParentWindow == g.NavWindow) {
+    if (win.ParentWindow === g.NavWindow) {
       console.assert(
         (win.Flags | g.NavWindow.Flags) & WindowFlags.NavFlattened
       );
@@ -1399,7 +1400,7 @@ export var ImguiNavMixin = {
           g.NavMoveDirLast = (g.NavMoveDirLast + 1) & 3;
           g.IO.KeysDownDuration[g.IO.KeyMap[Key.C]] = 0.01;
         }
-        if (quadrant == g.NavMoveDir) {
+        if (quadrant === g.NavMoveDir) {
           let buf = `${dist_box}/${dist_center}`;
           let dl = this.GetForegroundDrawList(win);
           dl.AddRectFilled(cand.Min, cand.Max, style.GetColor("_DEBUG0"));
@@ -1416,29 +1417,30 @@ export var ImguiNavMixin = {
 
     // Is it in the quadrant we're interesting in moving to?
     let new_best = false;
-    if (quadrant == g.NavMoveDir) {
+    if (quadrant === g.NavMoveDir) {
       // Does it beat the current best candidate?
       if (dist_box < result.DistBox) {
         result.DistBox = dist_box;
         result.DistCenter = dist_center;
         return true;
       }
-      if (dist_box == result.DistBox) {
+      if (dist_box === result.DistBox) {
         // Try using distance between center points to break ties
         if (dist_center < result.DistCenter) {
           result.DistCenter = dist_center;
           new_best = true;
-        } else if (dist_center == result.DistCenter) {
+        } else if (dist_center === result.DistCenter) {
           // Still tied! we need to be extra-careful to make sure
           // everything gets linked properly. We consistently break
           // ties by symbolically moving "later" items (with higher
           // index) to the right/downwards by an infinitesimal amount
           // since we the current "best" button already (so it must
           // have a lower index), this is fairly easy. This rule
-          // ensures that all buttons with dx==dy==0 will end up being
+          // ensures that all buttons with dx===dy===0 will end up being
           // linked in order of appearance along the x axis.
           if (
-            (g.NavMoveDir == Dir.Up || g.NavMoveDir == Dir.Down ? dby : dbx) < 0
+            (g.NavMoveDir === Dir.Up || g.NavMoveDir === Dir.Down ? dby : dbx) <
+            0
           ) {
             // moving bj to the right/down decreases distance
             new_best = true;
@@ -1459,14 +1461,14 @@ export var ImguiNavMixin = {
     // failure. For general navigation it feels awkward.  Disabling it may
     // lead to disconnected graphs when nodes are very spaced out on
     // different axis. Perhaps consider offering this as an option?
-    if (result.DistBox == Number.MAX_VALUE && dist_axial < result.DistAxial) {
+    if (result.DistBox === Number.MAX_VALUE && dist_axial < result.DistAxial) {
       // Check axial match
-      if (g.NavLayer == 1 && !(g.NavWindow.Flags & WindowFlags.ChildMenu)) {
+      if (g.NavLayer === 1 && !(g.NavWindow.Flags & WindowFlags.ChildMenu)) {
         if (
-          (g.NavMoveDir == Dir.Left && dax < 0) ||
-          (g.NavMoveDir == Dir.Right && dax > 0) ||
-          (g.NavMoveDir == Dir.Up && day < 0) ||
-          (g.NavMoveDir == Dir.Down && day > 0)
+          (g.NavMoveDir === Dir.Left && dax < 0) ||
+          (g.NavMoveDir === Dir.Right && dax > 0) ||
+          (g.NavMoveDir === Dir.Up && day < 0) ||
+          (g.NavMoveDir === Dir.Down && day > 0)
         ) {
           result.DistAxial = dist_axial;
           new_best = true;

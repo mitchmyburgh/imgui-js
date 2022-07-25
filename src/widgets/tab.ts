@@ -106,7 +106,7 @@ class TabBar
     GetTabOrder(tab)
     {
         let item = this.Tabs.indexOf(tab);
-        if(item == undefined)
+        if(item === undefined)
         {
             console.assert(0);
         }
@@ -156,7 +156,7 @@ export var ImguiTabBarMixin =
 
         let id = win.GetID(str_id);
         let tab_bar = g.TabBars[id];
-        if(tab_bar == undefined)
+        if(tab_bar === undefined)
         {
             tab_bar = new TabBar(id);
             g.TabBars[id] = tab_bar;
@@ -174,14 +174,14 @@ export var ImguiTabBarMixin =
         if (win.SkipItems)
             return false;
 
-        if ((flags & TabBarFlags.DockNode) == 0)
+        if ((flags & TabBarFlags.DockNode) === 0)
             win.IDStack.push(tab_bar.ID);
 
         // Add to stack
         g.CurrentTabBarStack.push(tab_bar); //was getTabBarRefFromTabBar
         g.CurrentTabBar = tab_bar;
 
-        if (tab_bar.CurrFrameVisible == g.FrameCount)
+        if (tab_bar.CurrFrameVisible === g.FrameCount)
         {
             console.assert(0, "beginTabBarEx already called this frame");
             return true;
@@ -199,7 +199,7 @@ export var ImguiTabBarMixin =
         }
 
         // Flags
-        if ((flags & TabBarFlags.FittingPolicyMask_) == 0)
+        if ((flags & TabBarFlags.FittingPolicyMask_) === 0)
             flags |= TabBarFlags.FittingPolicyDefault_;
         tab_bar.Flags = flags;
         tab_bar.BarRect = tab_bar_bb; // okay to copy
@@ -251,7 +251,7 @@ export var ImguiTabBarMixin =
             return;
 
         let tab_bar = g.CurrentTabBar;
-        if (tab_bar == null)
+        if (tab_bar === null)
         {
             console.assert(tab_bar != null,  "Mismatched BeginTabBar()/EndTabBar()!");
             return; // FIXME-ERRORHANDLING
@@ -263,16 +263,16 @@ export var ImguiTabBarMixin =
         // vertical flicker/movement when a tabs gets removed without calling
         // SetTabItemClosed().
         const tab_bar_appearing = (tab_bar.PrevFrameVisible + 1 < g.FrameCount);
-        if (tab_bar.VisibleTabWasSubmitted || tab_bar.VisibleTabId == 0 || tab_bar_appearing)
+        if (tab_bar.VisibleTabWasSubmitted || tab_bar.VisibleTabId === 0 || tab_bar_appearing)
             tab_bar.ContentsHeight = Math.max(win.DC.CursorPos.y - tab_bar.BarRect.Max.y, 0);
         else
             win.DC.CursorPos.y = tab_bar.BarRect.Max.y + tab_bar.ContentsHeight;
 
-        if ((tab_bar.Flags & TabBarFlags.DockNode) == 0)
+        if ((tab_bar.Flags & TabBarFlags.DockNode) === 0)
             this.PopID();
 
         g.CurrentTabBarStack.pop();
-        g.CurrentTabBar = g.CurrentTabBarStack.length == 0 ? null :
+        g.CurrentTabBar = g.CurrentTabBarStack.length === 0 ? null :
             g.CurrentTabBarStack[g.CurrentTabBarStack.length-1]; // was GetTabBarFromTabBarRef
     },
 
@@ -284,7 +284,7 @@ export var ImguiTabBarMixin =
             return false;
 
         let tabbar = g.CurrentTabBar;
-        if (tabbar == null)
+        if (tabbar === null)
         {
             console.assert(tabbar, "Needs to be called between BeginTabBar() and EndTabBar()!");
             return false; // FIXME-ERRORHANDLING
@@ -308,7 +308,7 @@ export var ImguiTabBarMixin =
             return;
 
         let tab_bar = g.CurrentTabBar;
-        if (tab_bar == null)
+        if (tab_bar === null)
         {
             console.assert(tab_bar != null,  "Needs to be called between BeginTabBar() and EndTabBar()!");
             return;
@@ -333,7 +333,7 @@ export var ImguiTabBarMixin =
         const style = g.Style;
         const id = this.tabBarCalcTabID(tab_bar, label);
 
-        // If the user called us with *p_open == false, we early out and
+        // If the user called us with *p_open === false, we early out and
         // don't render. We make a dummy call to ItemAdd() so that attempts
         // to use a contextual popup menu with an implicit ID won't use an
         // older ID.
@@ -351,7 +351,7 @@ export var ImguiTabBarMixin =
         // Acquire tab data
         let tab = this.tabBarFindTabByID(tab_bar, id);
         let tab_is_new = false;
-        if (tab == null)
+        if (tab === null)
         {
             tab = new TabItem();
             tab.ID = id;
@@ -362,7 +362,7 @@ export var ImguiTabBarMixin =
         tab_bar.LastTabItemIdx = tab_bar.Tabs.indexOf(tab);
         tab.WidthContents = size.x;
 
-        if (p_open == null)
+        if (p_open === null)
             flags |= TabItemFlags.NoCloseButton;
 
         const tab_bar_appearing = (tab_bar.PrevFrameVisible + 1 < g.FrameCount);
@@ -386,9 +386,9 @@ export var ImguiTabBarMixin =
 
         // Update selected tab
         if (tab_appearing && (tab_bar.Flags & TabBarFlags.AutoSelectNewTabs) &&
-            tab_bar.NextSelectedTabId == 0)
+            tab_bar.NextSelectedTabId === 0)
         {
-            if (!tab_bar_appearing || tab_bar.SelectedTabId == 0)
+            if (!tab_bar_appearing || tab_bar.SelectedTabId === 0)
                 tab_bar.NextSelectedTabId = id;  // New tabs gets activated
         }
         // SetSelected can only be passed on explicit tab bar
@@ -398,15 +398,15 @@ export var ImguiTabBarMixin =
         }
 
         // Lock visibility
-        let tab_contents_visible = (tab_bar.VisibleTabId == id);
+        let tab_contents_visible = (tab_bar.VisibleTabId === id);
         if (tab_contents_visible)
             tab_bar.VisibleTabWasSubmitted = true;
 
         // On the very first frame of a tab bar we let first tab contents be
         // visible to minimize appearing glitches
-        if (!tab_contents_visible && tab_bar.SelectedTabId == 0 && tab_bar_appearing)
+        if (!tab_contents_visible && tab_bar.SelectedTabId === 0 && tab_bar_appearing)
         {
-            if (tab_bar.Tabs.length == 1 && !(tab_bar.Flags & TabBarFlags.AutoSelectNewTabs))
+            if (tab_bar.Tabs.length === 1 && !(tab_bar.Flags & TabBarFlags.AutoSelectNewTabs))
                 tab_contents_visible = true;
         }
 
@@ -418,7 +418,7 @@ export var ImguiTabBarMixin =
             return tab_contents_visible;
         }
 
-        if (tab_bar.SelectedTabId == id)
+        if (tab_bar.SelectedTabId === id)
             tab.LastFrameSelected = g.FrameCount;
 
         // Backup current layout position
@@ -461,7 +461,7 @@ export var ImguiTabBarMixin =
         let pressed = this.ButtonBehavior(bb, id, hovered, held, button_flags);
         if (pressed)
             tab_bar.NextSelectedTabId = id;
-        hovered |= (g.HoveredId == id);
+        hovered |= (g.HoveredId === id);
 
         // Allow the close button to overlap unless we are dragging (in which
         // case we don't want any overlapping tabs to be hovered)
@@ -544,7 +544,7 @@ export var ImguiTabBarMixin =
         // ItemOverlap systems messes up with HoveredIdTimer). We test
         // IsItemHovered() to discard e.g. when another item is active
         // or drag and drop over the tab bar (which g.HoveredId ignores)
-        if (g.HoveredId == id && !held && g.HoveredIdNotActiveTimer > 0.5
+        if (g.HoveredId === id && !held && g.HoveredIdNotActiveTimer > 0.5
                 && this.IsItemHovered())
         {
             if (!(tab_bar.Flags & TabBarFlags.NoTooltip))
@@ -576,7 +576,7 @@ export var ImguiTabBarMixin =
             let tab = tab_bar.Tabs[tab_src_n];
             if (tab.LastFrameVisible < tab_bar.PrevFrameVisible)
             {
-                if (tab.ID == tab_bar.SelectedTabId)
+                if (tab.ID === tab_bar.SelectedTabId)
                     tab_bar.SelectedTabId = 0;
                 continue;
             }
@@ -611,7 +611,7 @@ export var ImguiTabBarMixin =
                     let tab2 = tab_bar.Tabs[tab2_order];
                     tab_bar.Tabs[tab2_order] = tab1;
                     tab_bar.Tabs[tab_bar.ReqorderRequestTabId] = tab2;
-                    if (tab2.ID == tab_bar.SelectedTabId)
+                    if (tab2.ID === tab_bar.SelectedTabId)
                         scrollTrackSelTabId = tab2.ID;
                 }
                 if (tab_bar.Flags & TabBarFlags.SaveSettings)
@@ -642,12 +642,12 @@ export var ImguiTabBarMixin =
             let tab = tab_bar.Tabs[tab_n];
             console.assert(tab.LastFrameVisible >= tab_bar.PrevFrameVisible);
 
-            if (recentTab == null ||
+            if (recentTab === null ||
                 recentTab.LastFrameSelected < tab.LastFrameSelected)
             {
                 recentTab = tab;
             }
-            if (tab.ID == tab_bar.SelectedTabId)
+            if (tab.ID === tab_bar.SelectedTabId)
                 foundSelTabID = true;
 
             // Refresh tab width immediately, otherwise changes of style e.g.
@@ -665,7 +665,7 @@ export var ImguiTabBarMixin =
 
             // Store data so we can build an array sorted by width if we need to shrink tabs down
             let si = widthBuffer[tab_n];
-            if(si == null)
+            if(si === null)
             {
                 si = new TabSortItem();
                 widthBuffer[tab_n] = si;
@@ -688,7 +688,7 @@ export var ImguiTabBarMixin =
                     tab_count_same_width < tab_bar.Tabs.length)
             {
                 while (tab_count_same_width < tab_bar.Tabs.length &&
-                        widthBuffer[0].Width == widthBuffer[tab_count_same_width].Width)
+                        widthBuffer[0].Width === widthBuffer[tab_count_same_width].Width)
                 {
                     tab_count_same_width++;
                 }
@@ -721,7 +721,7 @@ export var ImguiTabBarMixin =
         {
             let tab = tab_bar.Tabs[tab_n];
             tab.Offset = offset_x;
-            if (scrollTrackSelTabId == 0 && g.NavJustMovedToId == tab.ID)
+            if (scrollTrackSelTabId === 0 && g.NavJustMovedToId === tab.ID)
                 scrollTrackSelTabId = tab.ID;
             offset_x += tab.Width + g.Style.ItemInnerSpacing.x;
         }
@@ -746,9 +746,9 @@ export var ImguiTabBarMixin =
 
         // If we have lost the selected tab, select the next most recently
         // active one
-        if (foundSelTabID == false)
+        if (foundSelTabID === false)
             tab_bar.SelectedTabId = 0;
-        if (tab_bar.SelectedTabId == 0 && tab_bar.NextSelectedTabId == 0 && recentTab != null)
+        if (tab_bar.SelectedTabId === 0 && tab_bar.NextSelectedTabId === 0 && recentTab != null)
             scrollTrackSelTabId = tab_bar.SelectedTabId = recentTab.ID;
 
         // Lock in visible tab
@@ -783,7 +783,7 @@ export var ImguiTabBarMixin =
             tab_bar.ScrollingSpeed = 0.;
         }
         // Clear name buffers
-        if ((tab_bar.Flags & TabBarFlags.DockNode) == 0)
+        if ((tab_bar.Flags & TabBarFlags.DockNode) === 0)
             tab_bar.TabsNames.length = 0; // resize
     },
 
@@ -798,7 +798,7 @@ export var ImguiTabBarMixin =
         {
             for(let n=0;n<tabbar.Tabs.length;n++)
             {
-                if(tabbar.Tabs[n].ID == tabid)
+                if(tabbar.Tabs[n].ID === tabid)
                     return tabbar.Tabs[n];
             }
         }
@@ -807,7 +807,7 @@ export var ImguiTabBarMixin =
 
     tabBarCloseTab(tabbar, tab)
     {
-        if ((tabbar.VisibleTabId == tab.ID) &&
+        if ((tabbar.VisibleTabId === tab.ID) &&
             !(tab.Flags & TabItemFlags.UnsavedDocument))
         {
             // This will remove a frame of lag for selecting another tab on closure.
@@ -827,8 +827,8 @@ export var ImguiTabBarMixin =
 
     tabBarQueueChangeTabOrder(tabbar, tab, dir)
     {
-        console.assert(dir == -1 || dir == +1);
-        console.assert(tabbar.ReorderRequestTabId == 0);
+        console.assert(dir === -1 || dir === +1);
+        console.assert(tabbar.ReorderRequestTabId === 0);
         tabbar.ReorderRequestTabId = tab.ID;
         tabbar.ReorderRequestDir = dir;
     },
@@ -866,7 +866,7 @@ export var ImguiTabBarMixin =
     tabItemCalcSize(label, hasCloseButton)
     {
         let g = this.guictx;
-        if(label == undefined)
+        if(label === undefined)
         {
             console.assert(0);
             label = "Error";
@@ -947,16 +947,16 @@ export var ImguiTabBarMixin =
         // ImGuiButtonFlags_AllowOverlapMode + SetItemAllowOverlap()
         //  'hovered' will be true when hovering the Tab but NOT when
         //      hovering the close button
-        //  'g.HoveredId==id' will be true when hovering the Tab including
+        //  'g.HoveredId===id' will be true when hovering the Tab including
         //      when hovering the close button
-        //  'g.ActiveId==close_button_id' will be true when we are holding
+        //  'g.ActiveId===close_button_id' will be true when we are holding
         //      on the close button, in which case both hovered booleans are false
         let close_button_pressed = false;
         let close_button_visible = false;
         if (closebuttonid != 0)
         {
-            if (g.HoveredId == tabid || g.HoveredId == closebuttonid ||
-                g.ActiveId == closebuttonid)
+            if (g.HoveredId === tabid || g.HoveredId === closebuttonid ||
+                g.ActiveId === closebuttonid)
             {
                 close_button_visible = true;
             }
@@ -1033,7 +1033,7 @@ export var ImguiTabBarMixin =
             {
                 let tab = tab_bar.Tabs[tab_n];
                 let tab_name = tab_bar.GetTabName(tab);
-                if (this.Selectable(tab_name, tab_bar.SelectedTabId == tab.ID))
+                if (this.Selectable(tab_name, tab_bar.SelectedTabId === tab.ID))
                     tab_to_select = tab;
             }
             this.EndCombo();

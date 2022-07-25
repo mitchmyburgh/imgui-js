@@ -102,7 +102,7 @@ class UndoRecord
             str.InsertChars(this.where, this.charStorage);
             break;
         case UndoOp.Delete:
-            console.assert(this.charStorage == str.GetChars(this.where, this.deleteLen));
+            console.assert(this.charStorage === str.GetChars(this.where, this.deleteLen));
             str.DeleteChars(this.where, this.insertLen);
             break;
         case UndoOp.Replace:
@@ -307,7 +307,7 @@ export class TextEditState
             if (this.SelectStart > n) this.SelectStart = n;
             if (this.SelectEnd > n) this.SelectEnd = n;
             // if clamping forced them to be equal, move the cursor to match
-            if (this.SelectStart == this.SelectEnd)
+            if (this.SelectStart === this.SelectEnd)
                 this.Cursor = this.SelectStart;
         }
         if (this.Cursor > n)
@@ -361,7 +361,7 @@ export class TextEditState
            y = this.row.ymin;
         }
 
-        if (this.SelectStart == this.SelectEnd)
+        if (this.SelectStart === this.SelectEnd)
            this.SelectStart = this.Cursor;
 
         p = this.locateCoord(str, x, y);
@@ -410,7 +410,7 @@ export class TextEditState
             {
                 let ch = c;
                 // can't add newline in single-line mode
-                if (c == "\n" && this.singleLine)
+                if (c === "\n" && this.singleLine)
                     break;
 
                 if (this.insertMode && !this.HasSelection() &&
@@ -781,13 +781,13 @@ export class TextEditState
         let ret = {x: 0, y:0};
         let lineWidth = 0.;
         let i = lineStart;
-        if(lineEnd == -1)
+        if(lineEnd === -1)
             lineEnd = str.Length();
         g.Font.MeasureBegin();
         while (i < lineEnd)
         {
             let c = str.GetCharCode(i++);
-            if (c == 10) // 0x0a, "\n"
+            if (c === 10) // 0x0a, "\n"
             {
                 ret.x = Math.max(ret.x, lineWidth);
                 ret.y += lineHeight;
@@ -796,7 +796,7 @@ export class TextEditState
                     break;
                 continue;
             }
-            if (c == 13) // 0x0d, "\r"
+            if (c === 13) // 0x0d, "\r"
                 continue;
 
             lineWidth += g.Font.MeasureWidth(String.fromCharCode(c));
@@ -806,7 +806,7 @@ export class TextEditState
         if (ret.x < lineWidth)
             ret.x = lineWidth;
 
-        if (lineWidth > 0 || ret.y == 0)
+        if (lineWidth > 0 || ret.y === 0)
             ret.y += lineHeight;
 
         return ret;
@@ -894,7 +894,7 @@ export class TextEditState
                 this.layoutRow(r, str, i);
                 if (r.numChars <= 0)
                     return n;
-                if (i==0 && y < base_y + r.ymin)
+                if (i===0 && y < base_y + r.ymin)
                     return 0;
                 if (y < base_y + r.ymax)
                     break;
@@ -933,7 +933,7 @@ export class TextEditState
 
             // if the last character is a newline, return that. otherwise return
             // 'after' the last character
-            if (str[i+r.numChars-1] == "\n") // XXX: more newlines?
+            if (str[i+r.numChars-1] === "\n") // XXX: more newlines?
                 return i+r.numChars-1;
             else
                 return i+r.numChars;
@@ -954,7 +954,7 @@ export class TextEditState
         let z = str.Length();
         let i=0;
         let r = this.row;
-        if (n == z) // location of one-past last character
+        if (n === z) // location of one-past last character
         {
             // if it's at the end, then find the last line -- simpler than
             // trying to explicitly handle this case in the regular code

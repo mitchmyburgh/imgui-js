@@ -131,8 +131,8 @@ export class TextFilter
                 }
             }
             else
-            if(this.filter.Get() == "<undefined>" ||
-               this.filter.Get() == "<unknown>")
+            if(this.filter.Get() === "<undefined>" ||
+               this.filter.Get() === "<unknown>")
                 return true;
             return false;
         }
@@ -162,7 +162,7 @@ export var ImguiTextMixin =
     {
         let fields = txt.split("##");
         txt = fields[0] + " " + this.guictx.Style._UIcons.SmallDownArrow;
-        if(fields.length == 2)
+        if(fields.length === 2)
             txt += "##" + fields[1];
         return this.HyperText(txt, flags);
     },

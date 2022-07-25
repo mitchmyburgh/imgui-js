@@ -44,7 +44,7 @@ export var ImguiSliderMixin =
     */
     SliderFloat(label, v, v_min, v_max, format=null, power=1, onChange=null)
     {
-        if(format == null) format = FFmt;
+        if(format === null) format = FFmt;
         return this.SliderScalar(label, v, v_min, v_max, format, power, onChange);
     },
 
@@ -52,25 +52,25 @@ export var ImguiSliderMixin =
     // in-slider labels or unit display. Use power!=1.0 for power curve sliders
     SliderFloat2(label, v, v_min, v_max, format=null, power=1, onChange=null)
     {
-        if(format == null) format = FFmt;
+        if(format === null) format = FFmt;
         return this.SliderScalarN(label, 2, v, v_min, v_max, format, power, onChange);
     },
 
     SliderFloat3(label, v, v_min, v_max, format=null, power=1, onChange=null)
     {
-        if(format == null) format = FFmt;
+        if(format === null) format = FFmt;
         return this.SliderScalarN(label, 3, v, v_min, v_max, format, power, onChange);
     },
 
     SliderFloat4(label, v, v_min, v_max, format=null, power=1, onChange=null)
     {
-        if(format == null) format = FFmt;
+        if(format === null) format = FFmt;
         return this.SliderScalarN(label, 4, v, v_min, v_max, format, power, onChange);
     },
 
     SliderAngle(label, v_rad, v_degrees_min, v_degrees_max, format=null, onChange)
     {
-        if(format == null) format = IFmt;
+        if(format === null) format = IFmt;
         let v_deg = v_rad * 360 / (2 * Math.PI);
         let value_changed =
             this.SliderFloat(label, v_deg, v_degrees_min, v_degrees_max, format, 1,
@@ -83,25 +83,25 @@ export var ImguiSliderMixin =
 
     SliderInt(label, v, v_min, v_max, format=null, onChange=null)
     {
-        if(format == null) format = IFmt;
+        if(format === null) format = IFmt;
         return this.SliderScalar(label, v, v_min, v_max, format, 1, onChange);
     },
 
     SliderInt2(label, v, v_min, v_max, format=null, onChange=null)
     {
-        if(format == null) format = IFmt;
+        if(format === null) format = IFmt;
         return this.SliderScalarN(label, 2, v, v_min, v_max, format, 1, onChange);
     },
 
     SliderInt3(label, v, v_min, v_max, format=null, onChange=null)
     {
-        if(format == null) format = IFmt;
+        if(format === null) format = IFmt;
         return this.SliderScalarN(label, 3, v, v_min, v_max, format, 1, onChange);
     },
 
     SliderInt4(label, v, v_min, v_max, format=null, onChange=null)
     {
-        if(format == null) format = IFmt;
+        if(format === null) format = IFmt;
         return this.SliderScalarN(label, 4, v, v_min, v_max, format, 1, onChange);
     },
 
@@ -133,20 +133,20 @@ export var ImguiSliderMixin =
         const focus_requested = this.focusableItemRegister(win, id);
         const hovered = this.itemHoverable(frame_bb, id);
         if (focus_requested || (hovered && g.IO.MouseClicked[0]) ||
-            g.NavActivateId == id ||
-            (g.NavInputId == id && g.ScalarAsInputTextId != id))
+            g.NavActivateId === id ||
+            (g.NavInputId === id && g.ScalarAsInputTextId != id))
         {
             this.setActiveID(id, win);
             this.setFocusID(id, win);
             this.FocusWindow(win);
             g.ActiveIdAllowNavDirFlags = (1 << Dir.Up) | (1 << Dir.Down);
-            if (focus_requested || g.IO.KeyCtrl || g.NavInputId == id)
+            if (focus_requested || g.IO.KeyCtrl || g.NavInputId === id)
             {
                 start_text_input = true;
                 g.ScalarAsInputTextId = 0;
             }
         }
-        if (start_text_input || (g.ActiveId == id && g.ScalarAsInputTextId == id))
+        if (start_text_input || (g.ActiveId === id && g.ScalarAsInputTextId === id))
         {
             win.DC.CursorPos = frame_bb.Min;
             this.focusableItemUnregister(win);
@@ -155,8 +155,8 @@ export var ImguiSliderMixin =
         }
 
         // Draw frame
-        const  frame_col = style.GetColor(g.ActiveId == id ? "FrameBgActive" :
-                                        g.HoveredId == id ? "FrameBgHovered" :
+        const  frame_col = style.GetColor(g.ActiveId === id ? "FrameBgActive" :
+                                        g.HoveredId === id ? "FrameBgHovered" :
                                         "FrameBg");
         this.renderNavHighlight(frame_bb, id);
         this.renderFrame(frame_bb.Min, frame_bb.Max, frame_col, true,
@@ -178,7 +178,7 @@ export var ImguiSliderMixin =
 
         // Render grab
         win.DrawList.AddRectFilled(grab_bb.Min, grab_bb.Max,
-                    style.GetColor(g.ActiveId == id ?
+                    style.GetColor(g.ActiveId === id ?
                                 "SliderGrabActive" : "SliderGrab"),
                     style.GrabRounding);
 
@@ -255,13 +255,13 @@ export var ImguiSliderMixin =
     // Vertical slider
     VSliderFloat(label, size, v, v_min, v_max, format=null, power=1, onChange=null)
     {
-        if(format==null) format = FFmt;
+        if(format===null) format = FFmt;
         this.VSliderScalar(label, size, v, v_min, v_max, format, power, onChange);
     },
 
     VSliderInt(label, size, v, v_min, v_max, format=null, onChange=null)
     {
-        if(format == null) format = IFmt;
+        if(format === null) format = IFmt;
         this.VSliderScalar(label, size, v, v_min,v_max, format, 1, onChange);
     },
 
@@ -287,8 +287,8 @@ export var ImguiSliderMixin =
             return false;
 
         const hovered = this.itemHoverable(frame_bb, id);
-        if ((hovered && g.IO.MouseClicked[0]) || g.NavActivateId == id ||
-            g.NavInputId == id)
+        if ((hovered && g.IO.MouseClicked[0]) || g.NavActivateId === id ||
+            g.NavInputId === id)
         {
             this.setActiveID(id, win);
             this.setFocusID(id, win);
@@ -297,8 +297,8 @@ export var ImguiSliderMixin =
         }
 
         // Draw frame
-        const frame_col = style.GetColor(g.ActiveId == id ? "FrameBgActive" :
-                            g.HoveredId == id ? "FrameBgHovered" : "FrameBg");
+        const frame_col = style.GetColor(g.ActiveId === id ? "FrameBgActive" :
+                            g.HoveredId === id ? "FrameBgHovered" : "FrameBg");
         this.renderNavHighlight(frame_bb, id);
         this.renderFrame(frame_bb.Min, frame_bb.Max, frame_col, true,
                             g.Style.FrameRounding);
@@ -319,7 +319,7 @@ export var ImguiSliderMixin =
         if (grab_bb.Max.y > grab_bb.Min.y)
         {
             win.DrawList.AddRectFilled(grab_bb.Min, grab_bb.Max,
-                    style.GetColor(g.ActiveId == id ? "SliderGrabActive" : "SliderGrab"),
+                    style.GetColor(g.ActiveId === id ? "SliderGrabActive" : "SliderGrab"),
                     style.GrabRounding);
             }
 
@@ -346,7 +346,7 @@ export var ImguiSliderMixin =
         let g = this.guictx;
         const style = g.Style;
         let data_type = typeof(v);
-        console.assert(data_type == "number");
+        console.assert(data_type === "number");
         let precision = ParseFormatPrecision(format);
 
         const axis = (flags & SliderFlags.Vertical) ? "y" : "x"; // Axis.Y : Axis.X;
@@ -384,11 +384,11 @@ export var ImguiSliderMixin =
         }
         // Process interacting with the slider
         let value_changed = false;
-        if (g.ActiveId == id)
+        if (g.ActiveId === id)
         {
             let set_new_value = false;
             let clicked_t = 0.0;
-            if (g.ActiveIdSource == InputSource.Mouse)
+            if (g.ActiveIdSource === InputSource.Mouse)
             {
                 if (!g.IO.MouseDown[0])
                 {
@@ -401,20 +401,20 @@ export var ImguiSliderMixin =
                             Vec1.Clamp((mouse_abs_pos-slider_usable_pos_min) /
                             slider_usable_sz, 0, 1)
                             : 0.0;
-                    if (axis == "y")
+                    if (axis === "y")
                         clicked_t = 1 - clicked_t;
                     set_new_value = true;
                 }
             }
             else
-            if (g.ActiveIdSource == InputSource.Nav)
+            if (g.ActiveIdSource === InputSource.Nav)
             {
                 const delta2 = this.getNavInputAmount2d(NavDirSourceFlags.Keyboard |
                                                         NavDirSourceFlags.PadDPad,
                                                         InputReadMode.RepeatFast,
                                                         0, 0);
-                let delta = (axis == Axis.X) ? delta2.x : -delta2.y;
-                if (g.NavActivatePressedId == id && !g.ActiveIdIsJustActivated)
+                let delta = (axis === Axis.X) ? delta2.x : -delta2.y;
+                if (g.NavActivatePressedId === id && !g.ActiveIdIsJustActivated)
                 {
                     this.clearActiveID();
                 }
@@ -516,13 +516,13 @@ export var ImguiSliderMixin =
         }
         // Output grab position so it can be displayed by the caller
         let grab_t = this.sliderCalcRatioFromValue(v, v_min, v_max, power, linear_zero_pos);
-        if (axis == "y")
+        if (axis === "y")
             grab_t = 1. - grab_t;
         const grab_pos = Vec1.Lerp(slider_usable_pos_min, slider_usable_pos_max, grab_t);
         if(out_grab_bb != null)
         {
             let min, max;
-            if (axis == "x")
+            if (axis === "x")
             {
                 min = new Vec2(grab_pos - grab_sz*0.5, bb.Min.y + grab_padding);
                 max = new Vec2(grab_pos + grab_sz*0.5, bb.Max.y - grab_padding);
@@ -542,7 +542,7 @@ export var ImguiSliderMixin =
 
     sliderCalcRatioFromValue(v, v_min, v_max, power, linear_zero_pos)
     {
-        if (v_min == v_max)
+        if (v_min === v_max)
             return 0;
         const is_power = (power != 1);
         const v_clamped = (v_min < v_max) ? Vec1.Clamp(v, v_min, v_max) :

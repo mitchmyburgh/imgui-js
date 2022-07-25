@@ -21,7 +21,7 @@ export class DemoLayout
         if (imgui.TreeNode("Child windows"))
         {
             imgui.Tooltip("Use child windows to begin into a self-contained independent scrolling/clipping regions within a host window.");
-            if(this.CW_disable_mouse_wheel == undefined)
+            if(this.CW_disable_mouse_wheel === undefined)
             {
                 this.CW_disable_mouse_wheel = false;
                 this.CW_disable_menu = false;
@@ -47,7 +47,7 @@ export class DemoLayout
             for (let i=0; i < 100; i++)
             {
                 imgui.Text("%4d: scrollable region", i);
-                if (goto_line && this.CW_line == i)
+                if (goto_line && this.CW_line === i)
                     imgui.SetScrollHereY();
             }
             if (goto_line && this.CW_line >= 100)
@@ -111,7 +111,7 @@ export class DemoLayout
         {
             // Use SetNextItemWidth() to set the width of a single upcoming item.
             // Use PushItemWidth()/PopItemWidth() to set the width of a group of items.
-            if(this.WW_f == undefined)
+            if(this.WW_f === undefined)
                 this.WW_f = 0;
             imgui.Text("SetNextItemWidth/PushItemWidth(100)");
             imgui.SameLine();
@@ -203,7 +203,7 @@ export class DemoLayout
             imgui.SmallButton("x=300");
 
             // Checkbox
-            if(this.HL_c1 == undefined)
+            if(this.HL_c1 === undefined)
             {
                 this.HL_c1 = false;
                 this.HL_c2 = false;
@@ -223,7 +223,7 @@ export class DemoLayout
                 this.HL_c4 ^= 1;
 
             // Various
-            if(this.HL_f0 == undefined)
+            if(this.HL_f0 === undefined)
             {
                 this.HL_f0 = 1.;
                 this.HL_f1 = 2;
@@ -319,7 +319,7 @@ export class DemoLayout
             {
                 // Expose a couple of the available flags. In most cases you
                 // may just call BeginTabBar() with no flags (0).
-                if(this.T_tab_bar_flags == undefined)
+                if(this.T_tab_bar_flags === undefined)
                     this.T_tab_bar_flags = TabBarFlags.Reorderable;
                 imgui.CheckboxFlags("TabBarFlags.Reorderable",
                         this.T_tab_bar_flags, TabBarFlags.Reorderable,
@@ -335,7 +335,7 @@ export class DemoLayout
                         (newval)=>this.T_tab_bar_flags = newval);
 
                 // make sure we have a fitting policy (Scroll vs Resize)
-                if ((this.T_tab_bar_flags & TabBarFlags.FittingPolicyMask_) == 0)
+                if ((this.T_tab_bar_flags & TabBarFlags.FittingPolicyMask_) === 0)
                     this.T_tab_bar_flags |= TabBarFlags.FittingPolicyDefault_;
 
                 if(imgui.CheckboxFlags("TabBarFlags.FittingPolicyResizeDown",
@@ -356,7 +356,7 @@ export class DemoLayout
                 }
 
                 // Tab Bar
-                if(this.T_names == undefined)
+                if(this.T_names === undefined)
                 {
                     // Persistent user state
                     this.T_names = [ "Artichoke", "Beetroot", "Celery", "Daikon" ];
@@ -414,7 +414,7 @@ export class DemoLayout
                     imgui.SetTooltip("First group hovered");
             }
             // Capture the group size and create widgets using the same size
-            if(this.G_values == undefined)
+            if(this.G_values === undefined)
             {
                 this.G_values = [ 0.5, 0.20, 0.80, 0.60, 0.25];
             }
@@ -519,7 +519,7 @@ export class DemoLayout
         {
             imgui.Tooltip("Use SetScrollHereY() or SetScrollFromPosY() to scroll to a given position.");
 
-            if(this.S_track == undefined)
+            if(this.S_track === undefined)
             {
                 this.S_track = true;
                 this.S_track_line = 50;
@@ -557,7 +557,7 @@ export class DemoLayout
                 }
                 for (let line = 0; line < 100; line++)
                 {
-                    if (this.S_track && line == this.S_track_line)
+                    if (this.S_track && line === this.S_track_line)
                     {
                         imgui.TextColored(Colors.yellow, "Line %d", line);
                         imgui.SetScrollHereY(i * 0.25);
@@ -579,7 +579,7 @@ export class DemoLayout
         if (imgui.TreeNode("Horizontal Scrolling"))
         {
             imgui.Tooltip("Horizontal scrolling for a window has to be enabled explicitly via the WindowFlags.HorizontalScrollbar flag.\n\nYou may want to explicitly specify content width by calling SetNextWindowContentWidth() before Begin().");
-            if(this.H_lines == undefined)
+            if(this.H_lines === undefined)
                 this.H_lines = 7;
             imgui.SliderInt("Lines", this.H_lines, 1, 15, null,
                             (newval)=>this.H_lines=newval);
@@ -651,7 +651,7 @@ export class DemoLayout
             let txt = "Line 1 hello\nLine 2 clip me!";
             let fontScale = 2;
             let bigfont = imgui.GetFont(null, fontScale);
-            if(this.C_size == null)
+            if(this.C_size === null)
             {
                 this.C_size = new Vec2(100, 100);
                 this.C_offset = new Vec2(50, 20);

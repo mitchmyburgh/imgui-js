@@ -39,7 +39,7 @@ export class Font {
   }
 
   MeasureBegin() {
-    if (this.measuring == 0) {
+    if (this.measuring === 0) {
       this.ctx.save();
       this.ctx.font = this.AsStr();
     }
@@ -47,12 +47,12 @@ export class Font {
   }
 
   MeasureWidth(char) {
-    if (this.measuring == 0) {
+    if (this.measuring === 0) {
       this.ctx.save();
       this.ctx.font = this.AsStr();
     }
     let w = this.ctx.measureText(char).width; // canvas measure method
-    if (this.measuring == 0) {
+    if (this.measuring === 0) {
       this.ctx.restore();
     }
     return w;
@@ -60,7 +60,7 @@ export class Font {
 
   MeasureEnd() {
     this.measuring--;
-    if (this.measuring == 0) this.ctx.restore();
+    if (this.measuring === 0) this.ctx.restore();
     if (this.measuring < 0) {
       console.assert(0, "measure block botch");
     }
@@ -71,7 +71,7 @@ export class Font {
   MeasureText(text, wrapWidth, lineHeight, sz) {
     let lines = [];
     if (!text) text = "";
-    if (this.measuring == 0) {
+    if (this.measuring === 0) {
       this.ctx.save();
       this.ctx.font = this.AsStr();
     }
@@ -102,7 +102,7 @@ export class Font {
       }
       sz.y = lines.length * lineHeight;
     }
-    if (this.measuring == 0) this.ctx.restore();
+    if (this.measuring === 0) this.ctx.restore();
     return lines;
   }
 
@@ -202,7 +202,7 @@ export class FontAtlas {
   }
 
   FontLoaded(family, size = null, weight = null, style = null) {
-    if (!family || family == "default") family = this.defaultFontFamily;
+    if (!family || family === "default") family = this.defaultFontFamily;
     if (!size) size = this.defaultFontSize;
     if (!weight) weight = this.defaultFontWeight;
     if (!style) style = this.defaultFontStyle;
@@ -216,15 +216,15 @@ export class FontAtlas {
 
   // family may include a size: Arial 12
   GetFont(family, size = null, weight = null, style = null) {
-    if (!family || family == "default") family = this.defaultFontFamily;
+    if (!family || family === "default") family = this.defaultFontFamily;
     if (!size) size = this.defaultFontSize;
     if (!weight) weight = this.defaultFontWeight;
     if (!style) style = this.defaultFontStyle;
 
     let f = this.FontLoaded(family, size, weight, style);
-    if (f == undefined) {
+    if (f === undefined) {
       let str = this.fontToStr(family, size, weight, style);
-      let bypass = str.indexOf("Icon") == -1 ? false : true;
+      let bypass = str.indexOf("Icon") === -1 ? false : true;
       let metrics = this.fontMetrics.MeasureFont(
         family,
         size,

@@ -63,7 +63,7 @@ export var ImguiSelectableMixin =
                     size_arg.x : w_draw,
                 size_arg.y != 0 ? size_arg.y : size.y);
         let bb = new Rect(pos, Vec2.Add(pos, size_draw));
-        if (size_arg.x == 0 || (flags & SelectableFlags.DrawFillAvailWidth))
+        if (size_arg.x === 0 || (flags & SelectableFlags.DrawFillAvailWidth))
             bb.Max.x += window_padding.x;
 
         // Selectables are tightly packed together, we extend the box to cover spacing between selectable.
@@ -121,8 +121,8 @@ export var ImguiSelectableMixin =
         // happen on most widgets)
         if (pressed || hovered.get())
         {
-            if (!g.NavDisableMouseHover && g.NavWindow == win &&
-                g.NavLayer == win.DC.NavLayerCurrent)
+            if (!g.NavDisableMouseHover && g.NavWindow === win &&
+                g.NavLayer === win.DC.NavLayerCurrent)
             {
                 g.NavDisableHighlight = true;
                 this.setNavID(id, win.DC.NavLayerCurrent);

@@ -125,7 +125,7 @@ export default class ImguiApp
     End() // done
     {
         this.imgui.EndFrame();
-        if(this.runtime == "electron")
+        if(this.runtime === "electron")
         {
             // used window.require to trick webpack
             const remote = window.require("electron").remote;
@@ -211,7 +211,7 @@ export default class ImguiApp
             }
             this.imgui.Text(cfg.msg);
             this.imgui.Separator();
-            if(cfg.type == "entry")
+            if(cfg.type === "entry")
             {
                 if(!this.editText)
                     this.editText = new MutableString("");
@@ -227,7 +227,7 @@ export default class ImguiApp
                     if(cb)
                     {
                         let extra = null;
-                        if(cfg.type == "entry")
+                        if(cfg.type === "entry")
                             extra = this.editText.Get();
                         cb(i, extra);
                     }

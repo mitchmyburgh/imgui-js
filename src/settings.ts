@@ -78,7 +78,7 @@ export class WindowsSettingsHandler extends SettingsHandler {
         settings = imgui.createNewWindowSettings(win.Name);
         win.SettingsIdx = g.SettingsWindows.indexOf(settings);
       }
-      console.assert(settings.ID == win.ID);
+      console.assert(settings.ID === win.ID);
       settings.Pos.Copy(win.Pos);
       settings.Size.Copy(win.SizeFull);
       settings.Collapsed = win.Collapsed;
@@ -89,17 +89,17 @@ export class WindowsSettingsHandler extends SettingsHandler {
   Instantiate(imgui, strOrObj) {
     let g = imgui.guictx;
     try {
-      let o = typeof strOrObj == "string" ? JSON.parse(strOrObj) : strOrObj;
+      let o = typeof strOrObj === "string" ? JSON.parse(strOrObj) : strOrObj;
       let extra = [];
       for (let key in o) {
         let ws = null;
         for (let w of g.SettingsWindows) {
-          if (key == w.Name) {
+          if (key === w.Name) {
             ws = w;
             break;
           }
         }
-        if (ws == null) {
+        if (ws === null) {
           ws = new WindowSettings();
           extra.push(ws);
         }
@@ -121,7 +121,7 @@ export var ImguiSettingsMixin = {
   // call after CreateContext() and before the first call to NewFrame().
   // NewFrame() automatically calls LoadIniSettingsFromDisk(io.IniFilename).
   LoadIniSettingsFromDisk(ini_filename = null) {
-    if (ini_filename == null) ini_filename = this.guictx.IO.IniFilename;
+    if (ini_filename === null) ini_filename = this.guictx.IO.IniFilename;
     // for now, we'll use localStorage:
     let d = window.localStorage.getItem(ini_filename);
     if (d) this.LoadIniSettingsFromMemory(d);
@@ -192,7 +192,7 @@ export var ImguiSettingsMixin = {
   findWindowSettings(id) {
     let g = this.guictx;
     for (let i = 0; i != g.SettingsWindows.length; i++) {
-      if (g.SettingsWindows[i].ID == id) return g.SettingsWindows[i];
+      if (g.SettingsWindows[i].ID === id) return g.SettingsWindows[i];
     }
     return null;
   },

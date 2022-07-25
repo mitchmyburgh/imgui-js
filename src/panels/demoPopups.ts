@@ -55,7 +55,7 @@ export class DemoPopups
 
         if(imgui.TreeNode("Popups"))
         {
-            if(this._P == undefined)
+            if(this._P === undefined)
             {
                 this._P = {};
                 this._P.selected_fish = -1;
@@ -71,7 +71,7 @@ export class DemoPopups
             if (imgui.Button("Select.."))
                 imgui.OpenPopup("my_select_popup");
             imgui.SameLine();
-            imgui.TextUnformatted(this._P.selected_fish == -1 ? "<None>" :
+            imgui.TextUnformatted(this._P.selected_fish === -1 ? "<None>" :
                                  this._P.names[this._P.selected_fish]);
             if (imgui.BeginPopup("my_select_popup"))
             {
@@ -144,7 +144,7 @@ export class DemoPopups
             // For more advanced uses you may want to replicate and customize
             // this code. This the comments inside BeginPopupContextItem()
             // implementation.
-            if(this._C == undefined)
+            if(this._C === undefined)
             {
                 this._C = {};
                 this._C.value = .5;
@@ -188,7 +188,7 @@ export class DemoPopups
         }
         if(imgui.TreeNode("Modals"))
         {
-            if(this._M == undefined)
+            if(this._M === undefined)
             {
                 this._M = {};
                 this._M.dont_ask_me_next_time = new ValRef(false);

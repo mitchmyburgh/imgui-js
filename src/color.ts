@@ -55,7 +55,7 @@ export class Color {
       });
     } else return null;
 
-    if (fields.length == 3) return Color.rgb(fields[0], fields[1], fields[2]);
+    if (fields.length === 3) return Color.rgb(fields[0], fields[1], fields[2]);
     else return Color.rgba(fields[0], fields[1], fields[2], fields[3]);
   }
 
@@ -106,7 +106,7 @@ export class Color {
   }
 
   static Lerp(a, b, pct) {
-    console.assert(a.space == b.space);
+    console.assert(a.space === b.space);
     return new Color(
       a.x + (b.x - a.x) * pct,
       a.y + (b.y - a.y) * pct,
@@ -120,8 +120,8 @@ export class Color {
     b // b over a
   ) {
     let t = b.a;
-    if (t == 1) return b;
-    if (t == 0) return a;
+    if (t === 1) return b;
+    if (t === 0) return a;
     let under = a.AsRGB();
     let over = b.AsRGB();
     let x = Vec1.Lerp(under.x, over.x, t);
@@ -133,7 +133,7 @@ export class Color {
   static Instantiate(str) {
     let c = new Color();
     let fields = str.split(" ");
-    console.assert(fields.length == 5);
+    console.assert(fields.length === 5);
     c.space = fields[0];
     c.x = Number(fields[1]);
     c.y = Number(fields[2]);
@@ -182,7 +182,7 @@ export class Color {
   }
 
   Equals(other) {
-    return this.AsStr() == other.AsStr();
+    return this.AsStr() === other.AsStr();
   }
 
   Clone() {
@@ -196,14 +196,14 @@ export class Color {
   }
 
   Index(i) {
-    if (i == 0) return this.x;
-    if (i == 1) return this.y;
-    if (i == 2) return this.z;
-    if (i == 3) return this.a;
+    if (i === 0) return this.x;
+    if (i === 1) return this.y;
+    if (i === 2) return this.z;
+    if (i === 3) return this.a;
   }
 
   AsArray(space = null) {
-    if (space == null || space == this.space)
+    if (space === null || space === this.space)
       return [this.x, this.y, this.z, this.a];
     else {
       console.assert(0, "could do more work here.");
@@ -299,14 +299,14 @@ export class Color {
   }
 
   AsOpaque() {
-    if (this.a == 1) return this;
+    if (this.a === 1) return this;
     return new Color(this.x, this.y, this.z, 1, this.space);
   }
 
   AsRGB(alphaMult = 1, clone = false) {
     switch (this.space) {
       case "rgb":
-        if (alphaMult == 1 && !clone) return this;
+        if (alphaMult === 1 && !clone) return this;
         else return new Color(this.x, this.y, this.z, this.a * alphaMult);
       case "hsv": {
         // hsv to rgb
@@ -348,7 +348,7 @@ export class Color {
         let h = this.x;
         let s = this.y;
         let l = this.z;
-        if (this.y == 0) r = g = b = this.z; // achromatic
+        if (this.y === 0) r = g = b = this.z; // achromatic
         else {
           let hue2rgb = function (p, q, t) {
             if (t < 0) t += 1;
@@ -383,7 +383,7 @@ export class Color {
         let h,
           s,
           l = (max + min) / 2;
-        if (max == min) {
+        if (max === min) {
           h = 0;
           s = 0;
         } else {

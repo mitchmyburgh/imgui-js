@@ -108,7 +108,7 @@ export var ImguiMenuMixin =
         // When the user has left the menu layer (typically: closed menus through
         // activation of an item), we restore focus to the previous window
         let g = this.guictx;
-        if (g.CurrentWindow == g.NavWindow && g.NavLayer == 0)
+        if (g.CurrentWindow === g.NavWindow && g.NavLayer === 0)
             this.focusPreviousWindowIgnoringOne(g.NavWindow);
         this.End();
     },
@@ -159,7 +159,7 @@ export var ImguiMenuMixin =
         // Nav: When a move request within one of our child menu failed, capture
         // the request to navigate among our siblings.
         if (this.navMoveRequestButNoResultYet() &&
-            (g.NavMoveDir == Dir.Left || g.NavMoveDir == Dir.Right) &&
+            (g.NavMoveDir === Dir.Left || g.NavMoveDir === Dir.Right) &&
             (g.NavWindow.Flags & WindowFlags.ChildMenu))
         {
             let nav_earliest_child = g.NavWindow;
@@ -168,9 +168,9 @@ export var ImguiMenuMixin =
             {
                 nav_earliest_child = nav_earliest_child.ParentWindow;
             }
-            if (nav_earliest_child.ParentWindow == win &&
-                nav_earliest_child.DC.ParentLayoutType == LayoutType.Horizontal &&
-                g.NavMoveRequestForward == NavForward.None)
+            if (nav_earliest_child.ParentWindow === win &&
+                nav_earliest_child.DC.ParentLayoutType === LayoutType.Horizontal &&
+                g.NavMoveRequestForward === NavForward.None)
             {
                 // To do so we claim focus back, restore NavId and then process
                 // the movement request for yet another frame. This involve a
@@ -220,7 +220,7 @@ export var ImguiMenuMixin =
         let menu_is_open = this.isPopupOpen(id);
         let menuset_is_open = !(win.Flags & WindowFlags.Popup) &&
                         (g.OpenPopupStack.length > g.BeginPopupStack.length &&
-                        g.OpenPopupStack[g.BeginPopupStack.length].OpenParentId ==
+                        g.OpenPopupStack[g.BeginPopupStack.length].OpenParentId ===
                             win.IDStack[win.IDStack.length-1]);
         let backed_nav_window = g.NavWindow;
         if (menuset_is_open)
@@ -235,7 +235,7 @@ export var ImguiMenuMixin =
         // position is going to be different! It is choosen by FindBestWindowPosForPopup().
         // e.g. Menus tend to overlap each other horizontally to amplify relative Z-ordering.
         let popup_pos, pos = win.DC.CursorPos.Clone();
-        if (win.DC.LayoutType == LayoutType.Horizontal)
+        if (win.DC.LayoutType === LayoutType.Horizontal)
         {
             // Menu inside an horizontal menu bar
             // Selectable extend their highlight by half ItemSpacing in each direction.
@@ -287,14 +287,14 @@ export var ImguiMenuMixin =
             g.NavWindow = backed_nav_window;
 
         let want_open = false, want_close = false;
-        if (win.DC.LayoutType == LayoutType.Vertical) // (win.Flags & (WindowFlags.Popup|WindowFlags.ChildMenu))
+        if (win.DC.LayoutType === LayoutType.Vertical) // (win.Flags & (WindowFlags.Popup|WindowFlags.ChildMenu))
         {
             // Implement http://bjk5.com/post/44698559168/breaking-down-amazons-mega-dropdown
             // to avoid using timers, so menus feels more reactive.
             let inOpenTri = false;
-            if (g.HoveredWindow == win &&
+            if (g.HoveredWindow === win &&
                 g.OpenPopupStack.length > g.BeginPopupStack.length &&
-                g.OpenPopupStack[g.BeginPopupStack.length].ParentWindow == win &&
+                g.OpenPopupStack[g.BeginPopupStack.length].ParentWindow === win &&
                 !(win.Flags & WindowFlags.MenuBar))
             {
                 let next_window = g.OpenPopupStack[g.BeginPopupStack.length].Window;
@@ -320,18 +320,18 @@ export var ImguiMenuMixin =
                 }
             }
 
-            want_close = (menu_is_open && !hovered && g.HoveredWindow == win &&
+            want_close = (menu_is_open && !hovered && g.HoveredWindow === win &&
                     g.HoveredIdPreviousFrame != 0 && g.HoveredIdPreviousFrame != id &&
                     !inOpenTri);
             want_open = (!menu_is_open && hovered && !inOpenTri) ||
                     (!menu_is_open && hovered && pressed);
 
-            if (g.NavActivateId == id)
+            if (g.NavActivateId === id)
             {
                 want_close = menu_is_open;
                 want_open = !menu_is_open;
             }
-            if (g.NavId == id && g.NavMoveRequest && g.NavMoveDir == Dir.Right) // Nav-Right to open
+            if (g.NavId === id && g.NavMoveRequest && g.NavMoveDir === Dir.Right) // Nav-Right to open
             {
                 want_open = true;
                 this.navMoveRequestCancel();
@@ -353,7 +353,7 @@ export var ImguiMenuMixin =
                 want_open = true;
             }
             else
-            if (g.NavId == id && g.NavMoveRequest && g.NavMoveDir == Dir.Down) // Nav-Down to open
+            if (g.NavId === id && g.NavMoveRequest && g.NavMoveDir === Dir.Down) // Nav-Down to open
             {
                 want_open = true;
                 this.navMoveRequestCancel();
@@ -407,9 +407,9 @@ export var ImguiMenuMixin =
         // However, it means that with the current code, a BeginMenu() from outside another menu or a menu-bar won't be closable with the Left direction.
         let g = this.guictx;
         let win = g.CurrentWindow;
-        if (g.NavWindow && g.NavWindow.ParentWindow == win &&
-            g.NavMoveDir == Dir.Left && this.navMoveRequestButNoResultYet() &&
-            win.DC.LayoutType == LayoutType.Vertical)
+        if (g.NavWindow && g.NavWindow.ParentWindow === win &&
+            g.NavMoveDir === Dir.Left && this.navMoveRequestButNoResultYet() &&
+            win.DC.LayoutType === LayoutType.Vertical)
         {
             this.closePopupToLevel(g.BeginPopupStack.length, true);
             this.navMoveRequestCancel();
@@ -440,7 +440,7 @@ export var ImguiMenuMixin =
         let label_size = this.CalcTextSize(label, true);
         let flags = SelectableFlags.PressedOnRelease | (enabled ? 0 : SelectableFlags.Disabled);
         let pressed;
-        if (win.DC.LayoutType == LayoutType.Horizontal)
+        if (win.DC.LayoutType === LayoutType.Horizontal)
         {
             // Mimic the exact layout spacing of BeginMenu() to allow MenuItem()
             // inside a menu bar, which is a little misleading but may be useful

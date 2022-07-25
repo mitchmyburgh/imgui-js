@@ -29,7 +29,7 @@ export class DemoCustomRendering
         if (imgui.BeginTabBar("##TabBar"))
         {
             // Primitives
-            if(this._sz == undefined)
+            if(this._sz === undefined)
             {
                 this._sz = 36;
                 this._thickness = 4;
@@ -53,7 +53,7 @@ export class DemoCustomRendering
                 {
                     // First line uses a thickness of 1.0, second line uses the
                     // configurable thickness
-                    let th = (n == 0) ? 1 : this._thickness;
+                    let th = (n === 0) ? 1 : this._thickness;
                     drawlist.AddCircle(new Vec2(x + sz*.5, y + sz*.5),
                                         sz*0.5, this._col, th);
                     x += sz + spacing;

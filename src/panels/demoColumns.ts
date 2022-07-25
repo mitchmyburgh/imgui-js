@@ -55,7 +55,7 @@ export class DemoColumns
             for (let i = 0; i < 3; i++)
             {
                 let label = "000" + i;
-                if (imgui.Selectable(label, this.selected == i, SelectableFlags.SpanAllColumns))
+                if (imgui.Selectable(label, this.selected === i, SelectableFlags.SpanAllColumns))
                     this.selected = i;
                 let hovered = imgui.IsItemHovered();
                 imgui.NextColumn();
@@ -131,7 +131,7 @@ export class DemoColumns
             imgui.Columns(4, null, this.v_borders);
             for (let i = 0; i < 4*3; i++)
             {
-                if (this.h_borders && imgui.GetColumnIndex() == 0)
+                if (this.h_borders && imgui.GetColumnIndex() === 0)
                     imgui.Separator();
                 let t = String.fromCharCode("a".charCodeAt(0)+i);
                 imgui.Text(t, t, t);

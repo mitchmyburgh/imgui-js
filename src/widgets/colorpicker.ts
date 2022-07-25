@@ -203,7 +203,7 @@ export var ImguiColorPickerMixin =
 
         // R,G,B and H,S,V slider color editor
         let value_changed_fix_hue_wrap = false;
-        if ((flags & ColorEditFlags.NoInputs) == 0)
+        if ((flags & ColorEditFlags.NoInputs) === 0)
         {
             this.PushItemWidth((alpha_bar ? bar1_pos_x : bar0_pos_x) + bars_width - picker_pos.x);
             let sub_flags_to_forward = ColorEditFlags.DataTypeMask |
@@ -215,7 +215,7 @@ export var ImguiColorPickerMixin =
                                        ColorEditFlags.AlphaPreview |
                                        ColorEditFlags.AlphaPreviewHalf;
             let sub_flags = (flags & sub_flags_to_forward) | ColorEditFlags.NoPicker;
-            if (flags & ColorEditFlags.DisplayRGB || (flags & ColorEditFlags.DisplayMask) == 0)
+            if (flags & ColorEditFlags.DisplayRGB || (flags & ColorEditFlags.DisplayMask) === 0)
             {
                 if (this.ColorEdit4("##rgb", col, sub_flags | ColorEditFlags.DisplayRGB))
                 {
@@ -229,11 +229,11 @@ export var ImguiColorPickerMixin =
                     value_changed = true;
                 }
             }
-            if (flags & ColorEditFlags.DisplayHSV || (flags & ColorEditFlags.DisplayMask) == 0)
+            if (flags & ColorEditFlags.DisplayHSV || (flags & ColorEditFlags.DisplayMask) === 0)
             {
                 value_changed |= this.ColorEdit4("##hsv", col, sub_flags | ColorEditFlags.DisplayHSV);
             }
-            if (flags & ColorEditFlags.DisplayHex || (flags & ColorEditFlags.DisplayMask) == 0)
+            if (flags & ColorEditFlags.DisplayHex || (flags & ColorEditFlags.DisplayMask) === 0)
             {
                 value_changed |= this.ColorEdit4("##hex", col, sub_flags | ColorEditFlags.DisplayHex);
             }
@@ -366,13 +366,13 @@ export var ImguiColorPickerMixin =
     SetColorEditOptions(flags)
     {
         let g = this.guictx;
-        if ((flags & ColorEditFlags.DisplayMask) == 0)
+        if ((flags & ColorEditFlags.DisplayMask) === 0)
             flags |= ColorEditFlags.OptionsDefault & ColorEditFlags.DisplayMask;
-        if ((flags & ColorEditFlags.DataTypeMask) == 0)
+        if ((flags & ColorEditFlags.DataTypeMask) === 0)
             flags |= ColorEditFlags.OptionsDefault & ColorEditFlags.DataTypeMask;
-        if ((flags & ColorEditFlags.PickerMask) == 0)
+        if ((flags & ColorEditFlags.PickerMask) === 0)
             flags |= ColorEditFlags.OptionsDefault & ColorEditFlags.PickerMask;
-        if ((flags & ColorEditFlags.InputMask) == 0)
+        if ((flags & ColorEditFlags.InputMask) === 0)
             flags |= ColorEditFlags.OptionsDefault & ColorEditFlags.InputMask;
         // Check only 1 option is selected
         console.assert(IsPowerOfTwo(flags & ColorEditFlags.DisplayMask));

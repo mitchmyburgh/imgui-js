@@ -37,7 +37,7 @@ export class Prefs extends SettingsHandler
 
     Instantiate(imgui: Imgui, o: Record<string, any>) // @override of SettingsHandler
     {
-        console.assert(this.imgui == imgui);
+        console.assert(this.imgui === imgui);
         this.vals = o;
     }
 

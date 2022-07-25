@@ -90,7 +90,7 @@ export class InputTextState // NB: contains TextEditState
         this.UserCallback = null;
         this.UserCallbackData = null;
 
-        if(DOMTextEditing == null)
+        if(DOMTextEditing === null)
             DOMTextEditing = App.IsMobileDevice(); // for debugging: || true;
     }
 
@@ -162,7 +162,7 @@ export class InputTextState // NB: contains TextEditState
                     // unless enter is pressed (13) because auto-correct, etc
                     domEl.onkeyup = (evt) => 
                     {
-                        if(evt.keyCode == 13 && !multiline) // Enter
+                        if(evt.keyCode === 13 && !multiline) // Enter
                         {
                             // Transfer text from domElement to our internal state.
                             // dismiss overlay.
@@ -208,7 +208,7 @@ export class InputTextState // NB: contains TextEditState
                 domEl.focus();
             }
             else
-            if(domEl && domEl.id == idstr)
+            if(domEl && domEl.id === idstr)
                 domEl.style.display = "none";
         }
     }
@@ -317,7 +317,7 @@ export class InputTextCallbackData
         this.TextDirty = false; // callback should signal dirty if Text changed
         this.CursorPos = 0;     // Read-write   // [Completion,History,Always]
         this.SelectionStart = 0; // Read-write
-                                // [Completion,History,Always] == to SelectionEnd
+                                // [Completion,History,Always] === to SelectionEnd
                                 // when no selection)
         this.SelectionEnd = 0;  // Read-write [Completion,History,Always]
     }
@@ -374,7 +374,7 @@ export var ImguiInputMixin =
     InputFloat(label, v, step=0, step_fast=0, format=null,
                 flags=0, onChange)
     {
-        if(format==null) format = FFmt;
+        if(format===null) format = FFmt;
         flags |= InputTextFlags.CharsScientific;
         return this.InputScalar(label, DataType.Float, v, step > 0 ? step : null,
                 step_fast >0 ? step_fast : null, format, flags, onChange);
@@ -383,27 +383,27 @@ export var ImguiInputMixin =
     InputDouble(label, v, step=0, step_fast=0, format=null,
                 flags=0, onChange)
     {
-        if(format==null) format = DFmt;
+        if(format===null) format = DFmt;
         return this.InputFloat(label, v, step, step_fast, format, flags, onChange);
     },
 
     InputFloat2(label, v, format=null, flags=0, onChange)
     {
-        if(format==null) format = FFmt;
+        if(format===null) format = FFmt;
         return this.InputScalarN(label, DataType.Float, v, 2, null, null,
                                 format, flags, onChange);
     },
 
     InputFloat3(label, v, format=null, flags=0, onChange)
     {
-        if(format==null) format = FFmt;
+        if(format===null) format = FFmt;
         return this.InputScalarN(label, DataType.Float, v, 3, null, null,
                                 format, flags, onChange);
     },
 
     InputFloat4(label, v, format=null, flags=0, onChange)
     {
-        if(format==null) format = FFmt;
+        if(format===null) format = FFmt;
         return this.InputScalarN(label, DataType.Float, v, 4, null, null,
                                 format, flags, onChange);
     },
@@ -476,12 +476,12 @@ export var ImguiInputMixin =
 
         let g = this.guictx;
         let style = g.Style;
-        if (format == null)
-            format = (data_type == DataType.Float) ? FFmt : IFmt;
+        if (format === null)
+            format = (data_type === DataType.Float) ? FFmt : IFmt;
         let buf = FormatValues(format, [v]); // import from dataype.js
         let value_changed = false;
         if ((flags & (InputTextFlags.CharsHexadecimal |
-                      InputTextFlags.CharsScientific)) == 0)
+                      InputTextFlags.CharsScientific)) === 0)
             flags |= InputTextFlags.CharsDecimal;
         flags |= InputTextFlags.AutoSelectAll;
         let origStr = g.InputTextState.InitialText;
@@ -551,10 +551,10 @@ export var ImguiInputMixin =
         // IM_UNUSED(id);
         let g = this.guictx;
 
-        // On the first frame, g.ScalarAsInputTextId == 0, then on subsequent
-        // frames it becomes == id. We clear ActiveID on the first frame to
+        // On the first frame, g.ScalarAsInputTextId === 0, then on subsequent
+        // frames it becomes === id. We clear ActiveID on the first frame to
         // allow the InputText() taking it back.
-        if (g.ScalarAsInputTextId == 0)
+        if (g.ScalarAsInputTextId === 0)
             this.clearActiveID();
 
         console.assert(0, "implement me");
@@ -564,12 +564,12 @@ export var ImguiInputMixin =
         let format = ImParseFormatTrimDecorations(format, fmt_buf, IM_ARRAYSIZE(fmt_buf));
         DataTypeFormatString(data_buf, IM_ARRAYSIZE(data_buf), data_type, data_ptr, format);
         ImStrTrimBlanks(data_buf);
-        ImGuiInputTextFlags flags = ImGuiInputTextFlags_AutoSelectAll | ((data_type == ImGuiDataType_Float || data_type == ImGuiDataType_Double) ? ImGuiInputTextFlags_CharsScientific : ImGuiInputTextFlags_CharsDecimal);
+        ImGuiInputTextFlags flags = ImGuiInputTextFlags_AutoSelectAll | ((data_type === ImGuiDataType_Float || data_type === ImGuiDataType_Double) ? ImGuiInputTextFlags_CharsScientific : ImGuiInputTextFlags_CharsDecimal);
         bool value_changed = InputTextEx(label, NULL, data_buf, IM_ARRAYSIZE(data_buf), bb.GetSize(), flags);
-        if (g.ScalarAsInputTextId == 0)
+        if (g.ScalarAsInputTextId === 0)
         {
             // First frame we started displaying the InputText widget, we expect it to take the active id.
-            IM_ASSERT(g.ActiveId == id);
+            IM_ASSERT(g.ActiveId === id);
             g.ScalarAsInputTextId = g.ActiveId;
         }
         if (value_changed)
@@ -604,7 +604,7 @@ export var ImguiInputMixin =
         const is_multiline = (flags & InputTextFlags.Multiline) != 0;
         const is_readonly = (flags & InputTextFlags.ReadOnly) != 0;
         const is_password = (flags & InputTextFlags.Password) != 0;
-        const is_undoable = (flags & InputTextFlags.NoUndoRedo) == 0;
+        const is_undoable = (flags & InputTextFlags.NoUndoRedo) === 0;
         const is_resizable = (flags & InputTextFlags.CallbackResize) != 0;
 
         // Must provide a callback when InputTextFlags.CallbackResize
@@ -662,24 +662,24 @@ export var ImguiInputMixin =
 
         // NB: we are only allowed to access 'edit_state' if we are the active widget.
         let istate = null;
-        if (g.InputTextState.ID == id)
+        if (g.InputTextState.ID === id)
             istate = g.InputTextState;
 
         const focus_requested = this.focusableItemRegister(win, id);
         const focus_requested_by_code = focus_requested &&
-                                (g.FocusRequestCurrWindow == win &&
-                                g.FocusRequestCurrCounterAll == win.DC.FocusCounterAll);
+                                (g.FocusRequestCurrWindow === win &&
+                                g.FocusRequestCurrCounterAll === win.DC.FocusCounterAll);
         const focus_requested_by_tab = focus_requested && !focus_requested_by_code;
 
         const user_clicked = hovered && io.MouseClicked[0];
         const user_nav_input_start = (g.ActiveId != id) &&
-                                      ((g.NavInputId == id) ||
-                                        (g.NavActivateId == id &&
-                                         g.NavInputSource == InputSource.NavKeyboard));
-        const user_scroll_finish = is_multiline && istate != null && g.ActiveId == 0 &&
-                g.ActiveIdPreviousFrame == this.getScrollbarID(draw_window, Axis.Y);
+                                      ((g.NavInputId === id) ||
+                                        (g.NavActivateId === id &&
+                                         g.NavInputSource === InputSource.NavKeyboard));
+        const user_scroll_finish = is_multiline && istate != null && g.ActiveId === 0 &&
+                g.ActiveIdPreviousFrame === this.getScrollbarID(draw_window, Axis.Y);
         const user_scroll_active = is_multiline && istate != null &&
-                    g.ActiveId == this.getScrollbarID(draw_window, Axis.Y);
+                    g.ActiveId === this.getScrollbarID(draw_window, Axis.Y);
 
         let clear_active_id = false;
         let select_all = (g.ActiveId != id) &&
@@ -701,9 +701,9 @@ export var ImguiInputMixin =
 
             // Preserve cursor position and undo/redo stack if we come back to
             // same widget FIXME: For non-readonly widgets we might be able to
-            // require that TextIsValid && Text == val ? (untested) and
+            // require that TextIsValid && Text === val ? (untested) and
             // discard undo stack if user buffer has changed.
-            const recycle_state = (istate.ID == id);
+            const recycle_state = (istate.ID === id);
             if (recycle_state)
             {
                 // Recycle existing cursor/selection/undo stack but clamp position
@@ -726,7 +726,7 @@ export var ImguiInputMixin =
 
         if (g.ActiveId != id && init_make_active)
         {
-            console.assert(istate && istate.ID == id);
+            console.assert(istate && istate.ID === id);
             this.setActiveID(id, win);
             this.setFocusID(id, win);
             this.FocusWindow(win);
@@ -749,16 +749,16 @@ export var ImguiInputMixin =
         // We have an edge case if ActiveId was set through another widget (e.g.
         // widget being swapped), clear id immediately (don't wait until the end
         // of the function)
-        if (g.ActiveId == id && istate == null)
+        if (g.ActiveId === id && istate === null)
             this.clearActiveID();
 
         // Release focus when we click outside
-        if (g.ActiveId == id && io.MouseClicked[0] && !init_state && !init_make_active) //-V560
+        if (g.ActiveId === id && io.MouseClicked[0] && !init_state && !init_make_active) //-V560
             clear_active_id = true;
 
         // Lock the decision of whether we are going to take the path displaying
         // the cursor or selection
-        const render_cursor = (g.ActiveId == id) || (istate && user_scroll_active);
+        const render_cursor = (g.ActiveId === id) || (istate && user_scroll_active);
         let render_selection = istate && istate.HasSelection() &&
                                (RENDER_SELECTION_WHEN_INACTIVE || render_cursor);
         let value_changed = false;
@@ -777,16 +777,16 @@ export var ImguiInputMixin =
 
         // Select the buffer to render.
         const val_display_from_state = (render_cursor || render_selection ||
-                    g.ActiveId == id) && !is_readonly && istate && istate.TextIsValid;
+                    g.ActiveId === id) && !is_readonly && istate && istate.TextIsValid;
         let is_displaying_hint = false;
         if(hint != null)
         {
             if(val_display_from_state)
-                is_displaying_hint = (istate.Text.Length() == 0);
+                is_displaying_hint = (istate.Text.Length() === 0);
             else
-                is_displaying_hint = (val.Length() == 0);
+                is_displaying_hint = (val.Length() === 0);
         }
-        // k(hint != null && (buf_display_from_state ? state->TextA.Data : buf)[0] == 0);
+        // k(hint != null && (buf_display_from_state ? state->TextA.Data : buf)[0] === 0);
 
         // Password pushes a temporary font with only a fallback glyph
         if (is_password && !is_displaying_hint)
@@ -795,7 +795,7 @@ export var ImguiInputMixin =
         }
 
         // Process mouse inputs and character inputs
-        if (g.ActiveId == id)
+        if (g.ActiveId === id)
         {
             console.assert(istate != null);
             istate.UserFlags = flags;
@@ -875,7 +875,7 @@ export var ImguiInputMixin =
                         let evt = io.InputKeyEvents[n];
                         let key = evt.key; // May be "a", "A", "Tab"", "Escape",
                         let keyCode = evt.keyCode; // a _KEY_, not _CHAR_ code
-                        if (keyCode == 9 && evt.shiftKey) // shift-tab
+                        if (keyCode === 9 && evt.shiftKey) // shift-tab
                             continue;
                         // skip all control and nav keys since we handle
                         // them below
@@ -896,7 +896,7 @@ export var ImguiInputMixin =
 
         // Process other shortcuts/key-presses
         let cancel_edit = false;
-        if (g.ActiveId == id && !g.ActiveIdIsJustActivated && !clear_active_id)
+        if (g.ActiveId === id && !g.ActiveIdIsJustActivated && !clear_active_id)
         {
             console.assert(istate != null);
             const k_mask = (io.KeyShift ? TextEditMetaKeys.Shift : 0);
@@ -1066,7 +1066,7 @@ export var ImguiInputMixin =
                     {
                         let c = clipboard[i];
                         let code = c.charCodeAt(0);
-                        if (code == 0)
+                        if (code === 0)
                             break;
                         if (code >= 0x10000)
                             continue;
@@ -1092,7 +1092,7 @@ export var ImguiInputMixin =
         }
 
         // Process callbacks and apply result back to user's buffer.
-        if (g.ActiveId == id)
+        if (g.ActiveId === id)
         {
             console.assert(istate != null);
             let apply_new_text = null;
@@ -1183,14 +1183,14 @@ export var ImguiInputMixin =
                         if(onEdit)
                             onEdit(callback_data);
                         else
-                        if(event_key == Key.Tab && enter_returns_true)
+                        if(event_key === Key.Tab && enter_returns_true)
                         {
                             // or return true on Tab
                             enter_pressed = clear_active_id = true;
                         }
 
                         // Read back what user may have modified
-                        console.assert(callback_data.Flags == flags);
+                        console.assert(callback_data.Flags === flags);
                         istate.EditState.Cursor = callback_data.CursorPos;
                         istate.EditState.SelectionStart = callback_data.SelectionStart;
                         istate.EditState.SelectionEnd = callback_data.SelectionEnd;
@@ -1225,7 +1225,7 @@ export var ImguiInputMixin =
 
         // Release active ID at the end of the function (so e.g. pressing
         // Return still does a final application of the value)
-        if (clear_active_id && g.ActiveId == id)
+        if (clear_active_id && g.ActiveId === id)
         {
             this.clearActiveID();
             istate.Update(this, id, frame_bb, false, ismultiline);
@@ -1307,14 +1307,14 @@ export var ImguiInputMixin =
                     if (istate.Text.IsNewline(i))
                     {
                         line_count++;
-                        if (searches_result_line_no[0] == -1 &&
+                        if (searches_result_line_no[0] === -1 &&
                             i >= searches_input_offset[0])
                         {
                             searches_result_line_no[0] = line_count;
                             if (--searches_remaining <= 0)
                                 break;
                         }
-                        if (searches_result_line_no[1] == -1 &&
+                        if (searches_result_line_no[1] === -1 &&
                             i >= searches_input_offset[1])
                         {
                             searches_result_line_no[1] = line_count;
@@ -1324,9 +1324,9 @@ export var ImguiInputMixin =
                     }
                 }
                 line_count++;
-                if (searches_result_line_no[0] == -1)
+                if (searches_result_line_no[0] === -1)
                     searches_result_line_no[0] = line_count;
-                if (searches_result_line_no[1] == -1)
+                if (searches_result_line_no[1] === -1)
                     searches_result_line_no[1] = line_count;
 
                 // Calculate 2d position by finding the beginning of the line
@@ -1545,8 +1545,8 @@ export var ImguiInputMixin =
         if (ccode < 0x20)
         {
             let pass = false;
-            pass |= (c == "\n" && (flags & InputTextFlags.Multiline));
-            pass |= (c == "\t" && (flags & InputTextFlags.AllowTabInput));
+            pass |= (c === "\n" && (flags & InputTextFlags.Multiline));
+            pass |= (c === "\t" && (flags & InputTextFlags.AllowTabInput));
             if (!pass)
                 return null;
         }
@@ -1563,19 +1563,19 @@ export var ImguiInputMixin =
         {
             if (flags & InputTextFlags.CharsDecimal)
             {
-                if(ValidChars.Decimal.indexOf(c) == -1)
+                if(ValidChars.Decimal.indexOf(c) === -1)
                     return null;
             }
 
             if (flags & InputTextFlags.CharsScientific)
             {
-                if(ValidChars.Scientific.indexOf(c) == -1)
+                if(ValidChars.Scientific.indexOf(c) === -1)
                     return null;
             }
 
             if (flags & InputTextFlags.CharsHexadecimal)
             {
-                if(ValidChars.Hex.indexOf(c) == -1)
+                if(ValidChars.Hex.indexOf(c) === -1)
                     return null;
             }
 

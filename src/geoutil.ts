@@ -15,7 +15,7 @@ export function TriangleContainsPoint(a, b, c, p) {
   let b1 = (p.x - b.x) * (a.y - b.y) - (p.y - b.y) * (a.x - b.x) < 0;
   let b2 = (p.x - c.x) * (b.y - c.y) - (p.y - c.y) * (b.x - c.x) < 0;
   let b3 = (p.x - a.x) * (c.y - a.y) - (p.y - a.y) * (c.x - a.x) < 0;
-  return b1 == b2 && b2 == b3;
+  return b1 === b2 && b2 === b3;
 }
 
 // returns tuple(u,v,w)
@@ -39,7 +39,7 @@ export function TriangleClosestPoint(a, b, c, p) {
   let dist2_bc = Vec2.LengthSqr(p, proj_bc);
   let dist2_ca = Vec2.LengthSqr(p, proj_ca);
   let m = Math.min(dist2_ab, dist2_bc, dist2_ca);
-  if (m == dist2_ab) return proj_ab;
-  if (m == dist2_bc) return proj_bc;
+  if (m === dist2_ab) return proj_ab;
+  if (m === dist2_bc) return proj_bc;
   return proj_ca;
 }

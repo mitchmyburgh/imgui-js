@@ -23,7 +23,7 @@ export class PopupRef
         this.OpenParentId = -1; // we need this to differentiate multiple menu
                                 // sets from each others (e.g. inside menu bar vs
                                 // loose menu items)
-        this.OpenPopupPos = null; // Vec2, preferred popup position (typically ==
+        this.OpenPopupPos = null; // Vec2, preferred popup position (typically ===
                                   // OpenMousePos when using mouse)
         this.OpenMousePos = null; // copy of mouse position at the time of opening popup
     }
@@ -86,7 +86,7 @@ export var ImguiPopupMixin =
         // Center modal windows by default
         // FIXME: Should test for (PosCond & window->SetWindowPosAllowFlags)
         // with the upcoming window.
-        if (g.NextWindowData.PosCond == 0)
+        if (g.NextWindowData.PosCond === 0)
             this.SetNextWindowPos(Vec2.Mult(g.IO.DisplaySize, 0.5),
                                 CondFlags.Appearing, new Vec2(0.5, 0.5));
 
@@ -195,7 +195,7 @@ export var ImguiPopupMixin =
     // popup stack.
     IsPopupOpen(id)
     {
-        if(typeof(id) == "string")
+        if(typeof(id) === "string")
             return this.isPopupOpen(this.guictx.CurrentWindow.GetID(id));
         else
             return this.isPopupOpen(id);
@@ -221,7 +221,7 @@ export var ImguiPopupMixin =
             let close_parent = false;
             if (popup_window && (popup_window.Flags & WindowFlags.ChildMenu))
             {
-                if (parent_popup_window == null ||
+                if (parent_popup_window === null ||
                     !(parent_popup_window.Flags & WindowFlags.Modal))
                 {
                     close_parent = true;
@@ -248,7 +248,7 @@ export var ImguiPopupMixin =
     {
         let g = this.guictx;
         return g.OpenPopupStack.length > g.BeginPopupStack.length &&
-               g.OpenPopupStack[g.BeginPopupStack.length].PopupId == id;
+               g.OpenPopupStack[g.BeginPopupStack.length].PopupId === id;
     },
 
     getFrontMostPopupModal()
@@ -300,8 +300,8 @@ export var ImguiPopupMixin =
             // focus. Which would be a very confusing situation for the programmer.
             // Instead, we silently allow the popup to proceed, it will keep
             // reappearing and the programming error will be more obvious to understand.
-            if (g.OpenPopupStack[current_stack_size].PopupId == id &&
-                g.OpenPopupStack[current_stack_size].OpenFrameCount == g.FrameCount - 1)
+            if (g.OpenPopupStack[current_stack_size].PopupId === id &&
+                g.OpenPopupStack[current_stack_size].OpenFrameCount === g.FrameCount - 1)
             {
                 g.OpenPopupStack[current_stack_size].OpenFrameCount = popup_ref.OpenFrameCount;
             }
@@ -316,7 +316,7 @@ export var ImguiPopupMixin =
             // if its parent is itself a popup it would get closed by
             // ClosePopupsOverWindow(). This is equivalent to what
             // closePopupToLevel() does.
-            //if (g.OpenPopupStack[current_stack_size].PopupId == id)
+            //if (g.OpenPopupStack[current_stack_size].PopupId === id)
             //    FocusWindow(parent_window);
         }
     },
@@ -324,7 +324,7 @@ export var ImguiPopupMixin =
     closePopupsOverWindow(refwin)
     {
         let g = this.guictx;
-        if (g.OpenPopupStack.length == 0)
+        if (g.OpenPopupStack.length === 0)
             return;
 
         // When popups are stacked, clicking on a lower level popups puts
@@ -352,7 +352,7 @@ export var ImguiPopupMixin =
                      m++)
                 {
                     if (g.OpenPopupStack[m].Window &&
-                        g.OpenPopupStack[m].Window.RootWindow == refwin.RootWindow)
+                        g.OpenPopupStack[m].Window.RootWindow === refwin.RootWindow)
                     {
                         popup_or_descendent_has_focus = true;
                     }
@@ -393,7 +393,7 @@ export var ImguiPopupMixin =
         // anyway, but we should inspect and fix this properly.
         if (applyFocusToWindowUnder)
         {
-            if (g.NavLayer == 0)
+            if (g.NavLayer === 0)
                 focus_window = this.navRestoreLastChildNavWindow(focus_window);
             this.FocusWindow(focus_window);
         }
@@ -434,7 +434,7 @@ export var ImguiPopupMixin =
             // menu item, and then we move the new menu outside the parent bounds.
             // This is how we end up with child menus appearing (most-commonly)
             // on the right of the parent menu.
-            console.assert(g.CurrentWindow == win);
+            console.assert(g.CurrentWindow === win);
             let parent_window = g.CurrentWindowStack[g.CurrentWindowStack.length - 2];
             // We want some overlap to convey the relative depth of each menu
             //(currently the amount of overlap is hard-coded to style.ItemSpacing.x).
@@ -491,7 +491,7 @@ export var ImguiPopupMixin =
             let pos = this.findBestWindowPosForPopupEx(ref_pos, win.Size,
                                 lastAutoPos, r_outer, r_avoid);
             win.AutoPosLastDirection = lastAutoPos.get();
-            if (win.AutoPosLastDirection == Dir.None)
+            if (win.AutoPosLastDirection === Dir.None)
             {
                 // If there's not enough room, for tooltip we prefer avoiding
                 // the cursor at all cost even if it means that part of the
@@ -515,7 +515,7 @@ export var ImguiPopupMixin =
     findBestWindowPosForPopupEx(ref_pos, size, last_dir, r_outer, r_avoid,
                                 policy=PopupPositionPolicy.Default)
     {
-        if(last_dir.value == undefined)
+        if(last_dir.value === undefined)
             console.assert(last_dir.value, "last_dir must be a ValRef");
         let base_pos_clamped = Vec2.Clamp(ref_pos, r_outer.Min,
                                         Vec2.Subtract(r_outer.Max, size));
@@ -523,13 +523,13 @@ export var ImguiPopupMixin =
         //GetForegroundDrawList()->AddRect(r_outer.Min, r_outer.Max, IM_COL32(0,255,0,255));
 
         // Combo Box policy (we want a connecting edge)
-        if (policy == PopupPositionPolicy.ComboBox)
+        if (policy === PopupPositionPolicy.ComboBox)
         {
             const dirOrder = [ Dir.Down, Dir.Right, Dir.Left, Dir.Up];
             for (let n = (last_dir.get() != Dir.None) ? -1 : 0; n < dirOrder.length; n++)
             {
-                const dir = (n == -1) ? last_dir.get() : dirOrder[n];
-                if (n != -1 && dir == last_dir.get()) // Already tried this direction?
+                const dir = (n === -1) ? last_dir.get() : dirOrder[n];
+                if (n != -1 && dir === last_dir.get()) // Already tried this direction?
                     continue;
                 let pos;
                 switch(dir)
@@ -562,23 +562,23 @@ export var ImguiPopupMixin =
         const dirOrder = [ Dir.Right, Dir.Down, Dir.Up, Dir.Left ];
         for (let n = (last_dir.get() != Dir.None) ? -1 : 0; n < dirOrder.length; n++)
         {
-            const dir = (n == -1) ? last_dir.get() : dirOrder[n];
-            if (n != -1 && dir == last_dir.get())
+            const dir = (n === -1) ? last_dir.get() : dirOrder[n];
+            if (n != -1 && dir === last_dir.get())
                 continue; // Already tried this direction..
-            let avail_w = (dir == Dir.Left ?
+            let avail_w = (dir === Dir.Left ?
                 r_avoid.Min.x : r_outer.Max.x) -
-                    (dir == Dir.Right ? r_avoid.Max.x : r_outer.Min.x);
-            let avail_h = (dir == Dir.Up ?
+                    (dir === Dir.Right ? r_avoid.Max.x : r_outer.Min.x);
+            let avail_h = (dir === Dir.Up ?
                 r_avoid.Min.y : r_outer.Max.y) -
-                    (dir == Dir.Down ? r_avoid.Max.y : r_outer.Min.y);
+                    (dir === Dir.Down ? r_avoid.Max.y : r_outer.Min.y);
             if (avail_w < size.x || avail_h < size.y)
                 continue;
 
             let pos = new Vec2();
-            pos.x = (dir == Dir.Left) ? r_avoid.Min.x - size.x :
-                    (dir == Dir.Right) ? r_avoid.Max.x : base_pos_clamped.x;
-            pos.y = (dir == Dir.Up)? r_avoid.Min.y - size.y :
-                    (dir == Dir.Down) ? r_avoid.Max.y : base_pos_clamped.y;
+            pos.x = (dir === Dir.Left) ? r_avoid.Min.x - size.x :
+                    (dir === Dir.Right) ? r_avoid.Max.x : base_pos_clamped.x;
+            pos.y = (dir === Dir.Up)? r_avoid.Min.y - size.y :
+                    (dir === Dir.Down) ? r_avoid.Max.y : base_pos_clamped.y;
             // console.log(pos.x, pos.y, r_avoid.Max.y);
             last_dir.set(dir);
             return pos; /// <--------------------------------------- return

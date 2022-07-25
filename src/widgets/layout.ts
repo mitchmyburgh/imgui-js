@@ -48,9 +48,9 @@ export var ImguiLayoutMixin =
 {
 
     // Gets back to previous line and continue with horizontal layout
-    //      offset_from_start_x == 0 : follow right after previous item
+    //      offset_from_start_x === 0 : follow right after previous item
     //      offset_from_start_x != 0 : align to specified x position (relative to window/group left)
-    //      spacing_w < 0            : use default spacing if pos_x == 0, no spacing if pos_x != 0
+    //      spacing_w < 0            : use default spacing if pos_x === 0, no spacing if pos_x != 0
     //      spacing_w >= 0           : enforce spacing amount
     SameLine(offset_from_start_x=0, spacing_w=-1)
     {
@@ -227,7 +227,7 @@ export var ImguiLayoutMixin =
         let g = this.guictx;
 
         // Those flags should eventually be overridable by the user
-        let flags = (win.DC.LayoutType == LayoutType.Horizontal) ?
+        let flags = (win.DC.LayoutType === LayoutType.Horizontal) ?
                     SeparatorFlags.Vertical : SeparatorFlags.Horizontal;
         // console.assert(ImIsPowerOfTwo(flags & (SeparatorFlags_Horizontal | SeparatorFlags_Vertical)));   // Check that only 1 option is selected
         if (flags & SeparatorFlags.Vertical)
@@ -305,7 +305,7 @@ export var ImguiLayoutMixin =
 
         let hovered = new ValRef(), held = new ValRef();
         let bb_interact = bb.Clone();
-        bb_interact.Expand(axis == Axis.Y ? new Vec2(0., hover_extend) :
+        bb_interact.Expand(axis === Axis.Y ? new Vec2(0., hover_extend) :
                                             new Vec2(hover_extend, 0));
         this.ButtonBehavior(bb_interact, id, hovered, held,
                     ButtonFlags.FlattenChildren | ButtonFlags.AllowItemOverlap);
@@ -313,10 +313,10 @@ export var ImguiLayoutMixin =
             this.SetItemAllowOverlap();
 
         if (held.get() ||
-            (g.HoveredId == id && g.HoveredIdPreviousFrame == id &&
+            (g.HoveredId === id && g.HoveredIdPreviousFrame === id &&
             g.HoveredIdTimer >= hover_visibility_delay))
         {
-            this.SetMouseCursor(axis == Axis.Y ? MouseCursor.ResizeNS : MouseCursor.ResizeEW);
+            this.SetMouseCursor(axis === Axis.Y ? MouseCursor.ResizeNS : MouseCursor.ResizeEW);
         }
 
         let bb_render = bb.Clone();
@@ -325,7 +325,7 @@ export var ImguiLayoutMixin =
             let mouse_delta_2d = Vec2.Subtract(
                                     Vec2.Subtract(g.IO.MousePos, g.ActiveIdClickOffset),
                                     bb_interact.Min);
-            let mouse_delta = (axis == Axis.Y) ? mouse_delta_2d.y : mouse_delta_2d.x;
+            let mouse_delta = (axis === Axis.Y) ? mouse_delta_2d.y : mouse_delta_2d.x;
 
             // Minimum pane size
             let size_1_maximum_delta = Math.max(0., size1.get() - min_size1);
@@ -344,7 +344,7 @@ export var ImguiLayoutMixin =
                     console.assert(size2.get() - mouse_delta >= min_size2);
                 size1.set(size1.get() + mouse_delta);
                 size2.set(size2.get() - mouse_delta);
-                bb_render.Translate((axis == Axis.X) ?
+                bb_render.Translate((axis === Axis.X) ?
                                 new Vec2(mouse_delta, 0) :
                                 new Vec2(0., mouse_delta));
                 this.MarkItemEdited(id);
@@ -416,13 +416,13 @@ export var ImguiLayoutMixin =
         // would put a little more burden on individual widgets. (and if you
         // grep for LastItemId you'll notice it is only used in that context.
         if ((group_data.BackupActiveIdIsAlive != g.ActiveId) &&
-            (g.ActiveIdIsAlive == g.ActiveId) && g.ActiveId) // && g.ActiveIdWindow->RootWindow == win.RootWindow)
+            (g.ActiveIdIsAlive === g.ActiveId) && g.ActiveId) // && g.ActiveIdWindow->RootWindow === win.RootWindow)
         {
             win.DC.LastItemId = g.ActiveId;
         }
         else
         if (!group_data.BackupActiveIdPreviousFrameIsAlive &&
-              g.ActiveIdPreviousFrameIsAlive) // && g.ActiveIdPreviousFrameWindow->RootWindow == win->RootWindow)
+              g.ActiveIdPreviousFrameIsAlive) // && g.ActiveIdPreviousFrameWindow->RootWindow === win->RootWindow)
         {
             win.DC.LastItemId = g.ActiveIdPreviousFrame;
         }
@@ -437,7 +437,7 @@ export var ImguiLayoutMixin =
     // User generally sees positions in window coordinates. Internally we
     // store CursorPos in absolute screen coordinates because it is more
     // convenient. Conversion happens as we pass the value to user, but it
-    // makes our naming convention confusing because GetCursorPos() ==
+    // makes our naming convention confusing because GetCursorPos() ===
     // (DC.CursorPos - window.Pos). May want to rename 'DC.CursorPos'.
     GetCursorPos()
     {
@@ -464,7 +464,7 @@ export var ImguiLayoutMixin =
     //    GetWindowContentRegion* etc. other functions such as
     //    GetCursorScreenPos or everything in ImDrawList::
     //    are using the main, absolute coordinate system.
-    //    GetWindowPos() + GetCursorPos() == GetCursorScreenPos() etc.)
+    //    GetWindowPos() + GetCursorPos() === GetCursorScreenPos() etc.)
     GetCursorPosX()
     {
         let win = this.getCurrentWindowRead();
@@ -607,7 +607,7 @@ export var ImguiLayoutMixin =
         win.DC.CurrentLineHeightMax = 0;
 
         // Horizontal layout mode
-        if (win.DC.LayoutType == LayoutType.Horizontal)
+        if (win.DC.LayoutType === LayoutType.Horizontal)
             this.SameLine();
     },
 
@@ -636,11 +636,11 @@ export var ImguiLayoutMixin =
             //     This would work if user had explicit scrolling control (e.g.
             //     mapped on a stick).
             win.DC.NavLayerActiveMaskNext |= win.DC.NavLayerCurrentMask;
-            if (g.NavId == id || g.NavAnyRequest)
+            if (g.NavId === id || g.NavAnyRequest)
             {
-                if (g.NavWindow.RootWindowForNav == win.RootWindowForNav)
+                if (g.NavWindow.RootWindowForNav === win.RootWindowForNav)
                 {
-                    if (win == g.NavWindow ||
+                    if (win === g.NavWindow ||
                         ((win.Flags | g.NavWindow.Flags) & WindowFlags.NavFlattened))
                     {
                         this.navProcessItem(win, nav_bb ? nav_bb: bb, id);
@@ -675,7 +675,7 @@ export var ImguiLayoutMixin =
         let win = g.CurrentWindow;
         if (!bb.Overlaps(win.ClipRect))
         {
-            if (id == 0 || id != g.ActiveId)
+            if (id === 0 || id != g.ActiveId)
             {
                 if (clip_even_when_logged || !g.LogEnabled)
                     return true;

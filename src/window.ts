@@ -333,8 +333,8 @@ export class Window {
 
   getResizeBorderRect(border_n, perp_padding, thickness) {
     let rect = this.Rect();
-    if (thickness == 0) rect.Max.SubtractXY(1, 1);
-    if (border_n == 0)
+    if (thickness === 0) rect.Max.SubtractXY(1, 1);
+    if (border_n === 0)
       // Top
       return new Rect(
         rect.Min.x + perp_padding,
@@ -342,7 +342,7 @@ export class Window {
         rect.Max.x - perp_padding,
         rect.Min.y + thickness
       );
-    if (border_n == 1)
+    if (border_n === 1)
       // Right
       return new Rect(
         rect.Max.x - thickness,
@@ -350,7 +350,7 @@ export class Window {
         rect.Max.x + thickness,
         rect.Max.y - perp_padding
       );
-    if (border_n == 2)
+    if (border_n === 2)
       // Bottom
       return new Rect(
         rect.Min.x + perp_padding,
@@ -358,7 +358,7 @@ export class Window {
         rect.Max.x - perp_padding,
         rect.Max.y + thickness
       );
-    if (border_n == 3)
+    if (border_n === 3)
       // Left
       return new Rect(
         rect.Min.x - thickness,
@@ -371,7 +371,7 @@ export class Window {
   }
 
   SetWindowPos(pos, cond) {
-    if (cond && (this.SetWindowPosAllowFlags & cond) == 0) return;
+    if (cond && (this.SetWindowPosAllowFlags & cond) === 0) return;
 
     this.SetWindowPosAllowFlags &= ~(
       CondFlags.Once |
@@ -393,7 +393,7 @@ export class Window {
 
   SetWindowSize(size, cond) {
     // Test condition (NB: bit 0 is always true) and clear flags for next time
-    if (cond && (this.SetWindowSizeAllowFlags & cond) == 0) return;
+    if (cond && (this.SetWindowSizeAllowFlags & cond) === 0) return;
 
     this.SetWindowSizeAllowFlags &= ~(
       CondFlags.Once |
@@ -420,7 +420,7 @@ export class Window {
 
   SetWindowCollapsed(collapsed, cond) {
     // Test condition (NB: bit 0 is always true) and clear flags for next time
-    if (cond && (this.SetWindowCollapsedAllowFlags & cond) == 0) return;
+    if (cond && (this.SetWindowCollapsedAllowFlags & cond) === 0) return;
     this.SetWindowCollapsedAllowFlags &= ~(
       CondFlags.Once |
       CondFlags.FirstUseEver |
@@ -478,7 +478,7 @@ export class Window {
     }
     if (
       this.Hidden &&
-      this.HiddenFramesCannotSkipItems == 0 &&
+      this.HiddenFramesCannotSkipItems === 0 &&
       this.HiddenFramesCanSkipItems > 0
     ) {
       return this.SizeContents;
@@ -494,7 +494,7 @@ export class Window {
         ? this.SizeContentsExplicit.y
         : this.DC.CursorMaxPos.y - this.Pos.y + this.Scroll.y
     );
-    if (sz.y == 0) {
+    if (sz.y === 0) {
       // happens on first create
       // console.log("nothing here: " + this.Name);
     }
@@ -667,8 +667,8 @@ export class Window {
     let size_expected = Vec2.Subtract(pos_max, pos_min);
     let size_constrained = this.CalcSizeAfterConstraint(size_expected);
     out_pos.Copy(pos_min);
-    if (corner_norm.x == 0) out_pos.x -= size_constrained.x - size_expected.x;
-    if (corner_norm.y == 0) out_pos.y -= size_constrained.y - size_expected.y;
+    if (corner_norm.x === 0) out_pos.x -= size_constrained.x - size_expected.x;
+    if (corner_norm.y === 0) out_pos.y -= size_constrained.y - size_expected.y;
     out_size.Copy(size_constrained);
   }
 
@@ -686,7 +686,7 @@ export class Window {
     }
     // Early out to avoid running this code for e.g. an hidden
     // implicit/fallback Debug window.
-    if (this.WasActive == false) return;
+    if (this.WasActive === false) return;
 
     const resize_border_count = g.IO.ConfigWindowsResizeFromEdges ? 4 : 0;
     const grip_draw_size = Math.floor(
@@ -747,7 +747,7 @@ export class Window {
           resize_grip_n & 1 ? MouseCursor.ResizeNESW : MouseCursor.ResizeNWSE;
       }
 
-      if (held.get() && g.IO.MouseDoubleClicked[0] && resize_grip_n == 0) {
+      if (held.get() && g.IO.MouseDoubleClicked[0] && resize_grip_n === 0) {
         // Manual auto-fit when double-clicking
         size_target = this.CalcSizeAfterConstraint(autofit);
         imgui.clearActiveID();
@@ -770,7 +770,7 @@ export class Window {
           size_target /*output*/
         );
       }
-      if (resize_grip_n == 0 || held.get() || hovered.get()) {
+      if (resize_grip_n === 0 || held.get() || hovered.get()) {
         let col = g.Style.GetColor(
           held.get()
             ? "ResizeGripActive"
@@ -805,25 +805,25 @@ export class Window {
       if (held.get()) {
         let border_target = this.Pos.Clone();
         let border_posn = new Vec2();
-        if (border_n == 0) {
+        if (border_n === 0) {
           // Top
           border_posn = Vec2.Zero();
           border_target.y =
             g.IO.MousePos.y - g.ActiveIdClickOffset.y + WindowResizeFromEdge;
         }
-        if (border_n == 1) {
+        if (border_n === 1) {
           // Right
           border_posn = new Vec2(1, 0);
           border_target.x =
             g.IO.MousePos.x - g.ActiveIdClickOffset.x + WindowResizeFromEdge;
         }
-        if (border_n == 2) {
+        if (border_n === 2) {
           // Bottom
           border_posn = new Vec2(0, 1);
           border_target.y =
             g.IO.MousePos.y - g.ActiveIdClickOffset.y + WindowResizeFromEdge;
         }
-        if (border_n == 3) {
+        if (border_n === 3) {
           // Left
           border_posn = Vec2.Zero();
           border_target.x =
@@ -840,14 +840,14 @@ export class Window {
     imgui.PopID();
 
     // Navigation resize (keyboard/gamepad)
-    if (g.NavWindowingTarget && g.NavWindowingTarget.RootWindow == this) {
+    if (g.NavWindowingTarget && g.NavWindowingTarget.RootWindow === this) {
       let nav_resize_delta; // Vec2
-      if (g.NavInputSource == InputSource.NavKeyboard && g.IO.KeyShift)
+      if (g.NavInputSource === InputSource.NavKeyboard && g.IO.KeyShift)
         nav_resize_delta = imgui.getNavInputAmount2d(
           NavDirSourceFlags.Keyboard,
           InputReadMode.Down
         );
-      if (g.NavInputSource == InputSource.NavGamepad)
+      if (g.NavInputSource === InputSource.NavGamepad)
         nav_resize_delta = imgui.getNavInputAmount2d(
           NavDirSourceFlags.PadDPad,
           InputReadMode.Down
@@ -971,7 +971,7 @@ export class Window {
       resize_grip_n++
     ) {
       let col = resize_grip_col[resize_grip_n];
-      if (col == null) continue;
+      if (col === null) continue;
       const grip = ResizeGripDefs[resize_grip_n];
       const corner = Vec2.Lerp(
         this.Pos,
@@ -1111,13 +1111,13 @@ export class WindowTempData {
     // memory locality (reduce cache misses). The vectors are rarely
     // modified. Also it allows us to not heap allocate for short-lived
     // windows which are not using those settings.
-    // == ItemFlagsStack.back() [empty == ItemFlags_Default]
+    // === ItemFlagsStack.back() [empty === ItemFlags_Default]
     DC.ItemFlags = ItemFlags.Default;
-    // == ItemWidthStack.back(). 0.0: default, >0.0: width in pixels,
+    // === ItemWidthStack.back(). 0.0: default, >0.0: width in pixels,
     // <0.0: align xx pixels to the right of window
     DC.ItemWidth = 0;
-    DC.NextItemWidth = Number.MAX_VALUE; // == ItemWidthStack.back()
-    DC.TextWrapPos = -1; // == TextWrapPosStack.back() [empty == -1.0f]
+    DC.NextItemWidth = Number.MAX_VALUE; // === ItemWidthStack.back()
+    DC.TextWrapPos = -1; // === TextWrapPosStack.back() [empty === -1.0f]
     DC.ItemFlagsStack = new ArrayEx();
     DC.ItemWidthStack = new ArrayEx();
     DC.TextWrapPosStack = new ArrayEx();

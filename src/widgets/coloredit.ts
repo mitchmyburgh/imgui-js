@@ -115,7 +115,7 @@ export var ImguiColorEditMixin =
                                          ColorEditFlags.PickerMask |
                                          ColorEditFlags.InputMask));
 
-        const alpha = (flags & ColorEditFlags.NoAlpha) == 0;
+        const alpha = (flags & ColorEditFlags.NoAlpha) === 0;
         const hdr = (flags & ColorEditFlags.HDR) != 0;
         const components = alpha ? 4 : 3;
 
@@ -138,7 +138,7 @@ export var ImguiColorEditMixin =
         let value_changed_as_float = false;
 
         if ((flags & (ColorEditFlags.DisplayRGB | ColorEditFlags.DisplayHSV)) != 0
-            && (flags & ColorEditFlags.NoInputs) == 0)
+            && (flags & ColorEditFlags.NoInputs) === 0)
         {
             // RGB/HSV 0..255 Sliders
             const w_item_one  = Math.max(1, Math.floor((w_items_all - (style.ItemInnerSpacing.x)*(components-1))/components));
@@ -164,7 +164,7 @@ export var ImguiColorEditMixin =
             {
                 if (n > 0)
                     this.SameLine(0, style.ItemInnerSpacing.x);
-                if (n + 1 == components)
+                if (n + 1 === components)
                     this.PushItemWidth(w_item_last);
                 if (flags & ColorEditFlags.Float)
                 {
@@ -191,7 +191,7 @@ export var ImguiColorEditMixin =
         }
         else
         if ((flags & ColorEditFlags.DisplayHex) != 0 &&
-            (flags & ColorEditFlags.NoInputs) == 0)
+            (flags & ColorEditFlags.NoInputs) === 0)
         {
             // RGB Hexadecimal Input
             let buf = cedit.AsHashStr(!alpha);
@@ -269,7 +269,7 @@ export var ImguiColorEditMixin =
         }
 
         // Convert back
-        if (value_changed && picker_active_window == null)
+        if (value_changed && picker_active_window === null)
         {
             if (!value_changed_as_float)
             {
@@ -335,7 +335,7 @@ export var ImguiColorEditMixin =
         // When picker is being actively used, use its active id so IsItemActive()
         // will function on ColorEdit4().
         if (picker_active_window && g.ActiveId != 0 &&
-            g.ActiveIdWindow == picker_active_window)
+            g.ActiveIdWindow === picker_active_window)
         {
             win.DC.LastItemId = g.ActiveId;
         }
@@ -361,9 +361,9 @@ export var ImguiColorEditMixin =
         const style = g.Style;
         const id = win.GetID(desc_id);
         let default_size = this.GetFrameHeight();
-        if (size.x == 0)
+        if (size.x === 0)
             size.x = default_size;
-        if (size.y == 0)
+        if (size.y === 0)
             size.y = default_size;
         const bb = new Rect(win.DC.CursorPos,
                             Vec2.Add(win.DC.CursorPos, size));
@@ -423,7 +423,7 @@ export var ImguiColorEditMixin =
         // Drag and Drop Source
         // NB: The ActiveId test is merely an optional micro-optimization,
         // BeginDragDropSource() does the same test.
-        if (g.ActiveId == id && !(flags & ColorEditFlags.NoDragDrop) &&
+        if (g.ActiveId === id && !(flags & ColorEditFlags.NoDragDrop) &&
             this.BeginDragDropSource())
         {
             if (flags & ColorEditFlags.NoAlpha)

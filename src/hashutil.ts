@@ -5,12 +5,12 @@ export function GetHash(val, seed = 0) {
   var hash = seed,
     i,
     chr;
-  if (typeof val == "number") {
+  if (typeof val === "number") {
     if (seed) return hash + val;
     else val = "" + val; // convert to string
   }
 
-  if (typeof val == "string") {
+  if (typeof val === "string") {
     if (val.length === 0) return hash + 23;
     let vals = val.split("##");
     val = vals[vals.length - 1];
@@ -38,5 +38,5 @@ export function HashData(data, seed) {
 }
 
 export function IsPowerOfTwo(num) {
-  return num != 0 && (num & (num - 1)) == 0;
+  return num != 0 && (num & (num - 1)) === 0;
 }

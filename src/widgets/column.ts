@@ -69,7 +69,7 @@ export var ImguiColumnMixin =
         let flags = (border ? 0 : ColumnsFlags.NoBorder);
         //flags |= ImGuiColumnsFlags_NoPreserveWidths; // NB: Legacy behavior
         let columns = win.DC.CurrentColumns;
-        if (columns != null && columns.count == count && columns.Flags == flags)
+        if (columns != null && columns.count === count && columns.Flags === flags)
             return;
 
         if (columns != null)
@@ -84,15 +84,15 @@ export var ImguiColumnMixin =
     NextColumn()
     {
         let win = this.getCurrentWindow();
-        if (win.SkipItems || win.DC.CurrentColumns == null)
+        if (win.SkipItems || win.DC.CurrentColumns === null)
             return;
 
         let g = this.guictx;
         let columns = win.DC.CurrentColumns;
-        if (columns.Count == 1)
+        if (columns.Count === 1)
         {
             win.DC.CursorPos.x = Math.floor(win.Pos.x + win.DC.Indent.x + win.DC.ColumnsOffset.x);
-            console.assert(columns.Current == 0);
+            console.assert(columns.Current === 0);
             return;
         }
 
@@ -157,7 +157,7 @@ export var ImguiColumnMixin =
         let g = this.guictx;
         let win = g.CurrentWindow;
         console.assert(column_index > 0); // We are not supposed to drag column 0.
-        console.assert(g.ActiveId == columns.ID + column_index);
+        console.assert(g.ActiveId === columns.ID + column_index);
 
         let x = g.IO.MousePos.x - g.ActiveIdClickOffset.x
                     + ColumnsHitRectHalfWidth - win.Pos.x;
@@ -267,7 +267,7 @@ export var ImguiColumnMixin =
         // much with turning this into a faster lookup.
         for (let n = 0; n < win.ColumnsStorage.length; n++)
         {
-            if (win.ColumnsStorage[n].ID == id)
+            if (win.ColumnsStorage[n].ID === id)
                 return win.ColumnsStorage[n];
         }
         win.ColumnsStorage.push(new Columns());
@@ -296,13 +296,13 @@ export var ImguiColumnMixin =
 
         console.assert(columns_count >= 1);
         // Nested columns are currently not supported
-        console.assert(win.DC.CurrentColumns == null);
+        console.assert(win.DC.CurrentColumns === null);
 
         let id = this.getColumnsID(str_id, columns_count);
 
         // Acquire storage for the columns set
         let columns = this.findOrCreateColumns(win, id);
-        console.assert(columns.ID == id);
+        console.assert(columns.ID === id);
         columns.Current = 0;
         columns.Count = columns_count;
         columns.Flags = flags;
@@ -324,8 +324,8 @@ export var ImguiColumnMixin =
             columns.Columns.resize(0);
 
         // Initialize defaults
-        columns.IsFirstFrame = (columns.Columns.length == 0);
-        if (columns.Columns.length == 0)
+        columns.IsFirstFrame = (columns.Columns.length === 0);
+        if (columns.Columns.length === 0)
         {
             columns.Columns.length = columns_count+1; // reserve
             for (let n = 0; n < columns.Columns.length; n++)

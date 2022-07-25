@@ -49,7 +49,7 @@ export class FontMetrics {
     // These values are measured relative to the top, (ie: all positive)
     // More commonly, fonts are measured relative to baseline. Now the
     // question is should y go up or down.
-    if (chars == null)
+    if (chars === null)
       return {
         fontFamily: this.fontFamily,
         fontSize: this.fontSize,

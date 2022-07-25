@@ -102,9 +102,9 @@ export var ImguiComboMixin =
                             label);
         }
 
-        if ((pressed || g.NavActivateId == id) && !popup_open)
+        if ((pressed || g.NavActivateId === id) && !popup_open)
         {
-            if (win.DC.NavLayerCurrent == 0)
+            if (win.DC.NavLayerCurrent === 0)
                 win.NavLastIds[0] = id;
             this.openPopupEx(id);
             popup_open = true;
@@ -122,7 +122,7 @@ export var ImguiComboMixin =
         }
         else
         {
-            if ((flags & ComboFlags.HeightMask_) == 0)
+            if ((flags & ComboFlags.HeightMask_) === 0)
                 flags |= ComboFlags.HeightRegular;
             console.assert(IsPowerOfTwo(flags & ComboFlags.HeightMask_)); // Only one
             let popup_max_height_in_items = -1;
@@ -186,12 +186,12 @@ export var ImguiComboMixin =
     Combo(label, current_item, items, maxItems=-1, onChange)
     {
         let g = this.guictx;
-        if(typeof(maxItems) == "function" && onChange==undefined)
+        if(typeof(maxItems) === "function" && onChange===undefined)
         {
             onChange = maxItems;
             maxItems = -1;
         }
-        console.assert(typeof(maxItems)=="number");
+        console.assert(typeof(maxItems)==="number");
         let getter = function(i) {
             return items[i];
         };
@@ -204,7 +204,7 @@ export var ImguiComboMixin =
     {
         let g = this.guictx;
         let item = current_item < 0 ? null : getter(current_item);
-        console.assert(typeof(maxItems)=="number");
+        console.assert(typeof(maxItems)==="number");
 
         // This old Combo() API exposed "popup_max_height_in_items". The new
         // more general BeginCombo() API doesn't have/need it, but we emulate it here.
@@ -221,9 +221,9 @@ export var ImguiComboMixin =
         {
             let iitem = getter(i);
             this.PushID(i);
-            const item_selected = (i == current_item);
+            const item_selected = (i === current_item);
             let item_text;
-            if (iitem == null || iitem == undefined)
+            if (iitem === null || iitem === undefined)
                 item_text = "*Unknown item*";
             else
                 item_text = iitem.toString();

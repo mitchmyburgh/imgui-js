@@ -48,8 +48,8 @@ export function FormatValues(format, args) {
     let arg = args[i++];
     switch (match) {
       case "%d":
-        if (typeof arg == "boolean") return arg ? "1" : "0";
-        else if (typeof arg == "number") return arg.toFixed();
+        if (typeof arg === "boolean") return arg ? "1" : "0";
+        else if (typeof arg === "number") return arg.toFixed();
         else return arg.toString();
       case "%f":
       case "%g":
@@ -59,19 +59,19 @@ export function FormatValues(format, args) {
       case "%s":
         return arg;
       default:
-        if (match[2] == "d") {
+        if (match[2] === "d") {
           // %5d
           let p = Number(match[1]);
           return ("     " + arg.toString()).slice(-p);
-        } else if (match[1] == ".") {
+        } else if (match[1] === ".") {
           // %.3f/g
           let p = format[capture + 2]; // expect 0-9 (char)
           return arg.toFixed(p);
         } // %5.3f
-        else if (match[2] == ".") {
+        else if (match[2] === ".") {
           let w = match[1]; // expect 0-9 (char)
           let p = match[3]; // expect 0-9 (char)
-          if (w == 0) w = 10;
+          if (w === 0) w = 10;
           return ("          " + arg.toFixed(p)).slice(-w);
         } else return match;
     }
@@ -92,7 +92,7 @@ export function FormatValue(v, format, precision = 0) {
           break;
         case "d": // %d, %03d %3d
           {
-            digits = j == i + 1 ? 0 : Number(format[j - 1]);
+            digits = j === i + 1 ? 0 : Number(format[j - 1]);
             precision = 0;
           }
           break;
@@ -112,7 +112,7 @@ export function FormatValue(v, format, precision = 0) {
 }
 
 export function DataTypeFormatString(val, data_type, format) {
-  if (format == null) format = GDataTypeInfo[data_type][1]; // default format
+  if (format === null) format = GDataTypeInfo[data_type][1]; // default format
   return FormatValue(val, format);
 }
 
@@ -132,9 +132,9 @@ function subClampOverflow(v1, v2, minmax) {
 
 // output is returned
 export function DataTypeApplyOp(data_type, op, arg1, arg2) {
-  console.assert((op == "+") | (op == "-"));
+  console.assert((op === "+") | (op === "-"));
   let minmax = GDataTypeInfo[data_type][2];
-  if (op == "+") return addClampOverflow(arg1, arg2, minmax);
+  if (op === "+") return addClampOverflow(arg1, arg2, minmax);
   else return subClampOverflow(arg1, arg2, minmax);
 }
 
@@ -184,7 +184,7 @@ export function GetMinStepAtFloatPrecision(precision) {
 }
 
 export function RoundScalarToPrecision(val, precision) {
-  if (precision == 0) return Math.round(val);
+  if (precision === 0) return Math.round(val);
   else {
     let scale = Math.pow(10, precision);
     let nv = Math.round(scale * val) / scale;

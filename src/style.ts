@@ -294,7 +294,7 @@ export class Style extends SettingsHandler {
     // the first widget. So don't grow this too much!
     this.IndentSpacing = 21;
     // Horizontal spacing when e.g. entering a tree node.
-    // Generally == (FontSize + FramePadding.x*2).
+    // Generally === (FontSize + FramePadding.x*2).
     this.ColumnsMinSpacing = 6;
     // Minimum horizontal spacing between two columns
     this.ScrollbarSize = 16;
@@ -465,8 +465,8 @@ export class Style extends SettingsHandler {
   Encapsulate(imgui) {
     let o = {};
     for (let k of Object.getOwnPropertyNames(this)) {
-      if (k[0] == "_") continue; // font atlas, icons, _defaults
-      if (k == "Colors") {
+      if (k[0] === "_") continue; // font atlas, icons, _defaults
+      if (k === "Colors") {
         o.Colors = {};
         for (let cnm in this.Colors)
           o.Colors[cnm] = this.Colors[cnm].Encapsulate();
@@ -481,17 +481,17 @@ export class Style extends SettingsHandler {
     let knownProps = Object.getOwnPropertyNames(this); // a list
     for (let k in o) {
       if (deprecatedProps.indexOf(k) != -1) continue;
-      if (knownProps.indexOf(k) == -1)
+      if (knownProps.indexOf(k) === -1)
         console.debug("Style unknown field: " + k);
-      else if (k == "Colors") {
+      else if (k === "Colors") {
         let colors = o[k];
         for (let cnm in colors)
           this.Colors[cnm] = Color.Instantiate(colors[cnm]);
-      } else if (k == "Fonts") {
+      } else if (k === "Fonts") {
         this.Fonts = Object.assign(this._DefaultFonts, o[k]);
-      } else if (k == "FontSizes") {
+      } else if (k === "FontSizes") {
         this.FontSizes = Object.assign(this._DefaultFontSizes, o[k]);
-      } else if (typeof o[k] == "object" && this[k]) {
+      } else if (typeof o[k] === "object" && this[k]) {
         if (this[k].Copy)
           this[k].Copy(o[k]); // copy Vec2, otherwise no prototype
         else this[k] = o[k]; // Fonts, FontSizes should be okay here
@@ -522,7 +522,7 @@ export class Style extends SettingsHandler {
     let nm = fdesc[0];
     let sz = fdesc[1];
     let weight = fdesc[2];
-    if (typeof sz == "string") sz = this.FontSizes[sz];
+    if (typeof sz === "string") sz = this.FontSizes[sz];
     return this._fontAtlas.GetFont(nm, sz, weight); // also accepts style
   }
 
@@ -547,11 +547,11 @@ export class Style extends SettingsHandler {
 
   GetColor(field) {
     let c = this.Colors[field];
-    if (c == undefined) {
+    if (c === undefined) {
       console.warn("unknown style color " + field);
       c = this.Colors._DEBUG0;
     }
-    if (this.Alpha == 1) return c;
+    if (this.Alpha === 1) return c;
     else {
       c = c.Clone();
       c.a = this.Alpha;
@@ -1528,7 +1528,7 @@ zoom_out_map e56b
     .forEach((v) => {
       if (v != "") {
         let fields = v.split(" ");
-        if (fields.length == 2) {
+        if (fields.length === 2) {
           let num = Number("0x" + fields[1]);
           iconTable[fields[0]] = String.fromCharCode(num);
         }

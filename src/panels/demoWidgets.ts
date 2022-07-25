@@ -77,13 +77,13 @@ export class DemoWidgets
             if(imgui.Checkbox("checkbox", this.check))
                 this.check = !this.check;
 
-            if(imgui.RadioButton("radio a", this.e==0))
+            if(imgui.RadioButton("radio a", this.e===0))
                 this.e = 0;
             imgui.SameLine();
-            if(imgui.RadioButton("radio b", this.e==1))
+            if(imgui.RadioButton("radio b", this.e===1))
                 this.e = 1;
             imgui.SameLine();
-            if(imgui.RadioButton("radio c", this.e==2))
+            if(imgui.RadioButton("radio c", this.e===2))
                 this.e = 2;
 
             // Color buttons, demonstrate using PushID() to add unique
@@ -294,7 +294,7 @@ export class DemoWidgets
 
         if (imgui.TreeNode("Collapsing Headers"))
         {
-            if(this.closable_group == undefined)
+            if(this.closable_group === undefined)
                 this.closable_group = new ValRef(true);
             if(imgui.Checkbox("Show 2nd header", this.closable_group.get()))
                 this.closable_group.toggle();
@@ -340,7 +340,7 @@ export class DemoWidgets
                 imgui.TextWrapped("This text should automatically wrap on the edge of the window. The current implementation for text wrapping follows simple rules suitable for English and possibly other languages.");
                 imgui.Spacing();
 
-                if(this.wrap_width == undefined)
+                if(this.wrap_width === undefined)
                     this.wrap_width = 200.0;
                 imgui.SliderFloat("Wrap width", this.wrap_width, -20, 600, "%d", 1,
                                 (newval) => this.wrap_width = newval);
@@ -429,7 +429,7 @@ export class DemoWidgets
             }
 
             imgui.TextWrapped("And now some textured buttons..");
-            if(this.imgPressCount == undefined)
+            if(this.imgPressCount === undefined)
                 this.imgPressCount = 0;
             let bsize = new Vec2(64,32);
             for (let i = 0; i < 8; i++)
@@ -450,7 +450,7 @@ export class DemoWidgets
         if (imgui.TreeNode("Combo"))
         {
             // Expose flags as checkbox for the demo
-            if(this.comboflags == undefined)
+            if(this.comboflags === undefined)
                 this.comboflags = 0;
             imgui.CheckboxFlags("ComboFlags.PopupAlignLeft",
                     this.comboflags, ComboFlags.PopupAlignLeft,
@@ -478,13 +478,13 @@ export class DemoWidgets
             // a flag stored in the object itself, etc.)
 
             // The second parameter is the label previewed before opening the combo.
-            if(this.item_current_1 == undefined)
+            if(this.item_current_1 === undefined)
                 this.item_current_1 = "";
             if (imgui.BeginCombo("combo 1", this.item_current_1, this.comboflags))
             {
                 for (let n = 0; n < this.items.length; n++)
                 {
-                    let is_selected = (this.item_current_1 == this.items[n]);
+                    let is_selected = (this.item_current_1 === this.items[n]);
                     if (imgui.Selectable(this.items[n], is_selected))
                         this.item_current_1 = this.items[n];
                     if (is_selected)
@@ -495,14 +495,14 @@ export class DemoWidgets
 
             // Simplified one-liner Combo() API, using values packed in a
             // single constant string
-            if(this.item_current_2 == undefined)
+            if(this.item_current_2 === undefined)
                 this.item_current_2 = 0;
             imgui.Combo("combo 2 (one-liner)", this.item_current_2,
                 ["aaaa", "bbbb", "cccc", "dddd", "eeee"], -1,
                 (newval) => this.item_current_2 = newval);
 
             // Simplified one-liner Combo() using an array of const char*
-            if(this.item_current_3 == undefined)
+            if(this.item_current_3 === undefined)
             {
                 // If the selection isn't within 0..count, Combo won't display a preview
                 this.item_current_3 = -1;
@@ -511,7 +511,7 @@ export class DemoWidgets
                 (newval) => this.item_current_3 = newval);
 
             // Simplified one-liner Combo() using an accessor function
-            if(this.item_current_4 == undefined)
+            if(this.item_current_4 === undefined)
                 this.item_current_4 = 0;
             let getter = function(i) { return this.items[i]; }.bind(this);
             imgui.ComboCB("combo 4 (function)", this.item_current_4, getter,
@@ -522,7 +522,7 @@ export class DemoWidgets
 
         if (imgui.TreeNode("Selectables"))
         {
-            if(this.S_selection == undefined)
+            if(this.S_selection === undefined)
             {
                 this.S_selection = [false, true, false, false, false];
                 this.S_selected = -1;
@@ -560,7 +560,7 @@ export class DemoWidgets
             {
                 for (let n = 0; n < 5; n++)
                 {
-                    if (imgui.Selectable("Object "+n, this.S_selected == n))
+                    if (imgui.Selectable("Object "+n, this.S_selected === n))
                         this.S_selected = n;
                 }
                 imgui.TreePop();
@@ -660,7 +660,7 @@ export class DemoWidgets
             {
                 // Note: we are using a fixed-sized buffer for simplicity here. See InputTextFlags.CallbackResize
                 // and the code in misc/cpp/imgui_stdlib.h for how to setup InputText() for dynamically resizing strings.
-                if(this.T_text == undefined)
+                if(this.T_text === undefined)
                 {
                     this.T_text = new MutableString(
                     "**\n"+
@@ -740,11 +740,11 @@ export class DemoWidgets
                 {
                     static int MyResizeCallback(ImGuiInputTextCallbackData* data)
                     {
-                        if (data->EventFlag == InputTextFlags.CallbackResize)
+                        if (data->EventFlag === InputTextFlags.CallbackResize)
                         {
                             ImVector<char>* my_str = (ImVector<char>*)data->UserData;
-                            IM_ASSERT(my_str->begin() == data->Buf);
-                            my_str->resize(data->BufSize);  // NB: On resizing calls, generally data->BufSize == data->BufTextLen + 1
+                            IM_ASSERT(my_str->begin() === data->Buf);
+                            my_str->resize(data->BufSize);  // NB: On resizing calls, generally data->BufSize === data->BufTextLen + 1
                             data->Buf = my_str->begin();
                         }
                         return 0;
@@ -754,7 +754,7 @@ export class DemoWidgets
                     // For example, you may add a function called imgui.InputText(const char* label, MyString* my_str).
                     static bool MyInputTextMultiline(const char* label, ImVector<char>* my_str, const ImVec2& size = ImVec2(0, 0), ImGuiInputTextFlags flags = 0)
                     {
-                        IM_ASSERT((flags & InputTextFlags.CallbackResize) == 0);
+                        IM_ASSERT((flags & InputTextFlags.CallbackResize) === 0);
                         return imgui.InputTextMultiline(label, my_str->begin(), (size_t)my_str->size(), size, flags | InputTextFlags.CallbackResize, Funcs::MyResizeCallback, (void*)my_str);
                     }
                 };
@@ -782,9 +782,9 @@ export class DemoWidgets
             // Tip: If your float aren't contiguous but part of a structure,
             // you can pass a pointer to your first float and the sizeof() of
             // your structure in the Stride parameter.
-            if(this.plot_values == undefined || this.plot_refresh_time < imgui.GetTime())
+            if(this.plot_values === undefined || this.plot_refresh_time < imgui.GetTime())
             {
-                if(this.plot_values == undefined)
+                if(this.plot_values === undefined)
                 {
                     this.plot_values = [];
                     this.plot_values.length = 90;
@@ -793,7 +793,7 @@ export class DemoWidgets
                     this.plot_refresh_time = 0;
                     this.plot_phase = 0;
                 }
-                if (!this.plot_animate || this.plot_refresh_time == 0.0)
+                if (!this.plot_animate || this.plot_refresh_time === 0.0)
                     this.plot_refresh_time = imgui.GetTime();
                 // Create dummy data at fixed 60 hz rate for the demo
                 while (this.plot_refresh_time < imgui.GetTime())
@@ -813,7 +813,7 @@ export class DemoWidgets
             // FIXME: This is rather awkward because current plot API only
             // pass in indices. We probably want an API passing floats and
             // user provide sample rate/count.
-            if(this.plot_func_type == undefined)
+            if(this.plot_func_type === undefined)
             {
                 this.plot_func_type = 0;
                 this.plot_display_count = 70;
@@ -837,7 +837,7 @@ export class DemoWidgets
             imgui.Separator();
 
             // Animate a simple progress bar
-            if(this.plot_progress == undefined)
+            if(this.plot_progress === undefined)
             {
                 this.plot_progress = 0.0;
                 this.plot_progress_dir = 1.0;
@@ -871,7 +871,7 @@ export class DemoWidgets
 
         if (imgui.TreeNode("Color/Picker Widgets"))
         {
-            if(this.CP_color == undefined)
+            if(this.CP_color === undefined)
             {
                 this.CP_color = Color.rgba(114.0/255.0, 144.0/255.0, 154.0/255.0, 200.0/255.0);
                 this.CP_alpha_preview = true;
@@ -921,7 +921,7 @@ export class DemoWidgets
             imgui.Text("Color button with Custom Picker Popup:");
 
             // Generate a dummy default palette. The palette will persist and can be edited.
-            if(this.CP_saved_palette == undefined)
+            if(this.CP_saved_palette === undefined)
             {
                 this.CP_saved_palette = [];
                 this.CP_saved_palette.length = 32;
@@ -1001,7 +1001,7 @@ export class DemoWidgets
                               new Vec2(80,80));
 
             imgui.Text("Color picker:");
-            if(this.CP_alpha == undefined)
+            if(this.CP_alpha === undefined)
             {
                 this.CP_alpha = true;
                 this.CP_alpha_bar = true;
@@ -1044,12 +1044,12 @@ export class DemoWidgets
             if (!this.CP_alpha)            flags |= ColorEditFlags.NoAlpha;
             if (this.CP_alpha_bar)         flags |= ColorEditFlags.AlphaBar;
             if (!this.CP_side_preview)     flags |= ColorEditFlags.NoSidePreview;
-            if (this.CP_picker_mode == 1)  flags |= ColorEditFlags.PickerHueBar;
-            if (this.CP_picker_mode == 2)  flags |= ColorEditFlags.PickerHueWheel;
-            if (this.CP_display_mode == 1) flags |= ColorEditFlags.NoInputs;       // Disable all RGB/HSV/Hex displays
-            if (this.CP_display_mode == 2) flags |= ColorEditFlags.DisplayRGB;     // Override display mode
-            if (this.CP_display_mode == 3) flags |= ColorEditFlags.DisplayHSV;
-            if (this.CP_display_mode == 4) flags |= ColorEditFlags.DisplayHex;
+            if (this.CP_picker_mode === 1)  flags |= ColorEditFlags.PickerHueBar;
+            if (this.CP_picker_mode === 2)  flags |= ColorEditFlags.PickerHueWheel;
+            if (this.CP_display_mode === 1) flags |= ColorEditFlags.NoInputs;       // Disable all RGB/HSV/Hex displays
+            if (this.CP_display_mode === 2) flags |= ColorEditFlags.DisplayRGB;     // Override display mode
+            if (this.CP_display_mode === 3) flags |= ColorEditFlags.DisplayHSV;
+            if (this.CP_display_mode === 4) flags |= ColorEditFlags.DisplayHex;
             imgui.ColorPicker4("MyColor##4", this.CP_color, flags,
                         this.CP_ref_color ? this.CP_ref_color_v : null);
 
@@ -1061,8 +1061,8 @@ export class DemoWidgets
             if (imgui.Button("Default: Float + HDR + Hue Wheel"))
                 imgui.SetColorEditOptions(ColorEditFlags.Float | ColorEditFlags.HDR | ColorEditFlags.PickerHueWheel);
 
-            // HSV encoded support (to avoid RGB<>HSV round trips and singularities when S==0 or V==0)
-            if(this.CP_color_stored_as_hsv == undefined)
+            // HSV encoded support (to avoid RGB<>HSV round trips and singularities when S===0 or V===0)
+            if(this.CP_color_stored_as_hsv === undefined)
             {
                 this.CP_color_stored_as_hsv = Color.rgba(0.23, 1.0, 1.0, 1.0);
             }
@@ -1081,7 +1081,7 @@ export class DemoWidgets
 
         if (imgui.TreeNode("Range Widgets"))
         {
-            if(this.RW_begin == undefined)
+            if(this.RW_begin === undefined)
             {
                 this.RW_begin = 10;
                 this.RW_end = 90;
@@ -1108,7 +1108,7 @@ export class DemoWidgets
 
         if (imgui.TreeNode("Multi-component Widgets"))
         {
-            if(this.MC_vec4 == undefined)
+            if(this.MC_vec4 === undefined)
             {
                 this.MC_vec4 = [ 0.10, 0.20, 0.30, 0.44 ];
                 this.MC_vec4i = [ 1, 5, 100, 255 ];
@@ -1141,7 +1141,7 @@ export class DemoWidgets
 
         if (imgui.TreeNode("Vertical Sliders"))
         {
-            if(this.VS_spacing == undefined)
+            if(this.VS_spacing === undefined)
             {
                 this.VS_spacing = 4;
                 this.VS_int_value = 0;
@@ -1210,7 +1210,7 @@ export class DemoWidgets
 
         if (imgui.TreeNode("Drag and Drop"))
         {
-            if(this.DD_col1 == undefined)
+            if(this.DD_col1 === undefined)
             {
                 this.DD_col1 = Color.rgb(1.0,0.0,0.2);
                 this.DD_col2 = Color.rgba(0.4,0.7,0.0,0.5);
@@ -1231,17 +1231,17 @@ export class DemoWidgets
 
             imgui.BulletText("Drag and drop to copy/swap items");
             imgui.Indent();
-            if (imgui.RadioButton("Copy", this.DD_mode == "copy"))
+            if (imgui.RadioButton("Copy", this.DD_mode === "copy"))
             {
                 this.DD_mode = "copy";
             }
             imgui.SameLine();
-            if (imgui.RadioButton("Move", this.DD_mode == "move"))
+            if (imgui.RadioButton("Move", this.DD_mode === "move"))
             {
                 this.DD_mode = "move";
             }
             imgui.SameLine();
-            if (imgui.RadioButton("Swap", this.DD_mode == "swap"))
+            if (imgui.RadioButton("Swap", this.DD_mode === "swap"))
             {
                 this.DD_mode = "swap";
             }
@@ -1299,7 +1299,7 @@ export class DemoWidgets
         {
             // Display the value of IsItemHovered() and other common item state functions. Note that the flags can be combined.
             // (because BulletText is an item itself and that would affect the output of IsItemHovered() we pass all state in a single call to simplify the code).
-            if(this.Q_item_type == undefined)
+            if(this.Q_item_type === undefined)
             {
                 this.Q_item_type = 1;
                 this.Q_b = false;
@@ -1309,23 +1309,23 @@ export class DemoWidgets
                 this.Q_embed = false;
                 this.Q_testwin = new ValRef(false);
             }
-            if(imgui.RadioButton("Text ", this.Q_item_type==0))
+            if(imgui.RadioButton("Text ", this.Q_item_type===0))
                 this.Q_item_type = 0;
-            if(imgui.RadioButton("Button", this.Q_item_type==1))
+            if(imgui.RadioButton("Button", this.Q_item_type===1))
                 this.Q_item_type = 1;
-            if(imgui.RadioButton("Checkbox", this.Q_item_type==2))
+            if(imgui.RadioButton("Checkbox", this.Q_item_type===2))
                 this.Q_item_type = 2;
-            if(imgui.RadioButton("SliderFloat", this.Q_item_type==3))
+            if(imgui.RadioButton("SliderFloat", this.Q_item_type===3))
                 this.Q_item_type = 3;
-            if(imgui.RadioButton("InputText", this.Q_item_type==4))
+            if(imgui.RadioButton("InputText", this.Q_item_type===4))
                 this.Q_item_type = 4;
-            if(imgui.RadioButton("ColorEdit4", this.Q_item_type==5))
+            if(imgui.RadioButton("ColorEdit4", this.Q_item_type===5))
                 this.Q_item_type = 5;
-            if(imgui.RadioButton("MenuItem", this.Q_item_type==6))
+            if(imgui.RadioButton("MenuItem", this.Q_item_type===6))
                 this.Q_item_type = 6;
-            if(imgui.RadioButton("TreeNode (w/ double-click)", this.Q_item_type==7))
+            if(imgui.RadioButton("TreeNode (w/ double-click)", this.Q_item_type===7))
                 this.Q_item_type = 7;
-            if(imgui.RadioButton("ListBox", this.Q_item_type==8))
+            if(imgui.RadioButton("ListBox", this.Q_item_type===8))
                 this.Q_item_type = 8;
             imgui.Separator();
             let ret = false;
@@ -1465,8 +1465,8 @@ export class DemoWidgets
                     imgui.EndPopup();
                 }
                 imgui.Text(
-                    "IsItemHovered() after begin = %d (== is title bar hovered)\n"+
-                    "IsItemActive() after begin = %d (== is window being clicked/moved)\n",
+                    "IsItemHovered() after begin = %d (=== is title bar hovered)\n"+
+                    "IsItemActive() after begin = %d (=== is window being clicked/moved)\n",
                     imgui.IsItemHovered(), imgui.IsItemActive());
                 imgui.End();
             }

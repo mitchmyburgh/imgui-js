@@ -355,7 +355,7 @@ export class IO {
     // next frame. Set only when ImGuiConfigFlagsNavEnableSetMousePos
     // flag is enabled.
     this.WantSetMousePos = false;
-    // When manual .ini load/save is active (io.IniFilename == NULL),
+    // When manual .ini load/save is active (io.IniFilename === NULL),
     // this will be set to notify your application that you can call
     // SaveIniSettingsToMemory() and save yourself. IMPORTANT: You need
     // to clear io.WantSaveIniSettings yourself.
@@ -390,7 +390,7 @@ export class IO {
     // position are invalid (-FLTMAX,-FLTMAX), so a disappearing/reappearing
     // mouse won't have a huge delta.
     this.MouseDelta = new Vec2(0, 0);
-    // Previous mouse position (note that MouseDelta is not necessary ==
+    // Previous mouse position (note that MouseDelta is not necessary ===
     // MousePos-MousePosPrev, in case either position is invalid)
     this.MousePosPrev = new Vec2(0, 0);
     // Position at time of clicking
@@ -407,7 +407,7 @@ export class IO {
     // Track if button was clicked inside a window. We don't request
     // mouse capture from the application if click started outside ImGui bounds.
     this.MouseDownDuration = new ArrayEx();
-    // Duration the mouse button has been down (0.0f == just clicked)
+    // Duration the mouse button has been down (0.0f === just clicked)
     this.MouseDownDurationPrev = new ArrayEx();
     // Previous time the mouse button has been down
     this.MouseDragMaxDistanceAbs = new ArrayEx();
@@ -418,7 +418,7 @@ export class IO {
     // the clicking point
 
     this.KeysDownDuration = new ArrayEx();
-    // Duration the keyboard key has been down (0.0f == just pressed)
+    // Duration the keyboard key has been down (0.0f === just pressed)
     this.KeysDownDurationPrev = new ArrayEx();
     // Previous duration the key has been down
 
@@ -729,7 +729,7 @@ export class IO {
 
   GetKeyFromCode(code) {
     let ret = this.KeyCodeMap[code]; // dont want Tab to convert to "\t"
-    if (ret == undefined) ret = String.fromCharCode(code);
+    if (ret === undefined) ret = String.fromCharCode(code);
     return ret;
   }
 
@@ -823,7 +823,7 @@ export class IO {
     //  2. o (control-key still down)
     // if control/meta/alt isn't down, then keypress is invoked
     // console.info(`key down: ${evt.keyCode}, ${evt.key}, ${evt.timeStamp}`);
-    if (this.MetaKeys[evt.key] == undefined) {
+    if (this.MetaKeys[evt.key] === undefined) {
       // not a meta key
       this.InputKeyEvents.push(evt);
       // ClearInputCharacters called during imgui.EndFrame(0)
@@ -841,21 +841,21 @@ export class IO {
     let issystem = false;
     if (this.imgui.appServices.platform.indexOf("Mac") != -1) {
       // cmd-alt-j
-      if (evt.shiftKey && evt.metaKey && event.code == "KeyI") issystem = true;
-      else if (evt.shiftKey && evt.metaKey && event.code == "KeyC")
+      if (evt.shiftKey && evt.metaKey && event.code === "KeyI") issystem = true;
+      else if (evt.shiftKey && evt.metaKey && event.code === "KeyC")
         issystem = true;
-      else if (evt.metaKey && event.code == "KeyR") issystem = true;
+      else if (evt.metaKey && event.code === "KeyR") issystem = true;
     } else {
       // ctrl-shift-I is dev-inspector
-      if (evt.shiftKey && evt.ctrlKey && evt.key.toUpperCase() == "I")
+      if (evt.shiftKey && evt.ctrlKey && evt.key.toUpperCase() === "I")
         issystem = true;
-      if (evt.ctrlKey && evt.code == "KeyR")
+      if (evt.ctrlKey && evt.code === "KeyR")
         // Reload in electron
         issystem = true;
     }
     if (
-      evt.code == "F11" || // F11 is fullscreen
-      evt.code == "F12"
+      evt.code === "F11" || // F11 is fullscreen
+      evt.code === "F12"
     )
       // F12 is inspector
       issystem = true;
@@ -1046,7 +1046,7 @@ export class IO {
 
   getTouchIndex(t) {
     for (let i = 0; i < this.Touches.length; i++) {
-      if (t.identifier == this.Touches[i].id) return i;
+      if (t.identifier === this.Touches[i].id) return i;
     }
     return -1;
   }

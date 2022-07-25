@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 
 const logRequestStart = (req, res, next) => {
-  if (["GET", "HEAD"].indexOf(req.method) == -1)
+  if (["GET", "HEAD"].indexOf(req.method) === -1)
     console.info(`${req.method} ${req.originalUrl}`);
   next();
 };

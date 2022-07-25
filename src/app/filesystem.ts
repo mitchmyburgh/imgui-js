@@ -21,7 +21,7 @@ export class FileSystem
         let self = this;
         this.runtime = runtime;
         this.isWindows = false;
-        if(runtime == "browser")
+        if(runtime === "browser")
         {
             if(window.BrowserFS != undefined)
             {
@@ -45,7 +45,7 @@ export class FileSystem
                 console.warn("No file-IO in browser mode");
         }
         else
-        if(runtime == "electron")
+        if(runtime === "electron")
         {
             // we use window.require to trick webpack for electron
             /* we don't want to use remote package since it's 
@@ -137,10 +137,10 @@ export class FileSystem
                     // redundant mounts (eclipse seems to introduce one)
                     for(let vol of out.slice(1))
                     {
-                        if(vol[1] == ":")
+                        if(vol[1] === ":")
                         {
                             let vdir = vol.slice(0, 2); // "C:"
-                            if(ret.indexOf(vdir) == -1)
+                            if(ret.indexOf(vdir) === -1)
                                 ret.push(vdir);
                         }
                     }

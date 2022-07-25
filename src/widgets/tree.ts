@@ -85,7 +85,7 @@ export var ImguiTreeMixin =
         let win = this.getCurrentWindow();
         this.Unindent();
         win.DC.TreeDepth--;
-        if (g.NavMoveDir == Dir.Left && g.NavWindow == win &&
+        if (g.NavMoveDir === Dir.Left && g.NavWindow === win &&
             this.navMoveRequestButNoResultYet())
         {
             if (g.NavIdIsAlive &&
@@ -110,7 +110,7 @@ export var ImguiTreeMixin =
         g.CurrentWindow.DC.CursorPos.x += this.GetTreeNodeToLabelSpacing();
     },
 
-    // horizontal distance preceding label when using TreeNode*() or Bullet() ==
+    // horizontal distance preceding label when using TreeNode*() or Bullet() ===
     // (g.FontSize + style.FramePadding.x*2) for a regular unframed TreeNode
     GetTreeNodeToLabelSpacing()
     {
@@ -261,7 +261,7 @@ export var ImguiTreeMixin =
             if (pressed)
             {
                 toggled = !(flags & (TreeNodeFlags.OpenOnArrow | TreeNodeFlags.OpenOnDoubleClick))
-                            || (g.NavActivateId == id);
+                            || (g.NavActivateId === id);
                 if (flags & TreeNodeFlags.OpenOnArrow)
                 {
                     toggled |= this.IsMouseHoveringRect(interact_bb.Min,
@@ -276,16 +276,16 @@ export var ImguiTreeMixin =
                     toggled = false;
             }
 
-            if (g.NavId == id && g.NavMoveRequest &&
-                g.NavMoveDir == Dir.Left && is_open)
+            if (g.NavId === id && g.NavMoveRequest &&
+                g.NavMoveDir === Dir.Left && is_open)
             {
                 toggled = true;
                 this.navMoveRequestCancel();
             }
             // If there's something upcoming on the line we may want to
             // give it the priority?
-            if (g.NavId == id && g.NavMoveRequest &&
-                g.NavMoveDir == Dir.Right && !is_open)
+            if (g.NavId === id && g.NavMoveRequest &&
+                g.NavMoveDir === Dir.Right && !is_open)
             {
                 toggled = true;
                 this.navMoveRequestCancel();
@@ -380,7 +380,7 @@ export var ImguiTreeMixin =
                 // We treat Cond.Once and Cond.FirstUseEver the same because
                 // tree node state are not saved persistently.
                 const stored_value = storage.GetInt(id, -1);
-                if (stored_value == -1)
+                if (stored_value === -1)
                 {
                     is_open = g.NextTreeNodeOpenVal;
                     storage.SetInt(id, is_open);

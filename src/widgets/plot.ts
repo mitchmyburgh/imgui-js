@@ -101,9 +101,9 @@ export var ImguiPlotMixin =
         const id = win.GetID(label);
 
         const label_size = this.CalcTextSize(label, true);
-        if (frame_size.x == 0)
+        if (frame_size.x === 0)
             frame_size.x = this.getNextItemWidth();
-        if (frame_size.y == 0)
+        if (frame_size.y === 0)
             frame_size.y = label_size.y + (style.FramePadding.y * 2);
 
         const frame_bb = new Rect(win.DC.CursorPos,
@@ -121,7 +121,7 @@ export var ImguiPlotMixin =
         const hovered = this.itemHoverable(frame_bb, id);
 
         // Determine scale from values if not specified
-        if (scale_min == Number.MAX_VALUE || scale_max == Number.MAX_VALUE)
+        if (scale_min === Number.MAX_VALUE || scale_max === Number.MAX_VALUE)
         {
             let v_min = Number.MAX_VALUE;
             let v_max = -Number.MAX_VALUE;
@@ -133,21 +133,21 @@ export var ImguiPlotMixin =
                 v_min = Math.min(v_min, v);
                 v_max = Math.max(v_max, v);
             }
-            if (scale_min == Number.MAX_VALUE)
+            if (scale_min === Number.MAX_VALUE)
                 scale_min = v_min;
-            if (scale_max == Number.MAX_VALUE)
+            if (scale_max === Number.MAX_VALUE)
                 scale_max = v_max;
         }
 
         this.renderFrame(frame_bb.Min, frame_bb.Max,
                         style.GetColor("PlotBg"), true, style.FrameRounding);
 
-        const values_count_min = (plotType == PlotType.Lines) ? 2 : 1;
+        const values_count_min = (plotType === PlotType.Lines) ? 2 : 1;
         if (values_count >= values_count_min)
         {
             let res_w = Math.min(Math.floor(frame_size.x), values_count) +
-                        ((plotType == PlotType.Lines) ? -1 : 0);
-            let item_count = values_count + ((plotType == PlotType.Lines) ? -1 : 0);
+                        ((plotType === PlotType.Lines) ? -1 : 0);
+            let item_count = values_count + ((plotType === PlotType.Lines) ? -1 : 0);
             let roiPx;
             let colHovered, col, colDimmed;
             if(roi)
@@ -210,7 +210,7 @@ export var ImguiPlotMixin =
             }
 
             const t_step = 1 / res_w;
-            const inv_scale = (scale_min == scale_max) ? 0 :
+            const inv_scale = (scale_min === scale_max) ? 0 :
                                     (1/(scale_max - scale_min));
 
             let v0 = getter((0 + values_offset) % values_count);
@@ -234,7 +234,7 @@ export var ImguiPlotMixin =
 
                 let pos0, pos1;
                 let c;
-                if(v_hovered == v1_idx)
+                if(v_hovered === v1_idx)
                     c = colHovered;
                 else
                 {

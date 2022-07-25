@@ -99,9 +99,9 @@ export var ImguiDragDropMixin = {
       source_id = win.DC.LastItemId;
       // Early out for most common case
       if (source_id != 0 && g.ActiveId != source_id) return false;
-      if (g.IO.MouseDown[mouse_button] == false) return false;
+      if (g.IO.MouseDown[mouse_button] === false) return false;
 
-      if (source_id == 0) {
+      if (source_id === 0) {
         // If you want to use BeginDragDropSource() on an item with no
         // unique identifier for interaction, such as Text() or Image(),
         // you need to:
@@ -123,7 +123,7 @@ export var ImguiDragDropMixin = {
         // the button will early out this function and trigger !ActiveIdIsAlive.
         let is_hovered =
           (win.DC.LastItemStatusFlags & ItemStatusFlags.HoveredRect) != 0;
-        if (!is_hovered && (g.ActiveId == 0 || g.ActiveIdWindow != win))
+        if (!is_hovered && (g.ActiveId === 0 || g.ActiveIdWindow != win))
           return false;
         source_id = win.DC.LastItemId = win.GetIDFromRectangle(
           win.DC.LastItemRect
@@ -135,7 +135,7 @@ export var ImguiDragDropMixin = {
         }
         // Allow the underlying widget to display/return hovered
         // during the mouse release frame, else we would get a flicker.
-        if (g.ActiveId == source_id) g.ActiveIdAllowOverlap = is_hovered;
+        if (g.ActiveId === source_id) g.ActiveIdAllowOverlap = is_hovered;
       } else {
         g.ActiveIdAllowOverlap = false;
       }
@@ -203,7 +203,7 @@ export var ImguiDragDropMixin = {
       this.EndTooltip();
 
     // Discard the drag if have not called SetDragDropPayload()
-    if (g.DragDropPayload.DataFrameCount == -1) this.ClearDragDrop();
+    if (g.DragDropPayload.DataFrameCount === -1) this.ClearDragDrop();
     g.DragDropWithinSourceOrTarget = false;
   },
 
@@ -214,26 +214,26 @@ export var ImguiDragDropMixin = {
   SetDragDropPayload(type, data, cond = 0) {
     let g = this.guictx;
     let payload = g.DragDropPayload;
-    if (cond == 0) cond = CondFlags.Always;
+    if (cond === 0) cond = CondFlags.Always;
 
     console.assert(type != null);
     console.assert(
       type.length < 32,
       "Payload type can be at most 32 characters long"
     );
-    console.assert(cond == CondFlags.Always || cond == CondFlags.Once);
+    console.assert(cond === CondFlags.Always || cond === CondFlags.Once);
     console.assert(payload.SourceId != 0);
     // Not called between BeginDragDropSource() and EndDragDropSource()
 
-    if (cond == CondFlags.Always || payload.DataFrameCount == -1) {
+    if (cond === CondFlags.Always || payload.DataFrameCount === -1) {
       payload.DataType = type;
       payload.Data = data; // XXX: data.Clone, JSON.stringify?
     }
     payload.DataFrameCount = g.FrameCount;
 
     return (
-      g.DragDropAcceptFrameCount == g.FrameCount ||
-      g.DragDropAcceptFrameCount == g.FrameCount - 1
+      g.DragDropAcceptFrameCount === g.FrameCount ||
+      g.DragDropAcceptFrameCount === g.FrameCount - 1
     );
   },
 
@@ -255,7 +255,7 @@ export var ImguiDragDropMixin = {
     if (!(win.DC.LastItemStatusFlags & ItemStatusFlags.HoveredRect))
       return false;
     if (
-      g.HoveredWindow == null ||
+      g.HoveredWindow === null ||
       win.RootWindow != g.HoveredWindow.RootWindow
     ) {
       return false;
@@ -266,10 +266,10 @@ export var ImguiDragDropMixin = {
         ? win.DC.LastItemDisplayRect
         : win.DC.LastItemRect;
     let id = win.DC.LastItemId;
-    if (id == 0) id = win.GetIDFromRectangle(display_rect);
-    if (g.DragDropPayload.SourceId == id) return false;
+    if (id === 0) id = win.GetIDFromRectangle(display_rect);
+    if (g.DragDropPayload.SourceId === id) return false;
 
-    console.assert(g.DragDropWithinSourceOrTarget == false);
+    console.assert(g.DragDropWithinSourceOrTarget === false);
     g.DragDropTargetRect = display_rect.Clone();
     g.DragDropTargetId = id;
     g.DragDropWithinSourceOrTarget = true;
@@ -281,18 +281,21 @@ export var ImguiDragDropMixin = {
     if (!g.DragDropActive) return false;
 
     let win = g.CurrentWindow;
-    if (g.HoveredWindow == null || win.RootWindow != g.HoveredWindow.RootWindow)
+    if (
+      g.HoveredWindow === null ||
+      win.RootWindow != g.HoveredWindow.RootWindow
+    )
       return false;
     console.assert(id != 0);
     if (
       !this.IsMouseHoveringRect(bb.Min, bb.Max) ||
-      id == g.DragDropPayload.SourceId
+      id === g.DragDropPayload.SourceId
     ) {
       return false;
     }
     if (win.SkipItems) return false;
 
-    console.assert(g.DragDropWithinSourceOrTarget == false);
+    console.assert(g.DragDropWithinSourceOrTarget === false);
     g.DragDropTargetRect = bb;
     g.DragDropTargetId = id;
     g.DragDropWithinSourceOrTarget = true;
@@ -327,7 +330,7 @@ export var ImguiDragDropMixin = {
     // NB: We currently accept null id as target. However, overlapping
     // targets requires a unique ID to function!
     const was_accepted_previously =
-      g.DragDropAcceptIdPrev == g.DragDropTargetId;
+      g.DragDropAcceptIdPrev === g.DragDropTargetId;
     let r = g.DragDropTargetRect.Clone();
     let r_surface = r.GetWidth() * r.GetHeight();
     if (r_surface < g.DragDropAcceptIdCurrRectSurface) {

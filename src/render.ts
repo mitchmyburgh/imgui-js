@@ -92,7 +92,7 @@ export var ImguiRenderMixin = {
     let need_clipping =
       pos.x + text_size.x >= clip_max.x || pos.y + text_size.y >= clip_max.y;
     if (clip_rect)
-      // If we had no explicit clipping rectangle then pos==clip_min
+      // If we had no explicit clipping rectangle then pos===clip_min
       need_clipping |= pos.x < clip_min.x || pos.y < clip_min.y;
 
     // Align whole block. We should defer that to the better rendering
@@ -151,7 +151,7 @@ export var ImguiRenderMixin = {
   renderFrameBorder(p_min, p_max, rounding, size = 0) {
     let g = this.guictx;
     let window = g.CurrentWindow;
-    const border_size = size == 0 ? g.Style.FrameBorderSize : size;
+    const border_size = size === 0 ? g.Style.FrameBorderSize : size;
     if (border_size > 0) {
       window.DrawList.AddRect(
         Vec2.AddXY(p_min, 1, 1),
@@ -306,14 +306,14 @@ export var ImguiRenderMixin = {
     switch (dir) {
       case Dir.Up:
       case Dir.Down:
-        if (dir == Dir.Up) r = -r;
+        if (dir === Dir.Up) r = -r;
         a = new Vec2(0.0, 0.75 * r);
         b = new Vec2(-0.866 * r, -0.75 * r);
         c = new Vec2(0.866 * r, -0.75 * r);
         break;
       case Dir.Left:
       case Dir.Right:
-        if (dir == Dir.Left) r = -r;
+        if (dir === Dir.Left) r = -r;
         a = new Vec2(0.75 * r, 0);
         b = new Vec2(-0.75 * r, 0.866 * r);
         c = new Vec2(-0.75 * r, -0.866 * r);
@@ -459,7 +459,7 @@ export var ImguiRenderMixin = {
       return Math.acos(x);
     };
 
-    if (x_end_norm == x_start_norm) return;
+    if (x_end_norm === x_start_norm) return;
     if (x_start_norm > x_end_norm) {
       // swap
       let x = x_end_norm;
@@ -475,7 +475,7 @@ export var ImguiRenderMixin = {
       Vec1.Lerp(rect.Min.x, rect.Max.x, x_end_norm),
       rect.Max.y
     );
-    if (rounding == 0) {
+    if (rounding === 0) {
       draw_list.AddRectFilled(p0, p1, col, 0);
       return;
     }
@@ -492,10 +492,10 @@ export var ImguiRenderMixin = {
     const arc0_b = acos01(1 - (p0.x - rect.Min.x) * inv_rounding);
     const arc0_e = acos01(1 - (p1.x - rect.Min.x) * inv_rounding);
     const x0 = Math.max(p0.x, rect.Min.x + rounding);
-    if (arc0_b == arc0_e) {
+    if (arc0_b === arc0_e) {
       draw_list.PathLineTo(new Vec2(x0, p1.y));
       draw_list.PathLineTo(new Vec2(x0, p0.y));
-    } else if (arc0_b == 0 && arc0_e == half_pi) {
+    } else if (arc0_b === 0 && arc0_e === half_pi) {
       draw_list.PathArcToFast(new Vec2(x0, p1.y - rounding), rounding, 3, 6); // BL
       draw_list.PathArcToFast(new Vec2(x0, p0.y + rounding), rounding, 6, 9); // TR
     } else {
@@ -518,10 +518,10 @@ export var ImguiRenderMixin = {
       const arc1_b = acos01(1 - (rect.Max.x - p1.x) * inv_rounding);
       const arc1_e = acos01(1 - (rect.Max.x - p0.x) * inv_rounding);
       const x1 = Math.min(p1.x, rect.Max.x - rounding);
-      if (arc1_b == arc1_e) {
+      if (arc1_b === arc1_e) {
         draw_list.PathLineTo(new Vec2(x1, p0.y));
         draw_list.PathLineTo(new Vec2(x1, p1.y));
-      } else if (arc1_b == 0 && arc1_e == half_pi) {
+      } else if (arc1_b === 0 && arc1_e === half_pi) {
         draw_list.PathArcToFast(new Vec2(x1, p0.y + rounding), rounding, 9, 12); // TR
         draw_list.PathArcToFast(new Vec2(x1, p1.y - rounding), rounding, 0, 3); // BR
       } else {

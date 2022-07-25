@@ -55,7 +55,7 @@ export var ImguiWinMgrMixin = {
     name = sname[sname.length - 1];
     let title = sname[0];
     let win = this.findWindowByName(name);
-    const window_just_created = win == null;
+    const window_just_created = win === null;
     if (window_just_created) {
       // Any condition flag will do since we are creating a new window here.
       let sz =
@@ -64,7 +64,7 @@ export var ImguiWinMgrMixin = {
     }
 
     // Automatically disable manual moving/resizing when NoInputs is set
-    if ((flags & WindowFlags.NoInputs) == WindowFlags.NoInputs)
+    if ((flags & WindowFlags.NoInputs) === WindowFlags.NoInputs)
       flags |= WindowFlags.NoMove | WindowFlags.NoResize;
 
     if (flags & WindowFlags.NavFlattened)
@@ -215,7 +215,7 @@ export var ImguiWinMgrMixin = {
       let window_title_visible_elsewhere = false;
       if (
         g.NavWindowingList != null &&
-        (win.Flags & WindowFlags.NoNavFocus) == 0
+        (win.Flags & WindowFlags.NoNavFocus) === 0
       ) {
         // Window titles visible when using CTRL+TAB
         window_title_visible_elsewhere = true;
@@ -277,7 +277,7 @@ export var ImguiWinMgrMixin = {
       if (
         flags & WindowFlags.ChildWindow &&
         !(flags & (WindowFlags.AlwaysUseWindowPadding | WindowFlags.Popup)) &&
-        win.WindowBorderSize == 0
+        win.WindowBorderSize === 0
       ) {
         win.WindowPadding = new Vec2(
           0,
@@ -302,9 +302,9 @@ export var ImguiWinMgrMixin = {
         // verify that we don't have items over the title bar.
         let title_bar_rect = win.TitleBarRect(); // no clone needed
         if (
-          g.HoveredWindow == window &&
-          g.HoveredId == 0 &&
-          g.HoveredIdPreviousFrame == 0 &&
+          g.HoveredWindow === window &&
+          g.HoveredId === 0 &&
+          g.HoveredIdPreviousFrame === 0 &&
           this.IsMouseHoveringRect(title_bar_rect.Min, title_bar_rect.Max) &&
           g.IO.MouseDoubleClicked[0]
         ) {
@@ -422,7 +422,7 @@ export var ImguiWinMgrMixin = {
 
       const window_pos_with_pivot =
         win.SetWindowPosVal.x != Number.MAX_VALUE &&
-        win.HiddenFramesCannotSkipItems == 0;
+        win.HiddenFramesCannotSkipItems === 0;
       if (window_pos_with_pivot) {
         // Position given a pivot (e.g. for centering)
         win.SetWindowPos(
@@ -494,7 +494,10 @@ export var ImguiWinMgrMixin = {
         !(flags & WindowFlags.NoFocusOnAppearing)
       ) {
         if (flags & WindowFlags.Popup) want_focus = true;
-        else if ((flags & (WindowFlags.ChildWindow | WindowFlags.Tooltip)) == 0)
+        else if (
+          (flags & (WindowFlags.ChildWindow | WindowFlags.Tooltip)) ===
+          0
+        )
           want_focus = true;
       }
 
@@ -554,10 +557,10 @@ export var ImguiWinMgrMixin = {
       //  all viewports)
       const dim_bg_for_modal =
         flags & WindowFlags.Modal &&
-        win == this.getFrontMostPopupModal() &&
+        win === this.getFrontMostPopupModal() &&
         win.HiddenFramesCannotSkipItems <= 0;
       const dim_bg_for_window_list =
-        g.NavWindowingTargetAnim && win == g.NavWindowingTargetAnim.RootWindow;
+        g.NavWindowingTargetAnim && win === g.NavWindowingTargetAnim.RootWindow;
       if (dim_bg_for_modal || dim_bg_for_window_list) {
         const dim_bg_col = style.GetColor(
           dim_bg_for_modal ? "ModalWindowDimBg" : "NavWindowingDimBg",
@@ -571,7 +574,7 @@ export var ImguiWinMgrMixin = {
       }
 
       // Draw navigation selection/windowing rectangle background
-      if (dim_bg_for_window_list && win == g.NavWindowingTargetAnim) {
+      if (dim_bg_for_window_list && win === g.NavWindowingTargetAnim) {
         let bb = win.Rect();
         bb.Expand(g.FontSize);
         // Avoid drawing if the window covers all the viewport anyway
@@ -600,7 +603,7 @@ export var ImguiWinMgrMixin = {
       const title_bar_is_highlight =
         want_focus ||
         (window_to_highlight &&
-          win.RootWindowForTitleBarHighlight ==
+          win.RootWindowForTitleBarHighlight ===
             window_to_highlight.RootWindowForTitleBarHighlight);
       const title_bar_rect = win.TitleBarRect();
       if (win.Collapsed) {
@@ -704,7 +707,7 @@ export var ImguiWinMgrMixin = {
       } // end !Collapsed
 
       // Draw navigation selection/windowing rectangle border
-      if (g.NavWindowingTargetAnim == win) {
+      if (g.NavWindowingTargetAnim === win) {
         let rounding = Math.max(win.WindowRounding, g.Style.WindowRounding);
         let bb = win.Rect().Expand(g.FontSize);
         // If a window fits the entire viewport, adjust its highlight inward
@@ -888,7 +891,7 @@ export var ImguiWinMgrMixin = {
             ? style.FramePadding.x
             : style.FramePadding.x + g.FontSize + style.ItemInnerSpacing.x;
         let pad_right =
-          p_open == null
+          p_open === null
             ? style.FramePadding.x
             : style.FramePadding.x + g.FontSize + style.ItemInnerSpacing.x;
         if (style.WindowTitleAlign.x > 0)
@@ -944,7 +947,7 @@ export var ImguiWinMgrMixin = {
       // work that out and add better logging scope.
       // Maybe we can support CTRL+C on every element?
       /*
-            if (g.ActiveId == move_id)
+            if (g.ActiveId === move_id)
                 if (g.IO.KeyCtrl && this.isKeyPressedMap(Key.C))
                     LogToClipboard();
             */
@@ -1108,7 +1111,7 @@ export var ImguiWinMgrMixin = {
    * - Use child windows to begin into a self-contained independent
    *   scrolling/clipping regions within a host window. Child windows can
    *   embed their own child.
-   * - For each independent axis of 'size': ==0.0f: use remaining host
+   * - For each independent axis of 'size': ===0.0f: use remaining host
    *   window size / >0.0f: fixed size / <0.0f: use remaining window
    *   size minus abs(size) / Each axis can use a different mode, e.g.
    *   Rect(0,400).
@@ -1121,7 +1124,7 @@ export var ImguiWinMgrMixin = {
   BeginChild(strOrID, size_arg = Vec2.Zero(), border = false, flags = 0) {
     let id;
     let name;
-    if (typeof strOrID == "string") {
+    if (typeof strOrID === "string") {
       name = strOrID;
       id = this.getCurrentWindow().GetID(strOrID);
     } else {
@@ -1146,7 +1149,7 @@ export var ImguiWinMgrMixin = {
     const content_avail = this.GetContentRegionAvail();
     let size = Vec2.Floor(size_arg);
     const auto_fit_axes =
-      (size.x == 0 ? 1 << Axis.X : 0x00) | (size.y == 0 ? 1 << Axis.Y : 0x00);
+      (size.x === 0 ? 1 << Axis.X : 0x00) | (size.y === 0 ? 1 << Axis.Y : 0x00);
     // Arbitrary minimum child size (0 causing too much issues)
     if (size.x <= 0) size.x = Math.max(content_avail.x + size.x, 4);
     if (size.y <= 0) size.y = Math.max(content_avail.y + size.y, 4);
@@ -1170,12 +1173,12 @@ export var ImguiWinMgrMixin = {
     // Set the cursor to handle case where the user called
     // SetNextWindowPos()+BeginChild() manually. While this is not
     // really documented/defined, it seems that the expected thing to do.
-    if (child_window.BeginCount == 1)
+    if (child_window.BeginCount === 1)
       parent_window.DC.CursorPos.Copy(child_window.Pos);
 
     // Process navigation-in immediately so NavInit can run on first frame
     if (
-      g.NavActivateId == id &&
+      g.NavActivateId === id &&
       !(flags & WindowFlags.NavFlattened) &&
       (child_window.DC.NavLayerActiveMask != 0 || child_window.DC.NavHasScroll)
     ) {
@@ -1222,7 +1225,7 @@ export var ImguiWinMgrMixin = {
 
         // When browsing a window that has no activable items (scroll
         // only) we keep a highlight on the child
-        if (win.DC.NavLayerActiveMask == 0 && win == g.NavWindow) {
+        if (win.DC.NavLayerActiveMask === 0 && win === g.NavWindow) {
           this.renderNavHighlight(
             new Rect(Vec2.SubtractXY(bb.Min, 2, 2), Vec2.AddXY(bb.Max, 2, 2)),
             g.NavId,
@@ -1283,25 +1286,25 @@ export var ImguiWinMgrMixin = {
     switch (flags & (FocusedFlags.RootWindow | FocusedFlags.ChildWindows)) {
       case FocusedFlags.RootWindow | FocusedFlags.ChildWindows:
         return (
-          g.NavWindow && g.NavWindow.RootWindow == g.CurrentWindow.RootWindow
+          g.NavWindow && g.NavWindow.RootWindow === g.CurrentWindow.RootWindow
         );
       case FocusedFlags.RootWindow:
-        return g.NavWindow == g.CurrentWindow.RootWindow;
+        return g.NavWindow === g.CurrentWindow.RootWindow;
       case FocusedFlags.ChildWindows:
         return (
           g.NavWindow && this.isWindowChildOf(g.NavWindow, g.CurrentWindow)
         );
       default:
-        return g.NavWindow == g.CurrentWindow;
+        return g.NavWindow === g.CurrentWindow;
     }
   },
 
   IsWindowHovered(flags) {
     // Flags not supported by this function
-    console.assert((flags & HoveredFlags.AllowWhenOverlapped) == 0);
+    console.assert((flags & HoveredFlags.AllowWhenOverlapped) === 0);
     let g = this.guictx;
     if (flags & HoveredFlags.AnyWindow) {
-      if (g.HoveredWindow == null) return false;
+      if (g.HoveredWindow === null) return false;
     } else
       switch (flags & (HoveredFlags.RootWindow | HoveredFlags.ChildWindows)) {
         case HoveredFlags.RootWindow | HoveredFlags.ChildWindows:
@@ -1312,7 +1315,7 @@ export var ImguiWinMgrMixin = {
           break;
         case HoveredFlags.ChildWindows:
           if (
-            g.HoveredWindow == null ||
+            g.HoveredWindow === null ||
             !this.isWindowChildOf(g.HoveredWindow, g.CurrentWindow)
           ) {
             return false;
@@ -1716,9 +1719,9 @@ export var ImguiWinMgrMixin = {
       tracker["StyleModifiers"] = g.StyleModifiers.length;
       tracker["FontStack"] = g.FontStack.length;
     } else {
-      console.assert(tracker["ID"] == win.IDStack.length);
-      console.assert(tracker["Group"] == win.DC.GroupStack.length);
-      console.assert(tracker["BeginPopup"] == g.BeginPopupStack.length);
+      console.assert(tracker["ID"] === win.IDStack.length);
+      console.assert(tracker["Group"] === win.DC.GroupStack.length);
+      console.assert(tracker["BeginPopup"] === g.BeginPopupStack.length);
       console.assert(
         (tracker["DrawListLayers"] = win.DrawList.LayerStack.length)
       );
@@ -1799,10 +1802,10 @@ export var ImguiWinMgrMixin = {
   bringWindowToFocusFront(win) {
     let g = this.guictx;
     let len = g.WindowsFocusOrder.length;
-    if (g.WindowsFocusOrder[len - 1] == win) return;
+    if (g.WindowsFocusOrder[len - 1] === win) return;
     // We can ignore the front most window
     for (let i = len - 2; i >= 0; i--) {
-      if (g.WindowsFocusOrder[i] == win) {
+      if (g.WindowsFocusOrder[i] === win) {
         g.WindowsFocusOrder.splice(i, 1);
         g.WindowsFocusOrder.push(win);
         break;
@@ -1814,10 +1817,10 @@ export var ImguiWinMgrMixin = {
     let g = this.guictx;
     let len = g.WindowsFocusOrder.length;
     let front = g.Windows[len - 1];
-    if (front && (front == win || front.RootWindow == win)) return;
+    if (front && (front === win || front.RootWindow === win)) return;
     // We can ignore the front most window
     for (let i = len - 2; i >= 0; i--) {
-      if (g.Windows[i] == win) {
+      if (g.Windows[i] === win) {
         g.Windows.splice(i, 1);
         g.Windows.push(win);
         break;
@@ -1827,11 +1830,11 @@ export var ImguiWinMgrMixin = {
 
   bringWindowToDisplayBack(win) {
     let g = this.guictx;
-    if (g.Windows[0] == win)
+    if (g.Windows[0] === win)
       // already there
       return;
     for (let i = 0; i < g.Windows.length; i++) {
-      if (g.Windows[i] == win) {
+      if (g.Windows[i] === win) {
         g.Windows.splice(i, 1);
         g.Windows.splice(0, 0, win); // insert(0)
         break;
@@ -1845,9 +1848,9 @@ export var ImguiWinMgrMixin = {
   },
 
   isWindowChildOf(win, potentialParent) {
-    if (win.RootWindow == potentialParent) return true;
+    if (win.RootWindow === potentialParent) return true;
     while (win != null) {
-      if (win == potentialParent) return true;
+      if (win === potentialParent) return true;
       win = win.ParentWindow;
     }
     return false;
@@ -1856,7 +1859,7 @@ export var ImguiWinMgrMixin = {
   isWindowNavFocusable(win) {
     return (
       win.Active &&
-      win == win.RootWindow &&
+      win === win.RootWindow &&
       !(win.Flags & WindowFlags.NoNavFocus)
     );
   },
@@ -1928,19 +1931,19 @@ export var ImguiWinMgrMixin = {
     for (let i = 0; i < g.IO.MouseDown.length; i++) {
       if (g.IO.MouseClicked[i]) {
         g.IO.MouseDownOwned[i] =
-          g.HoveredWindow != null || !g.OpenPopupStack.length == 0;
+          g.HoveredWindow != null || !g.OpenPopupStack.length === 0;
       }
       anyDown |= g.IO.MouseDown[i];
       if (g.IO.MouseDown[i]) {
         if (
-          firstDown == -1 ||
+          firstDown === -1 ||
           g.IO.MouseClickedTime[i] < g.IO.MouseClickedTime[firstDown]
         ) {
           firstDown = i;
         }
       }
     }
-    let mouseAvail = firstDown == -1 || g.IO.MouseDownOwned[firstDown];
+    let mouseAvail = firstDown === -1 || g.IO.MouseDownOwned[firstDown];
 
     // If mouse was first clicked outside of ImGui bounds we also cancel out
     // hovering./ FIXME: For patterns of drag and drop across OS windows,
@@ -2018,7 +2021,7 @@ export var ImguiWinMgrMixin = {
 
       // Those seemingly unnecessary extra tests are because the code here
       // is a little different in viewport/docking branches.
-      if (hovered_window == null) hovered_window = win;
+      if (hovered_window === null) hovered_window = win;
       if (hovered_window) break;
     }
     g.HoveredWindow = hovered_window;

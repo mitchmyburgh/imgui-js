@@ -3,12 +3,9 @@
 // some extensions to Array to facilitate imgui porting.
 // we don't extend Array directly because it may muck with
 // non-imgui packages array iteration.
-export class ArrayEx {
+export class ArrayEx<T> extends Array<T> {
   constructor() {
-    var aex = Object.create(Array.prototype);
-    for (let i = 0; i < arguments.length; i++) aex.push(arguments[i]);
-    ArrayEx._extendArray(aex);
-    return aex;
+    super();
   }
 
   clear() {
@@ -19,7 +16,7 @@ export class ArrayEx {
     return this[this.length - 1];
   }
 
-  push_back(v) {
+  push_back(v: T) {
     return this.push(v);
   }
 
@@ -27,26 +24,20 @@ export class ArrayEx {
     return this.pop();
   }
 
-  push_front(v) {
+  push_front(v: T) {
     this.unshift(v);
     // return this.splice(0, 0, v);
   }
 
-  resize(len) {
+  resize(len: number) {
     return (this.length = len);
   }
 
   empty() {
-    return this.length == 0;
+    return this.length === 0;
   }
 
   clone() {
     return this.slice();
-  }
-
-  static _extendArray(aex) {
-    let props = Object.getOwnPropertyNames(ArrayEx.prototype);
-    for (var nm of props) aex[nm] = ArrayEx.prototype[nm];
-    return aex;
   }
 }

@@ -259,7 +259,7 @@ export class GuiContext {
     // Layer we are navigating on. For now the system is hard-coded for
     // 0=main contents and 1=menu/title bar, may expose layers later.
     this.NavIdTabCounter = Number.MAX_SAFE_INTEGER;
-    // == NavWindow->DC.FocusIdxTabCounter at time of NavId processing
+    // === NavWindow->DC.FocusIdxTabCounter at time of NavId processing
     this.NavIdIsAlive = false;
     this.NavMousePosDirty = false;
     this.NavDisableHighlight = true;

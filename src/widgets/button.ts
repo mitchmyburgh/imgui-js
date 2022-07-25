@@ -66,26 +66,26 @@ export var ImguiButtonMixin =
         {
             if (out_hovered) out_hovered.set(false);
             if (out_held) out_held.set(false);
-            if (g.ActiveId == id) this.clearActiveID();
+            if (g.ActiveId === id) this.clearActiveID();
             return false;
         }
 
         // Default behavior requires click+release on same spot
         if ((flags & (ButtonFlags.PressedOnClickRelease | ButtonFlags.PressedOnClick |
-            ButtonFlags.PressedOnRelease | ButtonFlags.PressedOnDoubleClick)) == 0)
+            ButtonFlags.PressedOnRelease | ButtonFlags.PressedOnDoubleClick)) === 0)
         {
             flags |= ButtonFlags.PressedOnClickRelease;
         }
 
         let backup_hovered_window = g.HoveredWindow;
-        if ((flags & ButtonFlags.FlattenChildren) && g.HoveredRootWindow == win)
+        if ((flags & ButtonFlags.FlattenChildren) && g.HoveredRootWindow === win)
             g.HoveredWindow = win;
 
         let pressed = false;
         let hovered = this.itemHoverable(bbox, id);
 
         // Drag source doesn't report as hovered
-        if (hovered && g.DragDropActive && g.DragDropPayload.SourceId == id &&
+        if (hovered && g.DragDropActive && g.DragDropPayload.SourceId === id &&
             !(g.DragDropSourceFlags & DragDropFlags.SourceNoDisableHover))
         {
             hovered = false;
@@ -111,7 +111,7 @@ export var ImguiButtonMixin =
             }
         }
 
-        if ((flags & ButtonFlags.FlattenChildren) && g.HoveredRootWindow == win)
+        if ((flags & ButtonFlags.FlattenChildren) && g.HoveredRootWindow === win)
             g.HoveredWindow = backup_hovered_window;
 
         // AllowOverlap mode (rarely used) requires previous frame HoveredId to be null or to match. This allows using patterns where a later submitted widget overlaps a previous one.
@@ -173,7 +173,7 @@ export var ImguiButtonMixin =
                 // table above). Relies on repeat logic of IsMouseClicked() but we
                 // may as well do it ourselves if we end up exposing finer
                 // RepeatDelay/RepeatRate settings.
-                if ((flags & ButtonFlags.Repeat) && g.ActiveId == id &&
+                if ((flags & ButtonFlags.Repeat) && g.ActiveId === id &&
                     g.IO.MouseDownDuration[0] > 0. && this.IsMouseClicked(0, true))
                 {
                     pressed = true;
@@ -186,20 +186,20 @@ export var ImguiButtonMixin =
 
         // Gamepad/Keyboard navigation
         // We report navigated item as hovered but we don't set g.HoveredId to not interfere with mouse.
-        if (g.NavId == id && !g.NavDisableHighlight && g.NavDisableMouseHover &&
-            (g.ActiveId == 0 || g.ActiveId == id || g.ActiveId == win.MoveId))
+        if (g.NavId === id && !g.NavDisableHighlight && g.NavDisableMouseHover &&
+            (g.ActiveId === 0 || g.ActiveId === id || g.ActiveId === win.MoveId))
         {
             hovered = true;
         }
 
-        if (g.NavActivateDownId == id)
+        if (g.NavActivateDownId === id)
         {
-            let nav_activated_by_code = (g.NavActivateId == id);
+            let nav_activated_by_code = (g.NavActivateId === id);
             let nav_activated_by_inputs = this.isNavInputPressed(NavInput.Activate,
                 (flags & ButtonFlags.Repeat) ? InputReadMode.Repeat : InputReadMode.Pressed);
             if (nav_activated_by_code || nav_activated_by_inputs)
                 pressed = true;
-            if (nav_activated_by_code || nav_activated_by_inputs || g.ActiveId == id)
+            if (nav_activated_by_code || nav_activated_by_inputs || g.ActiveId === id)
             {
                 // Set active id so it can be queried by user via IsItemActive(), equivalent of holding the mouse button.
                 g.NavActivateId = id; // This is so setActiveId assign a Nav source
@@ -215,11 +215,11 @@ export var ImguiButtonMixin =
         }
 
         let held = false;
-        if (g.ActiveId == id)
+        if (g.ActiveId === id)
         {
             if (pressed)
                 g.ActiveIdHasBeenPressed = true;
-            if (g.ActiveIdSource == InputSource.Mouse)
+            if (g.ActiveIdSource === InputSource.Mouse)
             {
                 if (g.ActiveIdIsJustActivated)
                     g.ActiveIdClickOffset = Vec2.Subtract(g.IO.MousePos, bbox.Min);
@@ -256,7 +256,7 @@ export var ImguiButtonMixin =
                     g.NavDisableHighlight = true;
             }
             else
-            if (g.ActiveIdSource == InputSource.Nav)
+            if (g.ActiveIdSource === InputSource.Nav)
             {
                 if (g.NavActivateDownId != id)
                     this.clearActiveID();
@@ -332,7 +332,7 @@ export var ImguiButtonMixin =
     {
         let fields = label.split("##");
         label = fields[0] + " " + Icons.RightArrow;
-        if(fields.length == 2)
+        if(fields.length === 2)
             label += "##" + fields[1];
         return this.ButtonEx(label, size_arg, flags);
     },
@@ -463,7 +463,7 @@ export var ImguiButtonMixin =
     {
         let g = this.guictx;
         let win = g.CurrentWindow;
-        if(id == null)
+        if(id === null)
             id = win.GetID("#CLOSE");
         let restorePos = null;
 
@@ -518,7 +518,7 @@ export var ImguiButtonMixin =
         let g = this.guictx;
         let win = g.CurrentWindow;
         let id;
-        if(typeof(idOrStr) == "string")
+        if(typeof(idOrStr) === "string")
             id = win.GetID(idOrStr);
         else
             id = idOrStr;
@@ -568,7 +568,7 @@ export var ImguiButtonMixin =
 
         let hovered = new ValRef(), held = new ValRef();
         let pressed = this.ButtonBehavior(total_bb, id, hovered, held);
-        let sel = (selected.value == undefined) ? selected : selected.get();
+        let sel = (selected.value === undefined) ? selected : selected.get();
         if (pressed)
         {
             // toggle val
@@ -610,7 +610,7 @@ export var ImguiButtonMixin =
     // invoked if on pressed.
     CheckboxFlags(label, flags, flags_bit, onChange=null)
     {
-        let v = new ValRef(((flags & flags_bit) == flags_bit));
+        let v = new ValRef(((flags & flags_bit) === flags_bit));
         let pressed = this.Checkbox(label, v);
         if (pressed && onChange)
         {
@@ -623,7 +623,7 @@ export var ImguiButtonMixin =
         return pressed;
     },
 
-    // use with e.g. if (RadioButton("one", my_value==1)) { my_value = 1; }
+    // use with e.g. if (RadioButton("one", my_value===1)) { my_value = 1; }
     RadioButton(label, active)
     {
         let win = this.getCurrentWindow();
@@ -765,7 +765,7 @@ export var ImguiButtonMixin =
             this.imageCache = {};
         let cache = this.imageCache;
         let img = cache[url];
-        if(img == undefined)
+        if(img === undefined)
         {
             img = new Image();
             cache[url] = img;

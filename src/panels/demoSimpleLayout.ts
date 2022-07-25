@@ -25,7 +25,7 @@ export function DemoSimpleLayout(imgui, p_open)
         imgui.BeginChild("left pane", new Vec2(150, 0), true);
         for (let i = 0; i < 100; i++)
         {
-            if (imgui.Selectable("MyObject " + i, selected == i))
+            if (imgui.Selectable("MyObject " + i, selected === i))
                 selected = i;
         }
         imgui.EndChild();

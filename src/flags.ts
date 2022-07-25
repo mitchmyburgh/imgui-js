@@ -3,10 +3,10 @@ export enum FocusedFlags {
   None = 0,
   ChildWindows = 1 << 0, // IsWindowFocused()= Return true if any children of the window is focused
   RootWindow = 1 << 1, // IsWindowFocused()= Test from root window (top most parent of the current hierarchy)
-  AnyWindow = 1 << 2, // IsWindowFocused()= Return true if any window is focused. Important= If you are trying to tell how to dispatch your low-level inputs, do NOT use this. Use ImGui==GetIO().WantCaptureMouse instead.
+  AnyWindow = 1 << 2, // IsWindowFocused()= Return true if any window is focused. Important= If you are trying to tell how to dispatch your low-level inputs, do NOT use this. Use ImGui===GetIO().WantCaptureMouse instead.
   RootAndChildWindows = (1 << 1) | (1 << 0), // FocusedFlags.RootWindow | FocusedFlags.ChildWindows
 }
-// Flags for ImGui==IsItemHovered(), ImGui==IsWindowHovered()
+// Flags for ImGui===IsItemHovered(), ImGui===IsWindowHovered()
 // Note= if you are trying to check whether your mouse should be dispatched to imgui or to your app, you should use the 'io.WantCaptureMouse' boolean for that. Please read the FAQ!
 // Note= windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHovered() calls.
 
@@ -28,7 +28,7 @@ export enum NavHighlightFlags {
   None = 0,
   TypeDefault = 1 << 0,
   TypeThin = 1 << 1,
-  AlwaysDraw = 1 << 2, // Draw rectangular highlight if (g.NavId == id) _even_ when using the mouse.
+  AlwaysDraw = 1 << 2, // Draw rectangular highlight if (g.NavId === id) _even_ when using the mouse.
   NoRounding = 1 << 3,
 }
 
@@ -37,7 +37,7 @@ export enum NavMoveFlags {
   LoopX = 1 << 0, // On failed request, restart from opposite side
   LoopY = 1 << 1,
   WrapX = 1 << 2, // On failed request, request from opposite side one line
-  // down (when NavDir==right) or one line up (when NavDir==left)
+  // down (when NavDir===right) or one line up (when NavDir===left)
   WrapY = 1 << 3, // This is not super useful for provided for completeness
   AllowCurrentNavId = 1 << 4, // Allow scoring and considering the current
   // NavId as a move target candidate. This is used

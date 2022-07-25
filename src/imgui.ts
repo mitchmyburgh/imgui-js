@@ -86,8 +86,8 @@ export class Imgui extends ImguiMixins {
     // assert handlers display their argument)
     if (this.debug) {
       console.assert(g.Initialized);
-      console.assert(g.IO.DeltaTime > 0 || g.FrameCount == 0); // Need a positive DeltaTime!
-      console.assert(g.FrameCount == 0 || g.FrameCountEnded == g.FrameCount); // Forgot to call Render() or EndFrame() at the end of the previous frame?
+      console.assert(g.IO.DeltaTime > 0 || g.FrameCount === 0); // Need a positive DeltaTime!
+      console.assert(g.FrameCount === 0 || g.FrameCountEnded === g.FrameCount); // Forgot to call Render() or EndFrame() at the end of the previous frame?
       console.assert(g.IO.DisplaySize.x >= 0 && g.IO.DisplaySize.y >= 0); // Invalid DisplaySize value!
       console.assert(g.IO.Fonts.Size() > 0); // Font Atlas not built.
       console.assert(g.Style.CurveTessellationTol > 0); // Invalid style setting!
@@ -114,7 +114,7 @@ export class Imgui extends ImguiMixins {
 
     // Load settings on first frame (if not explicitly loaded manually before)
     if (!g.SettingsLoaded) {
-      console.assert(g.SettingsWindows.length == 0);
+      console.assert(g.SettingsWindows.length === 0);
       if (g.IO.IniFilename) this.LoadIniSettingsFromDisk(g.IO.IniFilename);
       g.SettingsLoaded = true;
     }
@@ -157,12 +157,15 @@ export class Imgui extends ImguiMixins {
 
     // Drag and drop keep the source ID alive so even if the source disappear
     // our state is consistent
-    if (g.DragDropActive && g.DragDropPayload.SourceId == g.ActiveId)
+    if (g.DragDropActive && g.DragDropPayload.SourceId === g.ActiveId)
       this.keepAliveID(g.DragDropPayload.SourceId);
 
     // Clear reference to active widget if the widget isn't alive anymore
     if (!g.HoveredIdPreviousFrame) g.HoveredIdTimer = 0;
-    if (!g.HoveredIdPreviousFrame || (g.HoveredId && g.ActiveId == g.HoveredId))
+    if (
+      !g.HoveredIdPreviousFrame ||
+      (g.HoveredId && g.ActiveId === g.HoveredId)
+    )
       g.HoveredIdNotActiveTimer = 0;
     if (g.HoveredId) g.HoveredIdTimer += g.IO.DeltaTime;
     if (g.HoveredId && g.ActiveId != g.HoveredId)
@@ -172,7 +175,7 @@ export class Imgui extends ImguiMixins {
     g.HoveredIdAllowOverlap = false;
     if (
       g.ActiveIdIsAlive != g.ActiveId &&
-      g.ActiveIdPreviousFrame == g.ActiveId &&
+      g.ActiveIdPreviousFrame === g.ActiveId &&
       g.ActiveId != 0
     ) {
       this.clearActiveID();
@@ -248,7 +251,7 @@ export class Imgui extends ImguiMixins {
       !(g.NavWindow.Flags & WindowFlags.NoNavInputs) &&
       !g.IO.KeyCtrl &&
       this.isKeyPressedMap(Key.Tab);
-    if (g.ActiveId == 0 && g.FocusTabPressed) {
+    if (g.ActiveId === 0 && g.FocusTabPressed) {
       // Note that SetKeyboardFocusHere() sets the Next fields mid-frame.
       // To be consistent we also  manipulate the Next fields even, even
       // though they will be turned into Curr fields by the code below.
@@ -293,7 +296,7 @@ export class Imgui extends ImguiMixins {
     g.NavIdTabCounter = Number.MAX_SAFE_INTEGER;
 
     // Mark all windows as not visible
-    console.assert(g.WindowsFocusOrder.Size == g.Windows.Size);
+    console.assert(g.WindowsFocusOrder.Size === g.Windows.Size);
     for (let i = 0; i < g.Windows.length; i++) {
       let win = g.Windows[i];
       win.WasActive = win.Active;
@@ -334,7 +337,7 @@ export class Imgui extends ImguiMixins {
   EndFrame() {
     let g = this.guictx;
     console.assert(g.Initialized);
-    if (g.FrameCountEnded == g.FrameCount)
+    if (g.FrameCountEnded === g.FrameCount)
       // Don't process EndFrame() multiple times.
       return;
     console.assert(g.FrameScopeActive); // Forgot to call ImGui::NewFrame()?
@@ -343,7 +346,7 @@ export class Imgui extends ImguiMixins {
     // inputs using Microsoft IME)
     if (
       g.IO.ImeSetInputScreenPosFn &&
-      (g.PlatformImeLastPos.x == Number.MAX_VALUE ||
+      (g.PlatformImeLastPos.x === Number.MAX_VALUE ||
         Vec2.Subtract(g.PlatformImeLastPos, g.PlatformImePos).LengthSq() >
           0.0001)
     ) {
@@ -361,7 +364,7 @@ export class Imgui extends ImguiMixins {
     if (g.CurrentWindowStack.length != 1) {
       if (g.CurrentWindowStack.length > 1) {
         console.assert(
-          g.CurrentWindowStack.length == 1,
+          g.CurrentWindowStack.length === 1,
           "Mismatched Begin/BeginChild vs End/EndChild calls: did you forget to call End/EndChild?"
         );
         while (g.CurrentWindowStack.length > 1)
@@ -369,7 +372,7 @@ export class Imgui extends ImguiMixins {
           this.End();
       } else {
         console.assert(
-          g.CurrentWindowStack.length == 1,
+          g.CurrentWindowStack.length === 1,
           "Mismatched Begin/BeginChild vs End/EndChild calls: did you overcall End/EndChild?"
         );
       }
@@ -427,7 +430,7 @@ export class Imgui extends ImguiMixins {
     // This usually assert if there is a mismatch between the
     // WindowFlags.ChildWindow / ParentWindow values and DC.ChildWindows[]
     // in parents, aka we've done something wrong.
-    console.assert(g.Windows.length == g.WindowsSortBuffer.length);
+    console.assert(g.Windows.length === g.WindowsSortBuffer.length);
     let tmp = g.Windows;
     g.Windows = g.WindowsSortBuffer;
     g.WindowsSortBuffer = tmp;
@@ -475,7 +478,7 @@ export class Imgui extends ImguiMixins {
         let win = g.Windows[n];
         if (
           win.IsActiveAndVisible() &&
-          // (win.Flags & WindowFlags.ChildWindow) == 0 &&
+          // (win.Flags & WindowFlags.ChildWindow) === 0 &&
           // we don't combine display lists, so we draw child windows
           win != frontWins[0] &&
           win != frontWins[1]
@@ -587,9 +590,9 @@ export class Imgui extends ImguiMixins {
   // no name: get a scaled/styled version of the current font
   // name and scale/style: get a styled variant of the named font
   GetFont(name = null, scale = 1, weight = null, style = null) {
-    if (name == null && scale == 1) return this.guictx.Font;
+    if (name === null && scale === 1) return this.guictx.Font;
     else {
-      if (name == null) name = this.guictx.Font.Family;
+      if (name === null) name = this.guictx.Font.Family;
       let size = this.guictx.FontSize * scale;
       return this.guictx.IO.Fonts.GetFont(name, size, weight, style);
     }
@@ -628,7 +631,7 @@ export class Imgui extends ImguiMixins {
   }
 
   PushFont(font) {
-    if (typeof font == "string") font = this.guictx.Style.GetFont(font);
+    if (typeof font === "string") font = this.guictx.Style.GetFont(font);
 
     if (!font) font = this.getDefaultFont();
 
@@ -673,7 +676,7 @@ export class Imgui extends ImguiMixins {
   // to the right of window (so -1.0f always align width to the right side)
   PushItemWidth(item_width) {
     let win = this.getCurrentWindow();
-    win.DC.ItemWidth = item_width == 0 ? win.ItemWidthDefault : item_width;
+    win.DC.ItemWidth = item_width === 0 ? win.ItemWidthDefault : item_width;
     win.DC.ItemWidthStack.push(win.DC.ItemWidth);
   }
 
@@ -733,7 +736,7 @@ export class Imgui extends ImguiMixins {
   }
 
   // Calculate full item size given user provided 'size' parameter and
-  // default width/height. Default width is often == getNextItemWidth().
+  // default width/height. Default width is often === getNextItemWidth().
   // Those two functions CalcItemWidth vs calcItemSize are awkwardly named
   // because they are not fully symmetrical. Note that only CalcItemWidth()
   // is publicly exposed. The 4.0f here may be changed to match
@@ -744,11 +747,11 @@ export class Imgui extends ImguiMixins {
     let region_max;
     if (size.x < 0 || size.y < 0) region_max = this.getContentRegionMaxScreen();
 
-    if (size.x == 0) size.x = default_w;
+    if (size.x === 0) size.x = default_w;
     else if (size.x < 0)
       size.x = Math.max(4, region_max.x - win.DC.CursorPos.x + size.x);
 
-    if (size.y == 0) size.y = default_h;
+    if (size.y === 0) size.y = default_h;
     else if (size.y < 0)
       size.y = Math.max(4, region_max.y - win.DC.CursorPos.y + size.y);
     return size;
@@ -757,7 +760,7 @@ export class Imgui extends ImguiMixins {
   calcWrapWidthForPos(pos, wrap_pos_x) {
     if (wrap_pos_x < 0) return 0;
     let win = this.guictx.CurrentWindow;
-    if (wrap_pos_x == 0) wrap_pos_x = this.GetContentRegionMax().x + win.Pos.x;
+    if (wrap_pos_x === 0) wrap_pos_x = this.GetContentRegionMax().x + win.Pos.x;
     else if (wrap_pos_x > 0) {
       wrap_pos_x += win.Pos.x - win.Scroll.x;
       // wrap_pos_x is provided is window local space
@@ -792,7 +795,7 @@ export class Imgui extends ImguiMixins {
     let stack = win.DC.ItemFlagsStack;
     stack.pop();
     win.DC.ItemFlags = stack[stack.length - 1]; // may be undefined
-    if (win.DC.ItemFlags == undefined) win.DC.ItemFlags = ItemFlags.Default;
+    if (win.DC.ItemFlags === undefined) win.DC.ItemFlags = ItemFlags.Default;
   }
 
   isWindowContentHoverable(win, flags) {
@@ -833,7 +836,7 @@ export class Imgui extends ImguiMixins {
     let stack = win.DC.TextWrapPosStack;
     stack.pop();
     win.DC.TextWrapPos = stack[stack.length - 1]; // may be undefined
-    if (win.DC.TextWrapPos == undefined) win.DC.TextWrapPos = -1;
+    if (win.DC.TextWrapPos === undefined) win.DC.TextWrapPos = -1;
   }
 
   // allow focusing using TAB/Shift-TAB, enabled by default but you can
@@ -959,9 +962,9 @@ export class Imgui extends ImguiMixins {
     let win = g.CurrentWindow;
     if (win.Appearing) return;
     if (
-      g.NavWindow == win.RootWindowForNav &&
+      g.NavWindow === win.RootWindowForNav &&
       (g.NavInitRequest || g.NavInitResultId != 0) &&
-      g.NavLayer == g.NavWindow.DC.NavLayerCurrent
+      g.NavLayer === g.NavWindow.DC.NavLayerCurrent
     ) {
       g.NavInitRequest = false;
       g.NavInitResultId = g.NavWindow.DC.LastItemId;
@@ -1003,7 +1006,7 @@ export class Imgui extends ImguiMixins {
       return false;
     // Flags not supported by
     console.assert(
-      (flags & (HoveredFlags.RootWindow | HoveredFlags.ChildWindows)) == 0
+      (flags & (HoveredFlags.RootWindow | HoveredFlags.ChildWindows)) === 0
     );
 
     // Test if we are hovering the right window (our window could be behind another window)
@@ -1042,9 +1045,9 @@ export class Imgui extends ImguiMixins {
     }
 
     // Special handling for the dummy item after Begin() which represent
-    // the title bar or tab. When the window is collapsed (SkipItems==true)
+    // the title bar or tab. When the window is collapsed (SkipItems===true)
     // that last item will never be overwritten so we need to detect the ca
-    if (win.DC.LastItemId == win.MoveId && win.WriteAccessed) return false;
+    if (win.DC.LastItemId === win.MoveId && win.WriteAccessed) return false;
     else if (delay != 0 && g.HoveredIdTimer < delay) return false;
     else return true;
   }
@@ -1056,7 +1059,7 @@ export class Imgui extends ImguiMixins {
     let g = this.guictx;
     if (g.ActiveId) {
       let win = g.CurrentWindow;
-      return g.ActiveId == win.DC.LastItemId;
+      return g.ActiveId === win.DC.LastItemId;
     }
     return false;
   }
@@ -1065,13 +1068,17 @@ export class Imgui extends ImguiMixins {
   IsItemFocused() {
     let g = this.guictx;
     let win = g.CurrentWindow;
-    if (g.NavId == 0 || g.NavDisableHighlight || g.NavId != win.DC.LastItemId) {
+    if (
+      g.NavId === 0 ||
+      g.NavDisableHighlight ||
+      g.NavId != win.DC.LastItemId
+    ) {
       return false;
     } else return true;
   }
 
   // is the last item clicked? (e.g. button/node just clicked on)
-  //  == IsMouseClicked(mouse_button) && IsItemHovered()
+  //  === IsMouseClicked(mouse_button) && IsItemHovered()
   IsItemClicked(mouse_button = 0) {
     return (
       this.IsMouseClicked(mouse_button) && this.IsItemHovered(HoveredFlags.None)
@@ -1099,7 +1106,7 @@ export class Imgui extends ImguiMixins {
     if (g.ActiveId) {
       let win = g.CurrentWindow;
       if (
-        g.ActiveId == win.DC.LastItemId &&
+        g.ActiveId === win.DC.LastItemId &&
         g.ActiveIdPreviousFrame != win.DC.LastItemId
       ) {
         return true;
@@ -1114,7 +1121,7 @@ export class Imgui extends ImguiMixins {
     let g = this.guictx;
     let win = g.CurrentWindow;
     return (
-      g.ActiveIdPreviousFrame == win.DC.LastItemId &&
+      g.ActiveIdPreviousFrame === win.DC.LastItemId &&
       g.ActiveIdPreviousFrame != 0 &&
       g.ActiveId != win.DC.LastItemId
     );
@@ -1130,7 +1137,7 @@ export class Imgui extends ImguiMixins {
     return (
       this.IsItemDeactivated() &&
       (g.ActiveIdPreviousFrameHasBeenEdited ||
-        (g.ActiveId == 0 && g.ActiveIdHasBeenEdited))
+        (g.ActiveId === 0 && g.ActiveIdHasBeenEdited))
     );
   }
 
@@ -1174,9 +1181,9 @@ export class Imgui extends ImguiMixins {
   // with invisible buttons, selectables, etc. to catch unused area.
   SetItemAllowOverlap() {
     let g = this.guictx;
-    if (g.HoveredId == g.CurrentWindow.DC.LastItemId)
+    if (g.HoveredId === g.CurrentWindow.DC.LastItemId)
       g.HoveredIdAllowOverlap = true;
-    if (g.ActiveId == g.CurrentWindow.DC.LastItemId)
+    if (g.ActiveId === g.CurrentWindow.DC.LastItemId)
       g.ActiveIdAllowOverlap = true;
   }
 
@@ -1184,7 +1191,7 @@ export class Imgui extends ImguiMixins {
 
   IsRectVisible(a, b) {
     let win = this.guictx.CurrentWindow;
-    if (b == undefined) {
+    if (b === undefined) {
       // a is assumed to be size
       // test if rectangle (of given size, starting from cursor position)
       // is visible / not clipped.
@@ -1243,7 +1250,7 @@ export class Imgui extends ImguiMixins {
     let g = this.guictx;
     if (hide_text_after_double_hash) text = text.split("##")[0];
     let font = g.Font;
-    if (text.length == 0) return new Vec2(0, g.FontLineHeight);
+    if (text.length === 0) return new Vec2(0, g.FontLineHeight);
 
     let text_size = font.CalcTextSizeA(
       Number.MAX_VALUE,
@@ -1261,13 +1268,13 @@ export class Imgui extends ImguiMixins {
 
   // Inputs Utilities -----------------------------------------
 
-  // map Key.* values into user's key index. == io.KeyMap[key]
+  // map Key.* values into user's key index. === io.KeyMap[key]
   GetKeyIndex(guikey) {
     console.assert(guikey >= 0 && guikey < Key.COUNT);
     return this.guictx.IO.KeyMap[guikey];
   }
 
-  // is key being held. == io.KeysDown[user_key_index]. note that imgui
+  // is key being held. === io.KeysDown[user_key_index]. note that imgui
   // doesn't know the semantic of each entry of io.KeysDown[]. Use your
   // own indices/enums according to how your backend/engine stored them
   // into io.KeysDown[]!
@@ -1288,7 +1295,7 @@ export class Imgui extends ImguiMixins {
       user_key_index >= 0 && user_key_index < g.IO.KeysDown.length
     );
     const t = g.IO.KeysDownDuration[user_key_index];
-    if (t == 0) return true;
+    if (t === 0) return true;
     else if (repeat && t > g.IO.KeyRepeatDelay)
       return (
         this.GetKeyPressedAmount(
@@ -1359,7 +1366,7 @@ export class Imgui extends ImguiMixins {
     let g = this.guictx;
     console.assert(button >= 0 && button < g.IO.MouseDown.length);
     const t = g.IO.MouseDownDuration[button];
-    if (t == 0) return true;
+    if (t === 0) return true;
     if (repeat && t > g.IO.KeyRepeatDelay) {
       let delay = g.IO.KeyRepeatDelay;
       let rate = g.IO.KeyRepeatRate;

@@ -173,7 +173,7 @@ export class StyleEditor
                 // static bool output_only_modified = true;
                 if (imgui.Button("Export Unsaved"))
                 {
-                    if (this.outputTarget == 0)
+                    if (this.outputTarget === 0)
                         imgui.LogToClipboard();
                     else
                         imgui.LogToTTY();
@@ -200,13 +200,13 @@ export class StyleEditor
 
                 this.colorTextFilter.Draw("Filter colors", imgui.GetFontSize() * 16);
 
-                if(imgui.RadioButton("Opaque", this.colorAlphaFlags==0))
+                if(imgui.RadioButton("Opaque", this.colorAlphaFlags===0))
                     this.colorAlphaFlags = 0;
                 imgui.SameLine();
-                if(imgui.RadioButton("Alpha", this.colorAlphaFlags==ColorEditFlags.AlphaPreview))
+                if(imgui.RadioButton("Alpha", this.colorAlphaFlags===ColorEditFlags.AlphaPreview))
                     this.colorAlphaFlags = ColorEditFlags.AlphaPreview;
                 imgui.SameLine();
-                if(imgui.RadioButton("Both", this.colorAlphaFlags==ColorEditFlags.AlphaPreviewHalf))
+                if(imgui.RadioButton("Both", this.colorAlphaFlags===ColorEditFlags.AlphaPreviewHalf))
                     this.colorAlphaFlags = ColorEditFlags.AlphaPreviewHalf;
 
                 imgui.Tooltip("In the color list:\n\nLeft-click on colored square to open color picker,\n\nRight-click to open edit options menu.");
@@ -265,7 +265,7 @@ export class StyleEditor
 
                     if (fontDetailsOpen)
                     {
-                        if(this._fontvscale == undefined)
+                        if(this._fontvscale === undefined)
                             this._fontvscale = 1;
                         imgui.SliderFloat("Scale", this._fontvscale, 0.2, 5,
                             "%.1f", 1, (v) => this._fontvscale = v);

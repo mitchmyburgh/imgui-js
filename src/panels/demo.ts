@@ -382,15 +382,15 @@ export class DemoWindow
                 imgui.Text("Mouse Position: <invalid>");
             if (imgui.BeginPopupContextWindow())
             {
-                if (imgui.MenuItem("Custom", null, this._corner == -1))
+                if (imgui.MenuItem("Custom", null, this._corner === -1))
                     this._corner = -1;
-                if (imgui.MenuItem("Top-left", null, this._corner == 0))
+                if (imgui.MenuItem("Top-left", null, this._corner === 0))
                     this._corner = 0;
-                if (imgui.MenuItem("Top-right", null, this._corner == 1))
+                if (imgui.MenuItem("Top-right", null, this._corner === 1))
                     this._corner = 1;
-                if (imgui.MenuItem("Bottom-left",  null, this._corner == 2))
+                if (imgui.MenuItem("Bottom-left",  null, this._corner === 2))
                     this._corner = 2;
-                if (imgui.MenuItem("Bottom-right", null, this._corner == 3))
+                if (imgui.MenuItem("Bottom-right", null, this._corner === 3))
                     this._corner = 3;
                 if (p_open.get() && imgui.MenuItem("Close"))
                     p_open.set(false);

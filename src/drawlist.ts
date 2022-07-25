@@ -1,5 +1,6 @@
 import { CornerFlags, DrawListFlags } from "./flags.js";
 import { Rect, Vec2 } from "./types.js";
+import Imgui from "./imgui";
 
 let PathType = {
   Line: 0,
@@ -8,7 +9,7 @@ let PathType = {
   Bezier: 3,
 };
 
-let Angles = [];
+let Angles: number[] = [];
 for (let i = 0; i < 13; i++) Angles.push((2 * Math.PI * i) / 12);
 
 /**
@@ -25,7 +26,18 @@ for (let i = 0; i < 13; i++) Angles.push((2 * Math.PI * i) / 12);
  *      global DrawLists for foreground and background).
  */
 export class DrawList {
-  constructor(imgui, owner) {
+  imgui: Imgui;
+  canvas: HTMLCanvasElement;
+  canvasCtx: CanvasRenderingContext2D | null;
+  owner: string;
+  flags: DrawListFlags;
+  drawLayers: unknown[][] = [[]];
+  path: unknown[] = [];
+  clipRectStack: unknown[] = [];
+  LayerStack: unknown[][] = [];
+  currentLayer: unknown[] = [];
+
+  constructor(imgui: Imgui, owner: string) {
     this.imgui = imgui;
     this.canvas = imgui.canvas;
     this.canvasCtx = this.canvas.getContext("2d");
@@ -35,7 +47,7 @@ export class DrawList {
   }
 
   Clear(layer = undefined) {
-    if (layer == undefined) this.drawLayers = [[]]; // array of arrays
+    if (layer === undefined) this.drawLayers = [[]]; // array of arrays
     else this.drawLayers[layer] = [];
     this.path = [];
     this.clipRectStack = [];
@@ -43,9 +55,9 @@ export class DrawList {
     this.currentLayer = this.drawLayers[0];
   }
 
-  BeginLayer(i) {
+  BeginLayer(i: number) {
     let layer = this.drawLayers[i];
-    if (layer == undefined) {
+    if (layer === undefined) {
       layer = [];
       this.drawLayers[i] = layer;
     }
@@ -60,9 +72,9 @@ export class DrawList {
   }
 
   Render(
-    layer // undefined means render all
+    layer: number // undefined means render all
   ) {
-    if (layer == undefined) {
+    if (layer === undefined) {
       for (let layer of this.drawLayers) {
         // layer 0 under layer 1, etc
         for (let i = 0; i < layer.length; i++) this.layer[i]();
@@ -245,7 +257,7 @@ export class DrawList {
     let c0 = uleftCol.AsStr();
     let c1;
     let ttob;
-    if (uleftCol == urightCol) {
+    if (uleftCol === urightCol) {
       // top to bottom
       c1 = bleftCol.AsStr();
       ttob = true;
@@ -401,7 +413,7 @@ export class DrawList {
     let clip = this.getClipRect();
     let size = rect.GetSize();
     let cstr = col ? col.AsStr() : null;
-    if (uv_a == null || uv_b == null) {
+    if (uv_a === null || uv_b === null) {
       this.currentLayer.push(
         this.drawImage.bind(
           this,
@@ -485,7 +497,7 @@ export class DrawList {
 
   PathLineToMergeDuplicate(pos) {
     let lastpt = this.path[this.path.length - 1][0];
-    if (lastpt == undefined || lastpt.x != pos.x || lastpt.y != pos.y)
+    if (lastpt === undefined || lastpt.x != pos.x || lastpt.y != pos.y)
       this.path.push([PathType.Line, pos]);
   }
 
@@ -509,7 +521,7 @@ export class DrawList {
   }
 
   PathRect(a, b, rounding = 0, corners_flags = CornerFlags.All) {
-    if (rounding == 0 || corners_flags == 0) {
+    if (rounding === 0 || corners_flags === 0) {
       this.PathLineTo(a);
       this.PathLineTo(new Vec2(b.x, a.y));
       this.PathLineTo(b);
@@ -656,7 +668,7 @@ export class DrawList {
     ctx.save();
     if (clip) this.doClip(ctx, clip);
     ctx.fillStyle = fill;
-    if (rounding == 0) {
+    if (rounding === 0) {
       for (let r of rects) ctx.fillRect(r[0], r[1], r[2], r[3]);
     } else {
       for (let r of rects) {
@@ -684,7 +696,7 @@ export class DrawList {
       ctx.lineWidth = thickness;
       ctx.strokeStyle = col;
     }
-    if (rounding == 0) {
+    if (rounding === 0) {
       if (fill) ctx.fillRect(x, y, w, h);
       else {
         ctx.beginPath();
@@ -717,7 +729,7 @@ export class DrawList {
 
   roundRect(x, y, width, height, radius, corners, stroke = true, fill = true) {
     let ctx = this.canvasCtx;
-    if (radius == 0) ctx.rect(x, y, width, height);
+    if (radius === 0) ctx.rect(x, y, width, height);
     else {
       //    c1---a---------------b----c2
       //     |                         |
@@ -789,7 +801,7 @@ export class DrawList {
         case PathType.Line:
           {
             let p = el[1];
-            if (i == 0) ctx.moveTo(p.x, p.y);
+            if (i === 0) ctx.moveTo(p.x, p.y);
             else ctx.lineTo(p.x, p.y);
           }
           break;
@@ -831,7 +843,7 @@ export class DrawList {
           break;
       }
     }
-    if (op == "stroke") {
+    if (op === "stroke") {
       ctx.lineWidth = thickness;
       ctx.strokeStyle = style;
       ctx.stroke();

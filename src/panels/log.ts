@@ -151,7 +151,7 @@ export class LogWindow
 
     GetLastMsg(maxLength=0)
     {
-        if(maxLength == 0)
+        if(maxLength === 0)
             return this.lastMsg;
         else
             return this.lastMsg.slice(0, maxLength);
@@ -173,7 +173,7 @@ export class LogWindow
 
     GetLastError(maxLength=24)
     {
-        if(maxLength == 0)
+        if(maxLength === 0)
             return this.lastError;
         else
             return this.lastError.slice(0, maxLength);
@@ -195,7 +195,7 @@ export class LogWindow
     {
         if(msg.message)
             msg = msg.message;
-        if(typeof(msg) == "object")
+        if(typeof(msg) === "object")
             msg = JSON.stringify(msg);
         if(args && args.length > 0)
         {
@@ -204,7 +204,7 @@ export class LogWindow
         }
         this.lastMsg = msg;
         this.lastMsgLevel = level;
-        if(level == "WARNING" || level == "ERROR" || level == "ALERT")
+        if(level === "WARNING" || level === "ERROR" || level === "ALERT")
         {
             this.lastErrorLevel = level;
             this.lastError = msg; 
@@ -336,7 +336,7 @@ export class LogWindow
         let c;
         if(imgui)
         {
-            if(lev == "")
+            if(lev === "")
                 c = "#222";
             else
             {

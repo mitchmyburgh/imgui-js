@@ -98,7 +98,7 @@ export class FileBrowser
         this.selectionType = ""; // only valid if selection is non-empty
         if(this.filter)
             this.filter.Clear();
-        if(this.cwd == "/")
+        if(this.cwd === "/")
         {
             this.cwdList = ["/"];
             this.filesys.listVolumes(this.readDirCB.bind(this));
@@ -106,11 +106,11 @@ export class FileBrowser
         else
         {
             this.cwdList = this.cwd.split("/");
-            if(this.cwdList[0] == "") // path started with "/"
+            if(this.cwdList[0] === "") // path started with "/"
                 this.cwdList[0] = "/";
             else
                 this.cwdList.unshift("/"); // insert front
-            if(this.cwdList[this.cwdList.length-1] == "") // path ended with '/'
+            if(this.cwdList[this.cwdList.length-1] === "") // path ended with '/'
                 this.cwdList.pop();
             this.cwdSubdirs.push("..");
             let opts = {withFileTypes: true};
@@ -123,7 +123,7 @@ export class FileBrowser
     // client is expected to manually close via IsOpen.set(false)
     SetClient(prompt, cb, mode, ext, doopen=true, zIndex=-1)
     {
-        if(typeof(mode) == "string")
+        if(typeof(mode) === "string")
             mode = ClientModes.indexOf(mode);
         this.opMode = mode;
         this.clientCB = cb;
@@ -141,7 +141,7 @@ export class FileBrowser
 
     GetSelection(asRelative=true)
     {
-        let str = (this.opMode == FileBrowserMode.SaveFile) ?
+        let str = (this.opMode === FileBrowserMode.SaveFile) ?
                         this.nameEntry.toString() : this.selection;
         if(asRelative)
             return str;
@@ -176,7 +176,7 @@ export class FileBrowser
         }
 
         let recentDirs = this.prefs ? this.prefs.GetValue(RecentDirs, []) : this.recentDirs;
-        if(this.cwd == null)
+        if(this.cwd === null)
         {
             let firstDir;
             if(recentDirs.length)
@@ -207,7 +207,7 @@ export class FileBrowser
         let lastX2 = 0;
         let winMax = imgui.GetWindowPos().x +
                      imgui.GetWindowContentRegionMax().x;
-        if(this.cwdList.length == 0)
+        if(this.cwdList.length === 0)
         {
             if(imgui.SmallButton("/")) // windows root dir
                 this.SetDir("/"); // Async
@@ -222,7 +222,7 @@ export class FileBrowser
                 // button was clicked, so we need to rescan
                 let subset = this.cwdList.slice(0, i+1);
                 let newpath = subset.join("/"); // ["/", "C:"] -> "//C:"
-                if(newpath.indexOf("//") == 0)
+                if(newpath.indexOf("//") === 0)
                     newpath = newpath.slice(1);
                 this.SetDir(newpath); // Async
             }
@@ -270,8 +270,8 @@ export class FileBrowser
             let p = this.cwdSubdirs[i];
             if(this.filter.IsActive() && !this.filter.PassFilter(p))
                 continue;
-            if(p == ".") continue; // may not happen
-            if (imgui.Selectable(p+"/", p == this.selection,
+            if(p === ".") continue; // may not happen
+            if (imgui.Selectable(p+"/", p === this.selection,
                 SelectableFlags.AllowDoubleClick))
             {
                 this.selection = p;
@@ -285,14 +285,14 @@ export class FileBrowser
             }
         }
         imgui.PopStyleColor();
-        if (this.opMode == FileBrowserMode.SaveFile && this.cwd != "/")
+        if (this.opMode === FileBrowserMode.SaveFile && this.cwd != "/")
         {
             let id = "Create Folder";
             imgui.PushStyleColor("Text", imgui.GetStyleColor("FBMkDir"));
             if(imgui.Selectable("New folder...", false))
             {
                 imgui.OpenPopup(id);
-                this.selectionType == "newfolder";
+                this.selectionType === "newfolder";
                 this.mkdirEntry.Set("");
             }
             imgui.PopStyleColor();
@@ -327,7 +327,7 @@ export class FileBrowser
             let p = this.cwdFiles[i];
             if(this.filter.IsActive() && !this.filter.PassFilter(p))
                 continue;
-            if (imgui.Selectable(p, p == this.selection,
+            if (imgui.Selectable(p, p === this.selection,
                 SelectableFlags.AllowDoubleClick))
             {
                 this.selection = p;
@@ -366,10 +366,10 @@ export class FileBrowser
 
     disableSelection()
     {
-        return this.selection.length == 0 ||
-               (this.opMode == FileBrowserMode.PickFile &&
+        return this.selection.length === 0 ||
+               (this.opMode === FileBrowserMode.PickFile &&
                 this.selectionType != "file") ||
-               (this.opMode == FileBrowserMode.PickDir &&
+               (this.opMode === FileBrowserMode.PickDir &&
                 this.selectionType != "dir");
     }
 
@@ -378,10 +378,10 @@ export class FileBrowser
         switch(this.selectionType)
         {
         case "dir":
-            if(this.opMode == FileBrowserMode.PickDir)
+            if(this.opMode === FileBrowserMode.PickDir)
                 this.performSelection();
             else
-            if(this.selection == "..")
+            if(this.selection === "..")
             {
                 if(/^[a-zA-Z]:[/]?$/.test(this.cwd))  // C: and C:/
                     this.SetDir("/");
@@ -396,7 +396,7 @@ export class FileBrowser
             }
             break;
         case "file":
-            if(this.opMode == FileBrowserMode.PickFile)
+            if(this.opMode === FileBrowserMode.PickFile)
                 this.performSelection();
             break;
         case "newfolder":
@@ -443,7 +443,7 @@ export class FileBrowser
         case FileBrowserMode.SaveFile:
             imgui.InputText("##FileName", this.nameEntry);
             imgui.SameLine();
-            if(this.nameEntry.Length() == 0)
+            if(this.nameEntry.Length() === 0)
             {
                 imgui.PushItemFlag(ItemFlags.Disabled);
                 imgui.PushStyleVar("Alpha", .5);
@@ -452,7 +452,7 @@ export class FileBrowser
             {
                 this.performSelection();
             }
-            if(this.nameEntry.Length() == 0)
+            if(this.nameEntry.Length() === 0)
             {
                 imgui.PopItemFlag();
                 imgui.PopStyleVar();
@@ -538,7 +538,7 @@ export class FileBrowser
             {
                 this.selection = this.cwdFiles[this.selectionIndex-this.cwdSubdirs.length];
                 this.selectionType = "file";
-                if(this.opMode == FileBrowserMode.SaveFile)
+                if(this.opMode === FileBrowserMode.SaveFile)
                     this.nameEntry.Set(this.selection);
             }
         }
@@ -567,7 +567,7 @@ export class FileBrowser
             //  so we currently make a slew of stat calls
             let f = flist[i];
             let fpath;
-            if(this.cwd == "/" && this.path.sep == "\\")
+            if(this.cwd === "/" && this.path.sep === "\\")
                 fpath = f; // cuz this.path.join("/", "C:") is bad
             else
                 fpath = this.path.join(this.cwd, f);
@@ -583,7 +583,7 @@ export class FileBrowser
                 else
                     console.debug("skipping " + f); // (links, specical files)
                 nfiles++;
-                if(nfiles == flist.length-1)
+                if(nfiles === flist.length-1)
                 {
                     // ".." sorts to top for my locale
                     this.cwdSubdirs.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));

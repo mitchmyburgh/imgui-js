@@ -41,7 +41,7 @@ export var ImguiDragMixin =
     DragFloat(label, val, v_speed=1, v_min=0, v_max=0, format=null,
             power=1, onChange=null, onDone=null, flags=0)
     {
-        if(format==null) format=FFmt;
+        if(format===null) format=FFmt;
         return this.DragScalar(label, DataType.Float, val, v_speed, v_min, v_max,
                             format, power, onChange, onDone, flags);
     },
@@ -64,7 +64,7 @@ export var ImguiDragMixin =
     DragFloat2(label, val, v_speed=1, v_min=0, v_max=0, format=null,
                 power=1, onChange=null, onDone=null, flags=0)
     {
-        if(format==null) format=FFmt;
+        if(format===null) format=FFmt;
         return this.DragScalarN(label, DataType.Float, val, 2,
                                 v_speed, v_min, v_max, format, power, 
                                 onChange, onDone, flags);
@@ -73,7 +73,7 @@ export var ImguiDragMixin =
     DragFloat3(label, val, v_speed=1, v_min=0, v_max=0, format=null,
                 power=1, onChange=null, onDone=null, flags=0)
     {
-        if(format==null) format=FFmt;
+        if(format===null) format=FFmt;
         return this.DragScalarN(label, DataType.Float, val, 3,
                                 v_speed, v_min, v_max, format, power, 
                                 onChange, onDone, flags);
@@ -82,7 +82,7 @@ export var ImguiDragMixin =
     DragFloat4(label, val, v_speed=1, v_min=0, v_max=0, format=null,
                 power=1, onChange=null, onDone=null, flags=0)
     {
-        if(format==null) format=FFmt;
+        if(format===null) format=FFmt;
         if(val.AsArray != undefined)
         {
             let va = val.AsArray();
@@ -146,7 +146,7 @@ export var ImguiDragMixin =
     DragInt(label, v, v_speed=1, v_min=0, v_max=0, format=null, 
             onChange=null, onDone=null, flags=0)
     {
-        if(format==null) format=IFmt;
+        if(format===null) format=IFmt;
         return this.DragScalar(label, DataType.S32, v, v_speed, v_min, v_max,
                             format, 1, onChange, onDone, flags);
     },
@@ -155,7 +155,7 @@ export var ImguiDragMixin =
     DragInt2(label, v, v_speed=1, v_min=0, v_max=0, format=null, 
             onChange=null, onDone=null, flags=0)
     {
-        if(format==null) format=IFmt;
+        if(format===null) format=IFmt;
         return this.DragScalarN(label, DataType.S32, v, 2, v_speed, v_min, v_max,
                             format, 1, onChange, onDone, flags);
     },
@@ -164,7 +164,7 @@ export var ImguiDragMixin =
     DragInt3(label, v, v_speed=1, v_min=0, v_max=0, format=null, 
             onChange=null, onDone=null, flags=0)
     {
-        if(format==null) format=IFmt;
+        if(format===null) format=IFmt;
         return this.DragScalarN(label, DataType.S32, v, 3, v_speed, v_min, v_max,
                             format, 1, onChange, onDone, flags);
     },
@@ -173,7 +173,7 @@ export var ImguiDragMixin =
     DragInt4(label, v, v_speed=1, v_min=0, v_max=0, format=null, 
                             onChange=null, onDone=null, flags=0)
     {
-        if(format==null) format=IFmt;
+        if(format===null) format=IFmt;
         return this.DragScalarN(label, DataType.S32, v, 4, v_speed,
                                 v_min, v_max, format, 1, 
                                 onChange, onDone, flags);
@@ -276,21 +276,21 @@ export var ImguiDragMixin =
         const focus_requested = this.focusableItemRegister(win, id);
         if (focus_requested ||
             (hovered && (g.IO.MouseClicked[0] || g.IO.MouseDoubleClicked[0])) ||
-            g.NavActivateId == id ||
-            (g.NavInputId == id && g.ScalarAsInputTextId != id))
+            g.NavActivateId === id ||
+            (g.NavInputId === id && g.ScalarAsInputTextId != id))
         {
             this.setActiveID(id, win);
             this.setFocusID(id, win);
             this.FocusWindow(win);
             g.ActiveIdAllowNavDirFlags = (1 << Dir.Up) | (1 << Dir.Down);
             if (focus_requested || g.IO.KeyCtrl ||
-                g.IO.MouseDoubleClicked[0] || g.NavInputId == id)
+                g.IO.MouseDoubleClicked[0] || g.NavInputId === id)
             {
                 start_text_input = true;
                 g.ScalarAsInputTextId = 0;
             }
         }
-        if (start_text_input || (g.ActiveId == id && g.ScalarAsInputTextId == id))
+        if (start_text_input || (g.ActiveId === id && g.ScalarAsInputTextId === id))
         {
             win.DC.CursorPos = frame_bb.Min.Clone();
             this.focusableItemUnregister(win);
@@ -324,8 +324,8 @@ export var ImguiDragMixin =
         {
             this.renderFrameBorder(frame_bb.Min, frame_bb.Max, 0, .5);
 
-            let active = g.ActiveId == id && 
-                         g.ActiveIdSource == InputSource.Mouse && 
+            let active = g.ActiveId === id && 
+                         g.ActiveIdSource === InputSource.Mouse && 
                          g.IO.MouseDown[0];
 
             let col = style.GetColor((active||hovered) ? "LinkHovered" : "Link");
@@ -336,8 +336,8 @@ export var ImguiDragMixin =
         }
         else
         {
-            const frame_col = style.GetColor(g.ActiveId == id ? "FrameBgActive" :
-                    g.HoveredId == id ? "FrameBgHovered" : "FrameBg");
+            const frame_col = style.GetColor(g.ActiveId === id ? "FrameBgActive" :
+                    g.HoveredId === id ? "FrameBgHovered" : "FrameBg");
             this.renderNavHighlight(frame_bb, id);
             this.renderFrame(frame_bb.Min, frame_bb.Max, frame_col, true,
                             style.FrameRounding);
@@ -398,16 +398,16 @@ export var ImguiDragMixin =
                 flags, onChange, onDone)
     {
         let g = this.guictx;
-        if(g.ActiveId == id)
+        if(g.ActiveId === id)
         {
-            if(g.ActiveIdSource == InputSource.Mouse && !g.IO.MouseDown[0])
+            if(g.ActiveIdSource === InputSource.Mouse && !g.IO.MouseDown[0])
             {
                 this.clearActiveID();
                 if(onDone) onDone();
             }
             else
-            if(g.ActiveIdSource == InputSource.Nav &&
-                g.NavActivatePressedId == id && g.ActiveIdIsJustActivated)
+            if(g.ActiveIdSource === InputSource.Nav &&
+                g.NavActivatePressedId === id && g.ActiveIdIsJustActivated)
             {
                 this.clearActiveID();
                 if(onDone) onDone();
@@ -418,21 +418,21 @@ export var ImguiDragMixin =
 
         const axis = (flags & DragFlags.Vertical) ? Axis.Y : Axis.X;
         const axisS = (flags & DragFlags.Vertical) ? "y" : "x";
-        const isfloat = (data_type == DataType.Float);
+        const isfloat = (data_type === DataType.Float);
         const has_min_max = (v_min != v_max);
         const is_power = (power != 1 && isfloat && has_min_max &&
                            (v_max - v_min < Number.MAX_VALUE));
         let precision = isfloat ? ParseFormatPrecision(format) : 0;
 
         // Default tweak speed
-        if (v_speed == 0. && has_min_max && (v_max - v_min < Number.MAX_VALUE))
+        if (v_speed === 0. && has_min_max && (v_max - v_min < Number.MAX_VALUE))
             v_speed = (v_max - v_min) * g.DragSpeedDefaultRatio;
 
         // Inputs accumulates into g.DragCurrentAccum, which is flushed into
         // the current value as soon as it makes a difference with our precision
         // settings
         let adjust_delta = 0.;
-        if (g.ActiveIdSource == InputSource.Mouse && this.IsMousePosValid()
+        if (g.ActiveIdSource === InputSource.Mouse && this.IsMousePosValid()
             && g.IO.MouseDragMaxDistanceSqr[0] > 1.)
         {
             if(!(flags & DragFlags.LongPress) ||
@@ -446,7 +446,7 @@ export var ImguiDragMixin =
             }
         }
         else
-        if (g.ActiveIdSource == InputSource.Nav)
+        if (g.ActiveIdSource === InputSource.Nav)
         {
             adjust_delta = this.getNavInputAmount2d(
                             NavDirSourceFlags.Keyboard | NavDirSourceFlags.PadDPad,
@@ -457,7 +457,7 @@ export var ImguiDragMixin =
 
         // For vertical drag we currently assume that Up=higher value (like we
         // do with vertical sliders). This may become a parameter.
-        if (axis == Axis.Y)
+        if (axis === Axis.Y)
             adjust_delta = -adjust_delta;
 
         // Clear current value on activation
@@ -528,7 +528,7 @@ export var ImguiDragMixin =
                 v_cur = v_max;
         }
 
-        if (v == v_cur)
+        if (v === v_cur)
             return false;
         // Apply result
         if(onChange)

@@ -39,7 +39,7 @@ export class ListClipper
         if (this.ItemsCount < 0)
             return;
         // In theory here we should assert
-        //      GetCursorPosY() == StartPosY + DisplayEnd * ItemsHeight
+        //      GetCursorPosY() === StartPosY + DisplayEnd * ItemsHeight
         // but it feels saner to just seek at End and not assert/crash the user.
         if (this.ItemsCount < Number.MAX_SAFE_INTEGER)
         {
@@ -53,14 +53,14 @@ export class ListClipper
 
     Step()
     {
-        if (this.ItemsCount == 0 || this.imgui.getCurrentWindowRead().SkipItems)
+        if (this.ItemsCount === 0 || this.imgui.getCurrentWindowRead().SkipItems)
         {
             this.ItemsCount = -1;
             return false;
         }
         // Step 0: the clipper let you process the first element, regardless of
         // it being visible or not, so we can measure the element height.
-        if (this.StepNo == 0)
+        if (this.StepNo === 0)
         {
             this.DisplayStart = 0;
             this.DisplayEnd = 1;
@@ -71,9 +71,9 @@ export class ListClipper
         // Step 1: the clipper infer height from first element, calculate the
         // actual range of elements to display, and position the cursor before
         // the first element.
-        if (this.StepNo == 1)
+        if (this.StepNo === 1)
         {
-            if (this.ItemsCount == 1)
+            if (this.ItemsCount === 1)
             {
                 this.ItemsCount = -1;
                 return false;
@@ -90,7 +90,7 @@ export class ListClipper
         // Step 2: dummy step only required if an explicit items_height was
         // passed to constructor or Begin() and user still call Step(). Does
         // nothing and switch to Step 3.
-        if (this.StepNo == 2)
+        if (this.StepNo === 2)
         {
             console.assert(this.DisplayStart >= 0 && this.DisplayEnd >= 0);
             this.StepNo = 3;
@@ -99,7 +99,7 @@ export class ListClipper
         // Step 3: the clipper validate that we have reached the expected Y
         // position (corresponding to element DisplayEnd), advance the cursor
         // to the end of the list and then returns 'false' to end the loop.
-        if (this.StepNo == 3)
+        if (this.StepNo === 3)
             this.End();
         return false;
     }
@@ -138,9 +138,9 @@ export var ImguiListboxMixin =
 
         // When performing a navigation request, ensure we have one item extra
         // in the direction we are moving to
-        if (g.NavMoveRequest && g.NavMoveClipDir == Dir.Up)
+        if (g.NavMoveRequest && g.NavMoveClipDir === Dir.Up)
             start--;
-        if (g.NavMoveRequest && g.NavMoveClipDir == Dir.Down)
+        if (g.NavMoveRequest && g.NavMoveClipDir === Dir.Down)
             end++;
 
         start = Vec1.Clamp(start, 0, items_count);
@@ -294,9 +294,9 @@ export var ImguiListboxMixin =
             {
                 for (let i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
                 {
-                    const item_selected = (i == current_item);
+                    const item_selected = (i === current_item);
                     let item_text =  items_getter(i);
-                    if(item_text == undefined)
+                    if(item_text === undefined)
                         item_text = "*Unknown item*";
 
                     this.PushID(i);

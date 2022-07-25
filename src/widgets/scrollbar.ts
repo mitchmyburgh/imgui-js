@@ -22,7 +22,7 @@ export var ImguiScrollbarMixin =
         let g = this.guictx;
         let win = g.CurrentWindow;
 
-        const horizontal = (axis == Axis.X);
+        const horizontal = (axis === Axis.X);
         const style = g.Style;
         const id = this.getScrollbarID(win, axis);
         this.keepAliveID(id);
@@ -55,7 +55,7 @@ export var ImguiScrollbarMixin =
         // reduce visual noise on very small window and facilitate using the
         // resize grab)
         let alpha = 1.;
-        if ((axis == Axis.Y) && bb_height < g.FontLineHeight + g.Style.FramePadding.y * 2.)
+        if ((axis === Axis.Y) && bb_height < g.FontLineHeight + g.Style.FramePadding.y * 2.)
         {
             alpha = Vec1.Saturate((bb_height - g.FontLineHeight) / (g.Style.FramePadding.y * 2));
             if (alpha <= 0.) return;
@@ -101,7 +101,7 @@ export var ImguiScrollbarMixin =
         // scrolling position before calling Scrollbar().
         let held = new ValRef(false);
         let hovered = new ValRef(false);
-        const previously_held = (g.ActiveId == id);
+        const previously_held = (g.ActiveId === id);
         this.ButtonBehavior(bb, id, hovered, held, ButtonFlags.NoNavFocus);
 
         let scroll_max = Math.max(1, win_size_contents_v - win_size_avail_v);
@@ -206,7 +206,7 @@ export var ImguiScrollbarMixin =
 
     getScrollbarID(win, axis)
     {
-        return win.GetIDNoKeepAlive(axis == Axis.X ? "#SCROLLX" : "#SCROLLY");
+        return win.GetIDNoKeepAlive(axis === Axis.X ? "#SCROLLX" : "#SCROLLY");
     }
 
 }; // end mixin
