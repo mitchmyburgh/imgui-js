@@ -1,6 +1,8 @@
 import { Vec2 } from "./types.js";
 import { CondFlags, ItemStatusFlags } from "./flags.js";
 import { GetHash } from "./hashutil.js";
+import GuiContext from "./guictx";
+import Guictx from "./guictx";
 
 export var DragDropFlags = {
   None: 0,
@@ -48,11 +50,19 @@ f.AcceptPeekOnly = f.AcceptBeforeDelivery | f.AcceptNoDrawDefaultRect;
 // Data payload for Drag and Drop operations:
 //      AcceptDragDropPayload(), GetDragDropPayload()
 export class Payload {
+  SourceId = 0;
+  SourceParentId = 0;
+  DataType = "";
+  Data = null;
+  DataFrameCount = -1;
+  Preview = false;
+  Delivery = false;
+
   constructor() {
     this.Clear();
   }
 
-  IsDataType(typ) {
+  IsDataType(typ: string) {
     return this.DataFrameCount != -1 && this.DataType === typ;
   }
 

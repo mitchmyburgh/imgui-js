@@ -1,6 +1,7 @@
 import { Vec2 } from "./types.js";
 import { FontMetrics } from "./fontmetrics.js";
 import { FontIJMap } from "./fontijmap.js";
+import Imgui from "./imgui";
 
 // exports:
 //   Font
@@ -9,7 +10,18 @@ import { FontIJMap } from "./fontijmap.js";
 const StandardCharCodes = Array.from({ length: 512 }, (x, i) => i);
 
 export class Font {
-  constructor(canvctx, metrics, str) {
+  Metrics: FontMetrics;
+  Family: unknown;
+  Size: number;
+  Weight: unknown;
+  Ascent: unknown;
+  Baseline: unknown;
+  Descent: unknown;
+  str: string;
+  measuring: number;
+  ctx: CanvasRenderingContext2D;
+  ijmap: unknown;
+  constructor(canvctx: CanvasRenderingContext2D, metrics: FontMetrics, str: String) {
     this.Metrics = metrics;
     this.Family = metrics.fontFamily;
     this.Size = metrics.fontSize;
@@ -143,7 +155,58 @@ export class Font {
 export class FontAtlas {
   // Porting construct, we don't currently have need of a font atlas
   // so this can go away.
-  constructor(imgui) {
+  Locked = false;
+  Flags = 0;
+  canvasCtx: CanvasRenderingContext2D | null;
+  fontsInUse = {};
+  fontMetrics: FontMetrics = new FontMetrics();
+  defaultFontFamily = "Verdana";
+  defaultFontSize = 12;
+  defaultFontWeight = "normal";
+  defaultFontStyle = "normal"; // italic, oblique
+  availableFonts = [
+    // icons/special
+    "Material Icons",
+
+    // sans-serif
+    "Arial",
+    "Arial Black",
+    "Arial Narrow",
+    "Exo",
+    "Gill Sans",
+    "Helvetica",
+    "Impact",
+    "Verdana",
+    "Noto Sans",
+    "Open Sans",
+    "Optima",
+    "Roboto",
+    "Trebuchet MS",
+
+    // serif
+    "American Typewriter",
+    "Bookman",
+    "Didot",
+    "Georgia",
+    "New Century Schoolbook",
+    "Palatino",
+    "Times",
+    "Times New Roman",
+    "Ultra",
+
+    // monospace
+    "Andale Mono",
+    "Courier New",
+    "Courier",
+    "FreeMono",
+    "Lucida Console",
+    "Roboto Mono",
+    "SourceCodePro",
+
+    // handwriting (sans-serif)
+    "Comic Sans MS",
+  ];
+  constructor(imgui: Imgui) {
     this.Locked = false;
     this.Flags = 0;
     this.canvasCtx = imgui.canvas.getContext("2d");

@@ -14,7 +14,7 @@ function _lerp(v: number, a: number, b: number) {
 }
 
 export var CSSColors: Record<string, Color> = {}; // filled below
-export var Colors = {}; // filled below
+export var Colors: Record<string, Color> = {}; // filled below
 
 export class Color {
   x: number;
@@ -39,7 +39,7 @@ export class Color {
     );
   }
 
-  static Css(nm: number) {
+  static Css(nm: string) {
     return CSSColors[nm].Clone();
   }
 
@@ -69,18 +69,11 @@ export class Color {
     else return Color.rgba(fields[0], fields[1], fields[2], fields[3]);
   }
 
-  static rgbi(r?: number, g?: number, b?: number) {
-    if (r === undefined) {
-      r = g = b = 0;
-    }
+  static rgbi(r: number = 0, g: number = 0, b: number = 0) {
     return new Color(r / 255.0, g / 255.0, b / 255.0, 1);
   }
 
-  static rgbai(r?: number, g?: number, b?: number, a?: number) {
-    if (r === undefined) {
-      r = g = b = 0;
-      a = 1;
-    }
+  static rgbai(r: number = 0, g: number = 0, b: number = 0, a: number = 1) {
     return new Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
   }
 
@@ -360,7 +353,7 @@ export class Color {
         let l = this.z;
         if (this.y === 0) r = g = b = this.z; // achromatic
         else {
-          let hue2rgb = function (p, q, t) {
+          let hue2rgb = function (p: number, q: number, t: number) {
             if (t < 0) t += 1;
             if (t > 1) t -= 1;
             if (t < 1 / 6) return p + (q - p) * 6 * t;
@@ -381,7 +374,7 @@ export class Color {
     return this
   }
 
-  AsHSL() {
+  AsHSL(): Color {
     switch (this.space) {
       case "rgb": {
         // rgb to hsl
@@ -391,14 +384,14 @@ export class Color {
         let a = this.a;
         let max = Math.max(r, g, b);
         let min = Math.min(r, g, b);
-        let h,
-          s,
+        let h: number,
+          s: number,
           l = (max + min) / 2;
         if (max === min) {
           h = 0;
           s = 0;
         } else {
-          var d = max - min;
+          let d = max - min;
           s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
           switch (max) {
             case r:
@@ -411,7 +404,7 @@ export class Color {
               h = (r - g) / d + 4;
               break;
           }
-          h /= 6;
+          h =  (h!) / 6;
         }
         return new Color(h, s, l, a, "hsl");
       }
@@ -420,9 +413,10 @@ export class Color {
       case "hsv": // to hsv to rsl
         return this.AsRGB().AsHSL();
     }
+    return this
   }
 
-  AsHSV(clone = false) {
+  AsHSV(clone = false): Color {
     switch (this.space) {
       case "rgb": {
         // rgb to hsv
@@ -455,6 +449,7 @@ export class Color {
         if (!clone) return this;
         else return this.Clone();
     }
+    return this
   }
 
   rgbaStr() {
