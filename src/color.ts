@@ -153,17 +153,17 @@ export class Color {
   }
 
   constructor(
-    x: number,
-    y: number,
-    z: number,
-    a?: number,
+    x: number = 0,
+    y: number = 0,
+    z: number= 0,
+    a: number = 1,
     space: string = "rgb" // rgb, hsv, hsl
   ) {
     this.x = x;
     this.y = y;
     this.z = z;
     this.space = space;
-    this.a = a === undefined ? 1 : a;
+    this.a =  a;
     this.str = null;
   }
 
@@ -303,7 +303,7 @@ export class Color {
         return `${dstr}\n${fstr}`;
       }
       case "hsl":
-        console.assert(0, "unimplemented");
+        console.assert(false, "unimplemented");
         break;
     }
   }
@@ -323,7 +323,7 @@ export class Color {
         let h = this.x;
         let s = this.y;
         let v = this.z;
-        let r, g, b;
+        let r: number, g: number, b: number;
         let i = Math.floor(h * 6);
         let f = h * 6 - i;
         let p = v * (1 - s);
@@ -350,7 +350,7 @@ export class Color {
             (r = v), (g = p), (b = q);
             break;
         }
-        return new Color(r, g, b, this.a * alphaMult);
+        return new Color(r!, g!, b!, this.a * alphaMult);
       }
       case "hsl": {
         // hsl to rgb
@@ -378,6 +378,7 @@ export class Color {
         return new Color(r, g, b, this.a * this.alphaMult);
       }
     }
+    return this
   }
 
   AsHSL() {
