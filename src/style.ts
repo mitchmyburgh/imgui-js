@@ -1,96 +1,188 @@
 import { Color, CSSColors } from "./color.js";
 import { Vec2 } from "./types.js";
 import { SettingsHandler } from "./settings.js";
+import Imgui from "./imgui";
+import {FontAtlas} from "./font";
 
 let rgba = Color.rgba;
 let rgb = Color.rgb;
 let rgbi = Color.rgbi;
+
+interface ThemeColor {
+  Border: Color,
+  BorderShadow: Color,
+  Button: Color,
+  ButtonActive: Color,
+  ButtonHovered: Color,
+  CheckMark: Color,
+  CheckerOff: Color,
+  CheckerOn: Color,
+  ChildBg: Color,
+  DragDropTarget: Color,
+  FBDir: Color,
+  FBFile: Color,
+  FBMkDir: Color,
+  FrameBg: Color,
+  FrameBgActive: Color,
+  FrameBgHovered: Color,
+  Header: Color,
+  HeaderActive: Color,
+  HeaderHovered: Color,
+  Link: Color,
+  LinkActive: Color,
+  LinkHovered: Color,
+  MenuBarBg: Color,
+  ModalWindowDimBg: Color,
+  NavHighlight: Color,
+  NavWindowingDimBg: Color,
+  NavWindowingHighlight: Color,
+  PlotBg: Color,
+  PlotHistogram: Color,
+  PlotHistogramDimmed: Color,
+  PlotHistogramHovered: Color,
+  PlotLines: Color,
+  PlotLinesDimmed: Color,
+  PlotLinesHovered: Color,
+  PlotSignal: Color,
+  PlotSignalDimmed: Color,
+  PlotSignalHovered: Color,
+  PopupBg: Color,
+  ResizeGrip: Color,
+  ResizeGripActive: Color,
+  ResizeGripHovered: Color,
+  ScrollbarBg: Color,
+  ScrollbarGrab: Color,
+  ScrollbarGrabActive: Color,
+  ScrollbarGrabHovered: Color,
+  Separator: Color,
+  SeparatorActive: Color,
+  SeparatorHovered: Color,
+  SliderGrab: Color,
+  SliderGrabActive: Color,
+  Tab: Color,
+  TabActive: Color,
+  TabHovered: Color,
+  TabUnfocused: Color,
+  TabUnfocusedActive: Color,
+  Text: Color,
+  TextDisabled: Color,
+  TextEmphasized: Color,
+  TextHighlighted: Color,
+  TextError: Color,
+  TextSelectedBg: Color,
+  TitleBg: Color,
+  TitleBgActive: Color,
+  TitleBgCollapsed: Color,
+  WindowBg: Color,
+  DEBUG: Color,
+  INFO: Color,
+  NOTICE: Color,
+  WARNING: Color,
+  ALERT: Color,
+  ERROR: Color,
+  _DEBUG0: Color,
+  _DEBUG1: Color,
+  _DEBUG2: Color,
+  _DEBUG3: Color,
+}
 
 // DarkColors is the Primary Style object... If you feel lazy
 // just be sure to populate new entries there.  Those values
 // will be automatically propagated to other canned styles.
 // Clearly they may not be good choices, but at least the styles
 // will all have the same keys.
-export var DarkColors = {};
-let c = DarkColors;
-let bgActive = rgb(0.16, 0.29, 0.48);
-let bg = rgb(0.04, 0.04, 0.04);
-DarkColors.Border = rgba(0.43, 0.43, 0.5, 0.5);
-DarkColors.BorderShadow = rgba(0.0, 0.0, 0.0, 0.0);
-DarkColors.Button = rgba(0.26, 0.59, 0.98, 0.4);
-DarkColors.ButtonActive = rgba(0.06, 0.53, 0.98, 1.0);
-DarkColors.ButtonHovered = rgba(0.26, 0.59, 0.98, 1.0);
-DarkColors.CheckMark = rgba(0.26, 0.59, 0.98, 1.0);
-DarkColors.CheckerOff = rgbi(64, 64, 64);
-DarkColors.CheckerOn = rgbi(204, 204, 204);
-DarkColors.ChildBg = rgba(0.0, 0.0, 0.0, 0.0);
-DarkColors.DragDropTarget = rgba(1.0, 1.0, 0.0, 0.9);
-DarkColors.FBDir = rgb(0.2, 0.9, 0.2);
-DarkColors.FBFile = rgb(0.8, 0.8, 0.8);
-DarkColors.FBMkDir = rgb(0.3, 0.6, 1);
-DarkColors.FrameBg = rgba(0.16, 0.29, 0.48, 0.54);
-DarkColors.FrameBgActive = rgba(0.26, 0.59, 0.98, 0.67);
-DarkColors.FrameBgHovered = rgba(0.26, 0.59, 0.98, 0.4);
-DarkColors.Header = rgba(0.26, 0.59, 0.98, 0.31);
-DarkColors.HeaderActive = rgba(0.26, 0.59, 0.98, 1.0);
-DarkColors.HeaderHovered = rgba(0.26, 0.59, 0.98, 0.8);
-DarkColors.Link = rgb(0.3, 0.6, 0.9);
-DarkColors.LinkActive = rgb(0.2, 0.9, 0.7);
-DarkColors.LinkHovered = rgb(0.4, 0.6, 1);
-DarkColors.MenuBarBg = rgba(0.14, 0.14, 0.14, 1);
-DarkColors.ModalWindowDimBg = rgba(0.8, 0.8, 0.8, 0.35);
-DarkColors.NavHighlight = rgba(0.26, 0.59, 0.98, 1.0);
-DarkColors.NavWindowingDimBg = rgba(0.8, 0.8, 0.8, 0.2);
-DarkColors.NavWindowingHighlight = rgba(1.0, 1.0, 1.0, 0.7);
-DarkColors.PlotBg = rgb(0.1, 0.1, 0.1);
-DarkColors.PlotHistogram = rgba(0.9, 0.7, 0.0, 1.0);
-DarkColors.PlotHistogramDimmed = rgba(0.45, 0.35, 0.0, 1.0);
-DarkColors.PlotHistogramHovered = rgba(1.0, 0.6, 0.0, 1.0);
-DarkColors.PlotLines = rgba(0.61, 0.61, 0.61, 1.0);
-DarkColors.PlotLinesDimmed = rgba(0.3, 0.3, 0.3, 1.0);
-DarkColors.PlotLinesHovered = rgba(1.0, 0.43, 0.35, 1.0);
-DarkColors.PlotSignal = rgba(0.9, 0.7, 0.0, 1.0);
-DarkColors.PlotSignalDimmed = rgba(0.45, 0.35, 0.0, 1.0);
-DarkColors.PlotSignalHovered = rgba(1.0, 0.43, 0.35, 1.0);
-DarkColors.PopupBg = rgba(0.08, 0.08, 0.08, 0.94);
-DarkColors.ResizeGrip = rgba(0.26, 0.59, 0.98, 0.25);
-DarkColors.ResizeGripActive = rgba(0.26, 0.59, 0.98, 0.95);
-DarkColors.ResizeGripHovered = rgba(0.26, 0.59, 0.98, 0.67);
-DarkColors.ScrollbarBg = rgba(0.02, 0.02, 0.02, 0.53);
-DarkColors.ScrollbarGrab = rgba(0.31, 0.31, 0.31, 1);
-DarkColors.ScrollbarGrabActive = rgba(0.51, 0.51, 0.51, 1);
-DarkColors.ScrollbarGrabHovered = rgba(0.41, 0.41, 0.41, 1);
-DarkColors.Separator = c.Border;
-DarkColors.SeparatorActive = rgba(0.1, 0.4, 0.75, 1.0);
-DarkColors.SeparatorHovered = rgba(0.1, 0.4, 0.75, 0.78);
-DarkColors.SliderGrab = rgba(0.24, 0.52, 0.88, 1.0);
-DarkColors.SliderGrabActive = rgba(0.26, 0.59, 0.98, 1.0);
-DarkColors.Tab = Color.Lerp(c.Header, bgActive, 0.8);
-DarkColors.TabActive = Color.Lerp(c.HeaderActive, bgActive, 0.6);
-DarkColors.TabHovered = c.HeaderHovered;
-DarkColors.TabUnfocused = Color.Lerp(c.Tab, bg, 0.8);
-DarkColors.TabUnfocusedActive = Color.Lerp(c.TabActive, bg, 0.4);
-DarkColors.Text = rgb(0.9, 0.9, 0.9);
-DarkColors.TextDisabled = rgb(0.5, 0.5, 0.5);
-DarkColors.TextEmphasized = rgb(0.8, 1, 0.8);
-DarkColors.TextHighlighted = rgbi(25, 211, 97);
-DarkColors.TextError = CSSColors.darkorange;
-DarkColors.TextSelectedBg = rgba(0.26, 0.59, 0.98, 0.35);
-DarkColors.TitleBg = bg;
-DarkColors.TitleBgActive = bgActive;
-DarkColors.TitleBgCollapsed = rgba(0.0, 0.0, 0.0, 0.51);
-DarkColors.WindowBg = rgba(0.06, 0.06, 0.06, 0.94);
 
-DarkColors.DEBUG = rgb(0.2, 0.4, 0.9);
-DarkColors.INFO = rgb(0.3, 0.8, 0.9);
-DarkColors.NOTICE = rgb(0.4, 0.9, 0.4);
-DarkColors.WARNING = CSSColors.darkorange;
-DarkColors.ALERT = CSSColors.darkorange;
-DarkColors.ERROR = rgb(1, 0, 0);
-DarkColors._DEBUG0 = rgba(1, 0, 0, 0.5);
-DarkColors._DEBUG1 = rgba(0, 1, 0, 0.5);
-DarkColors._DEBUG2 = rgba(0, 0, 1, 0.5);
-DarkColors._DEBUG3 = rgba(1, 1, 0, 0.5);
+
+const bgActive = rgb(0.16, 0.29, 0.48);
+const bg = rgb(0.04, 0.04, 0.04);
+const border = rgba(0.43, 0.43, 0.5, 0.5)
+const header = rgba(0.26, 0.59, 0.98, 0.31)
+const headerActive = rgba(0.26, 0.59, 0.98, 1.0)
+const headerHovered = rgba(0.26, 0.59, 0.98, 0.8)
+const tab = Color.Lerp(header, bgActive, 0.8)
+const tabActive = Color.Lerp(headerActive, bgActive, 0.6)
+
+export const DarkColors: ThemeColor = {
+  Border : border,
+  BorderShadow : rgba(0.0, 0.0, 0.0, 0.0),
+  Button : rgba(0.26, 0.59, 0.98, 0.4),
+  ButtonActive : rgba(0.06, 0.53, 0.98, 1.0),
+  ButtonHovered : rgba(0.26, 0.59, 0.98, 1.0),
+  CheckMark : rgba(0.26, 0.59, 0.98, 1.0),
+  CheckerOff : rgbi(64, 64, 64),
+  CheckerOn : rgbi(204, 204, 204),
+  ChildBg : rgba(0.0, 0.0, 0.0, 0.0),
+  DragDropTarget : rgba(1.0, 1.0, 0.0, 0.9),
+  FBDir : rgb(0.2, 0.9, 0.2),
+  FBFile : rgb(0.8, 0.8, 0.8),
+  FBMkDir : rgb(0.3, 0.6, 1),
+  FrameBg : rgba(0.16, 0.29, 0.48, 0.54),
+  FrameBgActive : rgba(0.26, 0.59, 0.98, 0.67),
+  FrameBgHovered : rgba(0.26, 0.59, 0.98, 0.4),
+  Header : header,
+  HeaderActive : headerActive,
+  HeaderHovered : headerHovered,
+  Link : rgb(0.3, 0.6, 0.9),
+  LinkActive : rgb(0.2, 0.9, 0.7),
+  LinkHovered : rgb(0.4, 0.6, 1),
+  MenuBarBg : rgba(0.14, 0.14, 0.14, 1),
+  ModalWindowDimBg : rgba(0.8, 0.8, 0.8, 0.35),
+  NavHighlight : rgba(0.26, 0.59, 0.98, 1.0),
+  NavWindowingDimBg : rgba(0.8, 0.8, 0.8, 0.2),
+  NavWindowingHighlight : rgba(1.0, 1.0, 1.0, 0.7),
+  PlotBg : rgb(0.1, 0.1, 0.1),
+  PlotHistogram : rgba(0.9, 0.7, 0.0, 1.0),
+  PlotHistogramDimmed : rgba(0.45, 0.35, 0.0, 1.0),
+  PlotHistogramHovered : rgba(1.0, 0.6, 0.0, 1.0),
+  PlotLines : rgba(0.61, 0.61, 0.61, 1.0),
+  PlotLinesDimmed : rgba(0.3, 0.3, 0.3, 1.0),
+  PlotLinesHovered : rgba(1.0, 0.43, 0.35, 1.0),
+  PlotSignal : rgba(0.9, 0.7, 0.0, 1.0),
+  PlotSignalDimmed : rgba(0.45, 0.35, 0.0, 1.0),
+  PlotSignalHovered : rgba(1.0, 0.43, 0.35, 1.0),
+  PopupBg : rgba(0.08, 0.08, 0.08, 0.94),
+  ResizeGrip : rgba(0.26, 0.59, 0.98, 0.25),
+  ResizeGripActive : rgba(0.26, 0.59, 0.98, 0.95),
+  ResizeGripHovered : rgba(0.26, 0.59, 0.98, 0.67),
+  ScrollbarBg : rgba(0.02, 0.02, 0.02, 0.53),
+  ScrollbarGrab : rgba(0.31, 0.31, 0.31, 1),
+  ScrollbarGrabActive : rgba(0.51, 0.51, 0.51, 1),
+  ScrollbarGrabHovered : rgba(0.41, 0.41, 0.41, 1),
+  Separator : border,
+  SeparatorActive : rgba(0.1, 0.4, 0.75, 1.0),
+  SeparatorHovered : rgba(0.1, 0.4, 0.75, 0.78),
+  SliderGrab : rgba(0.24, 0.52, 0.88, 1.0),
+  SliderGrabActive : rgba(0.26, 0.59, 0.98, 1.0),
+  Tab : tab,
+  TabActive : tabActive,
+  TabHovered : headerHovered,
+  TabUnfocused : Color.Lerp(tab, bg, 0.8),
+  TabUnfocusedActive : Color.Lerp(tabActive, bg, 0.4),
+  Text : rgb(0.9, 0.9, 0.9),
+  TextDisabled : rgb(0.5, 0.5, 0.5),
+  TextEmphasized : rgb(0.8, 1, 0.8),
+  TextHighlighted : rgbi(25, 211, 97),
+  TextError : CSSColors.darkorange,
+  TextSelectedBg : rgba(0.26, 0.59, 0.98, 0.35),
+  TitleBg : bg,
+  TitleBgActive : bgActive,
+  TitleBgCollapsed : rgba(0.0, 0.0, 0.0, 0.51),
+  WindowBg : rgba(0.06, 0.06, 0.06, 0.94),
+  DEBUG : rgb(0.2, 0.4, 0.9),
+  INFO : rgb(0.3, 0.8, 0.9),
+  NOTICE : rgb(0.4, 0.9, 0.4),
+  WARNING : CSSColors.darkorange,
+  ALERT : CSSColors.darkorange,
+  ERROR : rgb(1, 0, 0),
+  _DEBUG0 : rgba(1, 0, 0, 0.5),
+  _DEBUG1 : rgba(0, 1, 0, 0.5),
+  _DEBUG2 : rgba(0, 0, 1, 0.5),
+  _DEBUG3 : rgba(1, 1, 0, 0.5),
+};
+let c = DarkColors;
+
+
+
 
 export var ClassicColors = Object.assign({}, DarkColors); // inherit from Dark
 c = ClassicColors;
@@ -221,8 +313,8 @@ LightColors.TitleBgCollapsed = rgba(1.0, 1.0, 1.0, 0.51);
 LightColors.WindowBg = rgba(0.94, 0.94, 0.94, 1.0);
 
 export var DebugColors = Object.assign({}, DarkColors);
-for (let k in DebugColors) {
-  DebugColors[k] = Color.RandomCss();
+for (const k of Object.keys(DebugColors)) {
+  ;(DebugColors as any)[k] = Color.RandomCss();
 }
 
 export var ColorSchemes = {
@@ -233,14 +325,154 @@ export var ColorSchemes = {
 };
 
 export class StyleMod {
-  constructor(field, val) {
+  Field: string;
+    Value: Color;
+  constructor(field: string, val: Color) {
     this.Field = field;
     this.Value = val;
   }
 }
 
 export class Style extends SettingsHandler {
-  constructor(fontAtlas, imgui) {
+
+  _imgui:Imgui;
+  Alpha = 1.0;
+  WindowPadding = new Vec2(8, 8);
+  WindowRounding = 7.0;
+  WindowBorderSize = 1.0;
+  WindowMinSize = new Vec2(32, 32);
+  WindowTitleAlign = new Vec2(0, 0.5);
+  ChildRounding = 0.0;
+  ChildBorderSize = 1;
+  PopupRounding = 0.0;
+  PopupBorderSize = 1;
+  FramePadding = new Vec2(4, 3);
+  FrameRounding = 3;
+  FrameBorderSize = 0;
+  ItemSpacing = new Vec2(8, 4);
+  ItemInnerSpacing = new Vec2(4, 4);
+  TextLineHeightPct = 1.25;
+  LabelWidth = "MMMMMM"; // aka 6em
+  TouchExtraPadding = new Vec2(0, 0);
+  IndentSpacing = 21;
+  ColumnsMinSpacing = 6;
+  ScrollbarSize = 16;
+  ScrollbarRounding = 3;
+  GrabMinSize = 10;
+  GrabRounding = 0;
+  TabRounding = 4;
+  TabBorderSize = 0;
+  ButtonTextAlign = new Vec2(0.5, 0.5);
+  SelectableTextAlign = new Vec2(0, 0);
+  DisplayWindowPadding = new Vec2(19, 19);
+  DisplaySafeAreaPadding = new Vec2(3, 3);
+
+  MouseCursorScale = 1;
+
+  AntiAliasedLines = true;
+
+  AntiAliasedFill = true;
+
+  CurveTessellationTol = 1.25;
+  _DefaultFontSizes = {
+    Small: 9,
+    Std: 10,
+    Med: 15,
+    Big: 20,
+    Huge: 32,
+  };
+  _DefaultFonts = {
+    Default: ["Exo", "Std", "normal"],
+    Label: ["Exo", "Std", "bold"],
+    Small: ["Exo", "Small", "normal"],
+    Med: ["Exo", "Med", "normal"],
+    Std: ["Exo", "Std", "normal"],
+    Big: ["Exo", "Big", "normal"],
+    serif: ["Georgia", "Std", "normal"],
+    "sans-serif": ["Exo", "Std", "normal"],
+    monospace: ["SourceCodePro", "Std", "normal"],
+    Fixed: ["SourceCodePro", "Std", "normal"],
+    MedFixed: ["SourceCodePro", "Med", "normal"],
+    BigFixed: ["SourceCodePro", "Big", "normal"],
+    Icons: ["Material Icons", "Std", "normal"],
+    BigIcons: ["Material Icons", "Big", "normal"],
+    HugeIcons: ["Material Icons", "Huge", "normal"],
+  };
+  FontSizes: unknown;
+  Fonts: unknown;
+  _MIcons = {
+    AccountBalance: String.fromCharCode(0x0e84f),
+    AddLocation: String.fromCharCode(0x0e567),
+    BorderColor: String.fromCharCode(0x0e22b), // edit-like
+    Build: String.fromCharCode(0x0e869),
+    Camera: String.fromCharCode(0x0ea3f), // shutter
+    ChevronLeft: String.fromCharCode(0x0e5cb),
+    ChevronRight: String.fromCharCode(0x0e5cc),
+    Close: String.fromCharCode(0x0e5cd),
+    CloudDownload: String.fromCharCode(0x0e2c0),
+    CloudUpload: String.fromCharCode(0x0e2c3),
+    CreateNewFolder: String.fromCharCode(0x0e2cc),
+    DateRange: String.fromCharCode(0x0e916),
+    Delete: String.fromCharCode(0x0e872), // trash
+    DeleteSweep: String.fromCharCode(0x0e16c),
+    Edit: String.fromCharCode(0x0e3c9),
+    Error: String.fromCharCode(0x0e000),
+    ErrorOutline: String.fromCharCode(0x0e001),
+    Eye: String.fromCharCode(0x0e8f4),
+    Folder: String.fromCharCode(0x0e2c7),
+    FolderOpen: String.fromCharCode(0x0e2c8),
+    Help: String.fromCharCode(0x0e887),
+    HelpOutline: String.fromCharCode(0x0e8fd),
+    Info: String.fromCharCode(0x0e88e),
+    InfoOutline: String.fromCharCode(0x0e88f),
+    ImportExport: String.fromCharCode(0x0e0c3),
+    LibraryBooks: String.fromCharCode(0x0e02f),
+    NavFwd: String.fromCharCode(0x0e315), // keyboard_arrow_right
+    NavRev: String.fromCharCode(0x0e314), // keyboard_arrow_left
+    Menu: String.fromCharCode(0x0e5d2), // ie hamburger
+    MenuOpen: String.fromCharCode(0x0e9bd),
+    Mute: String.fromCharCode(0x0e04f),
+    Monitization: String.fromCharCode(0x0e263), // $ dollar
+    MyLocation: String.fromCharCode(0x0e050),
+    NoMute: String.fromCharCode(0x0e050),
+    Note: String.fromCharCode(0x0e3a1), // audiotrack, musical_note
+    Notes: String.fromCharCode(0x0e26c), // subject
+    OpenInBrowser: String.fromCharCode(0x0e89d),
+    People: String.fromCharCode(0x0ea21), // people-alt
+    Pause: String.fromCharCode(0x0e034),
+    PickFile: String.fromCharCode(0x0e2c8),
+    PickImage: String.fromCharCode(0x0e43e), // add_photograph_alt
+    Play: String.fromCharCode(0x0e037),
+    Refresh: String.fromCharCode(0x0e5d5),
+    Settings: String.fromCharCode(0x0e8b8),
+    StarFilled: String.fromCharCode(0x0e838),
+    StarOutline: String.fromCharCode(0x0e83a),
+    Stop: String.fromCharCode(0x0e047),
+    Sync: String.fromCharCode(0x0e627),
+    Trash: String.fromCharCode(0x0e872), // delete
+    UnfoldLess: String.fromCharCode(0x0e5d6), // unfold_less
+    UnfoldMore: String.fromCharCode(0x0e5d7), // unfold_more
+    ViewComfy: String.fromCharCode(0x0e42a), // tighter grid
+    ViewGrid: String.fromCharCode(0x0e8f0), // aka Module
+    ViewHeadline: String.fromCharCode(0x0e872),
+    ViewList: String.fromCharCode(0x0e872),
+    ViewModule: String.fromCharCode(0x0e8f0), // aka Grid
+    Warning: String.fromCharCode(0x0e002),
+  };
+  _UIcons = {
+    NavIcon: String.fromCodePoint(0x2630), //  hamburger
+    InfoIcon: String.fromCodePoint(0x2139), // 0x1f6c8 circled information source
+    GearIcon: String.fromCodePoint(0x2699),
+    RightArrow: String.fromCodePoint(0x25b6),
+    SmallRightArrow: String.fromCodePoint(0x25b8),
+    RightArrow2: String.fromCodePoint(0x25ba),
+    DownArrow: String.fromCodePoint(0x25bc),
+    SmallDownArrow: String.fromCodePoint(0x25be),
+    Tricolon: String.fromCodePoint(0x205d), // 3 vertical dots (menu)
+  };
+  _fontAtlas: FontAtlas;
+
+  constructor(fontAtlas: FontAtlas, imgui: Imgui) {
     // NB: all member variables that don't begin with _ are part
     //  of the serialization.
     super();
@@ -462,7 +694,7 @@ export class Style extends SettingsHandler {
     return "Style";
   }
 
-  Encapsulate(imgui) {
+  Encapsulate(imgui:Imgui) {
     let o = {};
     for (let k of Object.getOwnPropertyNames(this)) {
       if (k[0] === "_") continue; // font atlas, icons, _defaults

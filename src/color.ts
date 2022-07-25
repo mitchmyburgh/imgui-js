@@ -1,20 +1,30 @@
-import { Vec1 } from "./types.js";
+import {Rect, Vec1} from "./types.js";
 
 export class ColorMod {
-  constructor(field, backupValue) {
+  Field: string;
+    BackupValue: Color;
+  constructor(field: string, backupValue: Color) {
     this.Field = field; // aka: Col (we use field name, not idx)
     this.BackupValue = backupValue;
   }
 }
 
-function _lerp(v, a, b) {
+function _lerp(v: number, a: number, b: number) {
   return a + (b - a) * v;
 }
 
-export var CSSColors = {}; // filled below
+export var CSSColors: Record<string, Color> = {}; // filled below
 export var Colors = {}; // filled below
 
 export class Color {
+  x: number;
+  y: number;
+  z: number;
+  space: string;
+  a: number;
+  str: string | null;
+  alphaMult: number = 0
+
   static RandomCss() {
     let keys = Object.keys(CSSColors);
     let i = Math.floor(Math.random() * keys.length);
@@ -29,15 +39,15 @@ export class Color {
     );
   }
 
-  static Css(nm) {
+  static Css(nm: number) {
     return CSSColors[nm].Clone();
   }
 
-  static FromArray(c, alpha = true, space = undefined) {
+  static FromArray(c: [number, number, number, number?], alpha = true, space = undefined) {
     return new Color(c[0], c[1], c[2], alpha ? c[3] : 1, space);
   }
 
-  static FromCSS(cstr) {
+  static FromCSS(cstr: string) {
     let m = /^(rgba?)\s*\(([^)]*)\)/.exec(cstr);
     let fields;
     if (m) {
@@ -59,14 +69,14 @@ export class Color {
     else return Color.rgba(fields[0], fields[1], fields[2], fields[3]);
   }
 
-  static rgbi(r, g, b) {
+  static rgbi(r?: number, g?: number, b?: number) {
     if (r === undefined) {
       r = g = b = 0;
     }
     return new Color(r / 255.0, g / 255.0, b / 255.0, 1);
   }
 
-  static rgbai(r, g, b, a) {
+  static rgbai(r?: number, g?: number, b?: number, a?: number) {
     if (r === undefined) {
       r = g = b = 0;
       a = 1;
@@ -74,14 +84,14 @@ export class Color {
     return new Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
   }
 
-  static rgb(r, g, b) {
+  static rgb(r?: number, g?: number, b?: number) {
     if (r === undefined) {
       r = g = b = 0;
     }
     return new Color(r, g, b, 1);
   }
 
-  static rgba(r, g, b, a) {
+  static rgba(r?: number, g?: number, b?: number, a?: number) {
     if (r === undefined) {
       r = g = b = 0;
       a = 1;
@@ -89,23 +99,23 @@ export class Color {
     return new Color(r, g, b, a);
   }
 
-  static hsv(h, s, v) {
+  static hsv(h: number, s: number, v: number) {
     return new Color(h, s, v, 1, "hsv");
   }
 
-  static hsva(h, s, v, a) {
+  static hsva(h: number, s: number, v: number, a: number) {
     return new Color(h, s, v, a, "hsv");
   }
 
-  static hsl(h, s, l) {
+  static hsl(h: number, s: number, l: number) {
     return new Color(h, s, l, 1, "hsl");
   }
 
-  static hsla(h, s, l, a) {
+  static hsla(h: number, s: number, l: number, a: number) {
     return new Color(h, s, l, a, "hsl");
   }
 
-  static Lerp(a, b, pct) {
+  static Lerp(a: Color, b: Color, pct: number) {
     console.assert(a.space === b.space);
     return new Color(
       a.x + (b.x - a.x) * pct,
@@ -116,8 +126,8 @@ export class Color {
   }
 
   static Blend(
-    a,
-    b // b over a
+    a: Color,
+    b: Color // b over a
   ) {
     let t = b.a;
     if (t === 1) return b;
@@ -130,7 +140,7 @@ export class Color {
     return new Color(x, y, z);
   }
 
-  static Instantiate(str) {
+  static Instantiate(str: string) {
     let c = new Color();
     let fields = str.split(" ");
     console.assert(fields.length === 5);
@@ -143,11 +153,11 @@ export class Color {
   }
 
   constructor(
-    x,
-    y,
-    z,
-    a,
-    space = "rgb" // rgb, hsv, hsl
+    x: number,
+    y: number,
+    z: number,
+    a?: number,
+    space: string = "rgb" // rgb, hsv, hsl
   ) {
     this.x = x;
     this.y = y;
@@ -164,7 +174,7 @@ export class Color {
     );
   }
 
-  Copy(src) {
+  Copy(src: Color) {
     this.x = src.x;
     this.y = src.y;
     this.z = src.z;
@@ -173,7 +183,7 @@ export class Color {
     this.str = null;
   }
 
-  CopyArray(src) {
+  CopyArray(src: [number, number, number, number]) {
     this.x = src[0];
     this.y = src[1];
     this.z = src[2];
@@ -181,7 +191,7 @@ export class Color {
     this.str = null;
   }
 
-  Equals(other) {
+  Equals(other: Color) {
     return this.AsStr() === other.AsStr();
   }
 
@@ -195,18 +205,18 @@ export class Color {
     if (this.str) this.str = null;
   }
 
-  Index(i) {
+  Index(i: number) {
     if (i === 0) return this.x;
     if (i === 1) return this.y;
     if (i === 2) return this.z;
     if (i === 3) return this.a;
   }
 
-  AsArray(space = null) {
+  AsArray(space: string | null = null) {
     if (space === null || space === this.space)
       return [this.x, this.y, this.z, this.a];
     else {
-      console.assert(0, "could do more work here.");
+      console.assert(false, "could do more work here.");
       return [];
     }
   }
@@ -220,7 +230,7 @@ export class Color {
     ];
   }
 
-  AsFloatStr(noalpha) {
+  AsFloatStr(noalpha: boolean) {
     let x = this.x.toFixed(3);
     let y = this.y.toFixed(3);
     let z = this.z.toFixed(3);
@@ -230,7 +240,7 @@ export class Color {
     return `${this.space}a(${x}, ${y}, ${z}, ${a})`;
   }
 
-  AsIntStr(noalpha) {
+  AsIntStr(noalpha: boolean) {
     let x = Math.floor(this.x * 255);
     let y = Math.floor(this.y * 255);
     let z = Math.floor(this.z * 255);
